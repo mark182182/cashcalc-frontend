@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, FormLabel, FormControlLabel, RadioGroup, FormControl, Radio, Checkbox, FormHelperText } from '@material-ui/core';
+import { Grid, Typography, FormLabel, FormControlLabel, RadioGroup, FormControl, Radio, Checkbox, FormHelperText, TextField, Dialog, Button } from '@material-ui/core';
 import Select from 'react-select';
 import { mapCountries } from '../../reducer/air';
+import './air.scss';
+import { Result } from '../result/result';
 
 export const Air = () => {
   const [countries, setCountries] = useState([]);
+  const [weights, setWeights] = useState([]);
   const [discount, setDiscount] = useState('');
   const [express, setExpress] = useState('');
   const [additional, setAdditional] = useState([]);
+  const [openAirResult, setOpenAirResult] = useState(false);
 
   useEffect(() => {
-    const loadCountries = () => {
-      setCountries(mapCountries());
+    setCountries(mapCountries());
+    let generateWeights = [];
+    for (let i = 0.5; i <= 200;) {
+      generateWeights = [...generateWeights, { value: i, label: i }];
+      i += 0.5;
     }
-    loadCountries();
+    setWeights(generateWeights);
   }, [])
 
   const handleDiscountChange = event => {
@@ -34,18 +41,31 @@ export const Air = () => {
     }
   }
 
+  const closeAirResult = () => {
+    setOpenAirResult(false);
+  }
+
   return (
-    <Grid container item>
+    <Grid container item className='air-container'>
+      <Dialog
+        open={openAirResult}
+        onClose={closeAirResult}
+        fullWidth>
+        <Result close={closeAirResult} />
+      </Dialog>
       <Typography variant='h5'>Légi/belföld transzport</Typography>
-      <Grid container item>
+      <Grid container item direction='column'>
         <Typography variant='subtitle2'>Ország</Typography>
         <Select options={countries} />
       </Grid>
-      <Grid container item>
+      <Grid container item direction='column'>
         <Typography variant='subtitle2'>Súly (kg)</Typography>
+        <Select options={weights} />
+        <Typography variant='caption'>Adj meg 0.5 és 200 kg közötti súlyt.</Typography>
       </Grid>
-      <Grid container item>
+      <Grid container item direction='column'>
         <Typography variant='subtitle2'>Biztosítási összeg (Ft)</Typography>
+        <TextField type='number' variant='outlined' />
       </Grid>
       <Grid container item>
         <FormControl className='air-discount-formcontrol'>
@@ -103,6 +123,11 @@ export const Air = () => {
             Amennyiben az ügyfél lakóövezetbe kéri a kézbesítést (ODD), ikszeld be!
             </FormHelperText>
         </FormControl>
+      </Grid>
+      <Grid container item justify='flex-end'>
+        <Button
+          onClick={() => setOpenAirResult(true)}
+          className='air-calculate-button'>Számítsd ki!</Button>
       </Grid>
     </Grid >
   )

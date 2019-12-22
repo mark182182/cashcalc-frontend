@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Tabs, Tab, TabPanel, AppBar } from '@material-ui/core';
+import { Grid, Tabs, Tab, TabPanel, AppBar } from '@material-ui/core';
 import { Air } from '../air/air';
 import { Road } from '../road/road';
 import { Admin } from '../admin/admin';
@@ -26,7 +26,7 @@ export const Main = () => {
   }
 
   return (
-    <Container>
+    <Grid container>
       <AppBar position="static">
         <Tabs
           value={currentTab}
@@ -41,6 +41,6 @@ export const Main = () => {
         </Tabs>
       </AppBar>
       {renderCurrentTab()}
-    </Container>
+    </Grid>
   )
 }
