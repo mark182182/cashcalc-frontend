@@ -48,22 +48,146 @@
   <div class="columns">
     <div class="column">
       <p class="subtitle">Ország</p>
-      <div class="select">
-        <select>
-          <option>option1</option>
-          <option>option2</option>
-        </select>
+      <div class="control has-icons-left">
+        <div class="select">
+          <select>
+            <option>Magyarország</option>
+            <option disabled>Anglia</option>
+            <option>Németország</option>
+          </select>
+        </div>
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faGlobe"></fa-icon>
+        </span>
       </div>
     </div>
     <div class="column">
       <p class="subtitle">Súly (kg)</p>
-      <div class="select">
-        <select>
-          <option>0.5</option>
-          <option>1</option>
-        </select>
+      <div class="control has-icons-left">
+        <div class="select">
+          <select>
+            <option>0.5</option>
+            <option>1</option>
+          </select>
+        </div>
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faWeightHanging"></fa-icon>
+        </span>
       </div>
       <p class="caption">Adj meg 0.5 és 200 kg közötti súlyt.</p>
+    </div>
+    <div class="column">
+      <p class="subtitle">Biztosítási összeg (Ft)</p>
+      <div class="control has-icons-left">
+        <input class="input" type="number" />
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faShieldAlt"></fa-icon>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-one-third">
+      <p class="subtitle">Kedvezmény</p>
+      <div class="control has-icons-left">
+        <div class="select">
+          <select>
+            <option value="0.1" label="10%"></option>
+            <option value="0.2" label="20%"></option>
+            <option value="0.3" label="30%"></option>
+          </select>
+        </div>
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faDollarSign"></fa-icon>
+        </span>
+      </div>
+    </div>
+    <div class="column is-one-third">
+      <p class="subtitle">Express csomag?</p>
+      <div class="control has-icons-left">
+        <div class="select">
+          <select>
+            <option value="0" label="Express Worldwide"></option>
+            <option value="9" label="Express 9h"></option>
+            <option value="12" label="Express 12h"></option>
+          </select>
+        </div>
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faShieldAlt"></fa-icon>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="columns">
+    <p class="subtitle">Kiegészítő opciók</p>
+  </div>
+  <div class="columns is-mobile">
+    <div class="column is-narrow">
+      <p class="subtitle">DOX:</p>
+    </div>
+    <div class="column is-narrow">
+      <input type="checkbox" aria-label="dox" />
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column">
+      <p class="caption">
+        Amennyiben az ügyfél EU-n kívüli területre küld dokumentumot, ikszeld
+        be!
+      </p>
+    </div>
+  </div>
+  <div class="columns is-mobile">
+    <div class="column is-narrow">
+      <p class="subtitle">EXT:</p>
+    </div>
+    <div class="column is-narrow">
+      <input type="checkbox" aria-label="ext" />
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column">
+      <p class="caption">
+        Amennyiben az ügyfél küldeménye dokumentum, és szeretné biztosítani,
+        ikszeld be!
+      </p>
+    </div>
+  </div>
+  <div class="columns is-mobile">
+    <div class="column is-narrow">
+      <p class="subtitle">RAS:</p>
+    </div>
+    <div class="column is-narrow">
+      <input type="checkbox" aria-label="RAS" />
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column">
+      <p class="caption">
+        Amennyiben a küldemény kieső területre megy, ikszeld be!
+      </p>
+    </div>
+  </div>
+  <div class="columns is-mobile">
+    <div class="column is-narrow">
+      <p class="subtitle">TK:</p>
+    </div>
+    <div class="column is-narrow">
+      <input type="checkbox" aria-label="tk" />
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-narrow">
+      <p class="caption">
+        Amennyiben az ügyfél lakóövezetbe kéri a kézbesítést (ODD), ikszeld be!
+      </p>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-narrow">
+      <button class="button is-primary is-mobile is-fullwidth">
+        Számítsd ki!
+      </button>
     </div>
   </div>
 </div>

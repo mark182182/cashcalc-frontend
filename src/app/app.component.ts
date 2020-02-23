@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { faWeightHanging } from '@fortawesome/free-solid-svg-icons';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import { faShippingFast } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +12,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'CashCalc';
+  faGlobe = faGlobe;
+  faWeightHanging = faWeightHanging;
+  faDollarSign = faDollarSign;
+  faShieldAlt = faShieldAlt;
+  faShippingFast = faShippingFast;
 
   ngOnInit() {
     // Get all "navbar-burger" elements
