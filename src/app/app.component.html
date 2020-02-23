@@ -1,4 +1,8 @@
-<nav class="navbar subtitle" role="navigation" aria-label="main navigation">
+<nav
+  class="navbar subtitle is-primary is-fixed-top"
+  role="navigation"
+  aria-label="main navigation"
+>
   <div class="navbar-brand">
     <a class="navbar-item" href="https://cashcalc.herokuapp.com">
       <img src="../favicon.ico" />
@@ -8,6 +12,8 @@
     <a
       role="button"
       class="navbar-burger burger"
+      [ngClass]="{ 'is-active': menuStatus }"
+      (click)="toggleMenu()"
       aria-label="menu"
       aria-expanded="false"
       data-target="navbarBasicExample"
@@ -18,8 +24,15 @@
     </a>
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
+  <div
+    id="navbarBasicExample"
+    class="navbar-menu"
+    [ngClass]="{ 'is-active': menuStatus }"
+  >
     <div class="navbar-start">
+      <a class="navbar-item button is-light" (click)="openLogin()">
+        Bejelentkezés
+      </a>
       <a class="navbar-item">
         Légi
       </a>
@@ -30,18 +43,42 @@
         Admin
       </a>
     </div>
-
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-light">
-            Bejelentkezés
-          </a>
-        </div>
-      </div>
-    </div>
   </div>
 </nav>
+
+<div class="modal" [ngClass]="{ 'is-active': loginMenu }">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Bejelentkezés</p>
+      <button class="delete" aria-label="close" (click)="closeLogin()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="control">
+        <div class="field">
+          <div class="control has-icons-left">
+            <input class="input" type="email" />
+            <span class="icon is-small is-left">
+              <fa-icon [icon]="faUser"></fa-icon>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control has-icons-left">
+            <input class="input" type="password" />
+            <span class="icon is-small is-left">
+              <fa-icon [icon]="faKey"></fa-icon>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-primary">Belépés</button>
+      <button class="button" (click)="closeLogin()">Vissza</button>
+    </footer>
+  </div>
+</div>
 
 <div class="box">
   <p class="title">Légi/belföld transzport</p>
@@ -79,7 +116,7 @@
     <div class="column">
       <p class="subtitle">Biztosítási összeg (Ft)</p>
       <div class="control has-icons-left">
-        <input class="input" type="number" />
+        <input class="input" type="number" min="0" />
         <span class="icon is-small is-left">
           <fa-icon [icon]="faShieldAlt"></fa-icon>
         </span>
@@ -113,7 +150,7 @@
           </select>
         </div>
         <span class="icon is-small is-left">
-          <fa-icon [icon]="faShieldAlt"></fa-icon>
+          <fa-icon [icon]="faShippingFast"></fa-icon>
         </span>
       </div>
     </div>
@@ -185,9 +222,25 @@
   </div>
   <div class="columns">
     <div class="column is-narrow">
-      <button class="button is-primary is-mobile is-fullwidth">
+      <button
+        class="button is-primary is-mobile is-fullwidth"
+        (click)="openCalculateWindow()"
+      >
         Számítsd ki!
       </button>
     </div>
   </div>
+</div>
+<div class="modal" [ngClass]="{ 'is-active': isActive }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      ASD
+    </div>
+  </div>
+  <button
+    class="modal-close is-large"
+    aria-label="close"
+    (click)="closeCalculateWindow()"
+  ></button>
 </div>
