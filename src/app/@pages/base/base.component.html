@@ -1,0 +1,46 @@
+<nav
+  class="navbar subtitle is-primary is-fixed-top"
+  role="navigation"
+  aria-label="main navigation"
+>
+  <div class="navbar-brand">
+    <a class="navbar-item" href="https://cashcalc.herokuapp.com">
+      <img src="../favicon.ico" />
+      <p>CASHCALC</p>
+    </a>
+
+    <a
+      role="button"
+      class="navbar-burger burger"
+      [ngClass]="{ 'is-active': menuStatus }"
+      (click)="toggleMenu()"
+      aria-label="menu"
+      aria-expanded="false"
+      data-target="navbarBasicExample"
+    >
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div
+    id="navbarBasicExample"
+    class="navbar-menu"
+    [ngClass]="{ 'is-active': menuStatus }"
+  >
+    <div class="navbar-end">
+      <a class="navbar-item">
+        Kalkulátor
+      </a>
+      <a class="navbar-item">
+        Admin
+      </a>
+      <a class="navbar-item">
+        Superuser
+      </a>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

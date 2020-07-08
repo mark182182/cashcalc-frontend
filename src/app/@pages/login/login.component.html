@@ -1,0 +1,31 @@
+<div>
+  <div>
+    <p>Bejelentkezés</p>
+    <div class="control">
+      <div class="field">
+        <div class="control has-icons-left">
+          <input  [(ngModel)]="_userDetails.username" class="input" type="email" required />
+          <span class="icon is-small is-left">
+            <fa-icon [icon]="faUser"></fa-icon>
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control has-icons-left">
+          <input
+            [(ngModel)]="_userDetails.password"
+            class="input"
+            type="password"
+            required
+          />
+          <span class="icon is-small is-left">
+            <fa-icon [icon]="faKey"></fa-icon>
+          </span>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <button class="button is-primary" (click)="submitLogin()">Belépés</button>
+    </footer>
+  </div>
+</div>
