@@ -3,6 +3,7 @@ import { Grid, Tabs, Tab, TabPanel, AppBar } from '@material-ui/core';
 import { Air } from '../air/air';
 import { Road } from '../road/road';
 import { Admin } from '../admin/admin';
+import Login from '../login/login';
 import './main.scss';
 
 export const Main = () => {
@@ -10,7 +11,7 @@ export const Main = () => {
 
   const switchTab = (event, value) => {
     setTab(value);
-  }
+  };
 
   const renderCurrentTab = () => {
     switch (currentTab) {
@@ -21,9 +22,9 @@ export const Main = () => {
       case 2:
         return <Admin />;
       default:
-        return <Air />;
+        return <Login />;
     }
-  }
+  };
 
   return (
     <Grid container>
@@ -34,13 +35,15 @@ export const Main = () => {
           centered={true}
           className="main-tabs"
           indicatorColor="secondary"
-          TabIndicatorProps={{ className: "main-indicator" }}>
-          <Tab label='Légi/belföld' />
-          <Tab label='Közúti' />
-          <Tab label='Bejelentkezés' />
+          TabIndicatorProps={{ className: 'main-indicator' }}
+        >
+          <Tab label="Légi/belföld" />
+          <Tab label="Közúti" />
+          <Tab label="Admin" />
+          <Tab label="Bejelentkezés" />
         </Tabs>
       </AppBar>
       {renderCurrentTab()}
     </Grid>
-  )
-}
+  );
+};
