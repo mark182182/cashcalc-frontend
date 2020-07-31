@@ -1,8 +1,16 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { loginUser, resetUser } from '../../action/login';
-import { Grid, Typography } from '@material-ui/core';
+import {
+  Grid,
+  Typography,
+  TextField,
+  InputAdornment,
+  Button,
+} from '@material-ui/core';
 import { SnackBarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
+import { Person, VpnKey } from '@material-ui/icons';
+import './login.scss';
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -15,54 +23,54 @@ export const LoginConnected = (props) => {
   const username = useRef(null);
   const password = useRef(null);
 
-  useEffect(() => {
-    return () => {
-      props.resetUser();
-    };
-  }, []);
-
   const login = () => {
     props.loginUser(username.current.value, password.current.value);
   };
 
   return (
-    <Grid>
-      <SnackBarWrapper
+    <Grid container>
+      {/* <SnackBarWrapper
         reset={props.resetUser}
         isLoading={props.loginIsLoading}
         status={props.loginStatus}
         message={props.loginMessage}
-      />
-      <Grid>
-        <Typography>Bejelentkezés</Typography>
-        <Grid className="control">
-          <Grid className="field">
-            <Grid className="control has-icons-left">
-              <input className="input" ref={username} type="email" required />
-              <span className="icon is-small is-left">
-                <Grid>icon</Grid>
-              </span>
-            </Grid>
+      /> */}
+      <Grid container className="login-wrapper" direction="column">
+        <Grid container className="login-container">
+          <Grid container className="login-username" justify="center">
+            <TextField
+              className="input"
+              type="email"
+              required
+              inputRef={username}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Person />
+                  </InputAdornment>
+                ),
+              }}
+            />
           </Grid>
-          <Grid className="field">
-            <Grid className="control has-icons-left">
-              <input
-                className="input"
-                ref={password}
-                type="password"
-                required
-              />
-              <span className="icon is-small is-left">
-                <Grid>icon</Grid>
-              </span>
-            </Grid>
+          <Grid container className="login-password" justify="center">
+            <TextField
+              className="input"
+              inputRef={password}
+              type="password"
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <VpnKey />
+                  </InputAdornment>
+                ),
+              }}
+            />
           </Grid>
         </Grid>
-        <footer>
-          <button className="button is-primary" onClick={login}>
-            Belépés
-          </button>
-        </footer>
+        <Grid container item justify="flex-end">
+          <Button onClick={login}>Belépés</Button>
+        </Grid>
       </Grid>
     </Grid>
   );

@@ -11,11 +11,18 @@ import {
   FormHelperText,
   TextField,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
 import Select from 'react-select';
-import { mapCountries } from '../../data-reducer/air';
+import { getCountriesRoad } from '../../action/country';
 import './road.scss';
 
-export const Road = () => {
+const mapDispatch = (dispatch) => {
+  return {
+    getCountriesRoad: () => dispatch(getCountriesRoad()),
+  };
+};
+
+const RoadConnected = (props) => {
   const [countries, setCountries] = useState([]);
   const [weights, setWeights] = useState([]);
   const [discount, setDiscount] = useState('');
@@ -23,7 +30,7 @@ export const Road = () => {
   const [additional, setAdditional] = useState([]);
 
   useEffect(() => {
-    setCountries(mapCountries());
+    props.getCountriesRoad().then(setCountries(props.countries));
     let generateWeights = [];
     for (let i = 0.5; i < 200; ) {
       generateWeights = [...generateWeights, { value: i, label: i }];
@@ -171,3 +178,12 @@ export const Road = () => {
     </Grid>
   );
 };
+
+const mapState = (state) => {
+  return {
+    countries: state.countryReducer.countries,
+  };
+};
+
+const Road = connect(mapState, mapDispatch)(RoadConnected);
+export default Road;

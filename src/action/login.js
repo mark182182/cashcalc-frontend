@@ -1,19 +1,25 @@
 import axios from 'axios';
-import CONSTANTS from '../constants/constants';
-import { actionTypes } from '../constants/action-types';
+import constants from '../constants/constants';
+import actionTypes from '../constants/action-types';
 
 export const loginUser = (username, password) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.LOGIN_USER_RESET });
     return axios
-      .post(CONSTANTS.BASE_URL + CONSTANTS.API_ROUTES.LOGIN, {
-        username,
-        password,
-      })
+      .post(
+        constants.BASE_URL + constants.API_ROUTES.LOGIN,
+        {
+          username,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((resp) => {
         dispatch({
           type: actionTypes.LOGIN_USER_SUCCESS,
-          payload: resp.data.message,
+          payload: resp.data,
         });
       })
       .catch((err) => {

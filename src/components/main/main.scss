@@ -1,7 +1,17 @@
+@import '../../styles/style.scss';
+
 .main-tabs {
-  background-color:rebeccapurple;
+  background-color: $primary-color;
 }
 
 .main-indicator {
-  color: #FFFFFF;
+  color: #ffffff;
+}
+
+.navbar-brand {
+  width: 50% !important;
+}
+
+.navbar-content {
+  width: 50% !important;
 }

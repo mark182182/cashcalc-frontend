@@ -1,8 +1,10 @@
+@import '../../styles/style.scss';
+
 .air-container {
   padding: 1em;
 }
 
 .air-calculate-button {
-  background: #43a047 !important;
-  color: #FFFFFF !important;
+  background: $success-color !important;
+  color: #ffffff !important;
 }

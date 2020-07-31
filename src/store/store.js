@@ -7,6 +7,7 @@ import rootReducer from '../redux-reducer/root';
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['loginReducer'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

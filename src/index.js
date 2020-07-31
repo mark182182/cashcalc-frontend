@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Main } from './components/main/main';
+import Main from './components/main/main';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from '../src/store/store';
-import './index.css';
+import 'normalize.css';
+import './styles/style.scss';
 import { PersistGate } from 'redux-persist/integration/react';
 
 ReactDOM.render(

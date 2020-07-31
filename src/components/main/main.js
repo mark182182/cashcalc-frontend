@@ -1,49 +1,106 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Tabs, Tab, TabPanel, AppBar } from '@material-ui/core';
+import {
+  Grid,
+  Tabs,
+  Tab,
+  TabPanel,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Hidden,
+  Drawer,
+  List,
+  ListItemIcon,
+  ListItemText,
+  ListItem,
+  Typography,
+} from '@material-ui/core';
 import { Air } from '../air/air';
-import { Road } from '../road/road';
+import Road from '../road/road';
 import { Admin } from '../admin/admin';
 import Login from '../login/login';
+import { SuperUser } from '../superuser/superuser';
+import { connect } from 'react-redux';
+import constants from '../../constants/constants';
+import { Menu as MenuIcon } from '@material-ui/icons';
 import './main.scss';
 
-export const Main = () => {
-  const [currentTab, setTab] = useState(0);
+const mapDispatch = (dispatch) => {
+  return {};
+};
 
-  const switchTab = (event, value) => {
-    setTab(value);
-  };
+const MainConnected = (props) => {
+  const [currentTab, setTab] = useState(null);
+  const [isDrawerOpen, toggleDrawer] = useState(false);
 
   const renderCurrentTab = () => {
     switch (currentTab) {
-      case 0:
-        return <Air />;
       case 1:
-        return <Road />;
+        return <Air />;
       case 2:
+        return <Road />;
+      case 3:
         return <Admin />;
+      case 4:
+        return <SuperUser />;
+      case null:
+        return <Login />;
       default:
         return <Login />;
     }
   };
 
+  const getRole = () => {
+    return constants.ROLES[props.role];
+  };
+
+  const drawer = (
+    <List>
+      {['Bejelentkezés', 'Légi/belföld', 'Közúti', 'Admin', 'Super'].map(
+        (text, index) => {
+          if (getRole() >= index) {
+            return (
+              <ListItem button onClick={() => setTab(index)} key={text}>
+                <ListItemText primary={text} />
+              </ListItem>
+            );
+          }
+        }
+      )}
+    </List>
+  );
+
   return (
-    <Grid container>
-      <AppBar position="static">
-        <Tabs
-          value={currentTab}
-          onChange={switchTab}
-          centered={true}
-          className="main-tabs"
-          indicatorColor="secondary"
-          TabIndicatorProps={{ className: 'main-indicator' }}
-        >
-          <Tab label="Légi/belföld" />
-          <Tab label="Közúti" />
-          <Tab label="Admin" />
-          <Tab label="Bejelentkezés" />
-        </Tabs>
-      </AppBar>
+    <Grid container className="navbar-main">
+      <Grid container className="navbar-content">
+        <IconButton onClick={() => toggleDrawer(!isDrawerOpen)}>
+          <MenuIcon />
+        </IconButton>
+      </Grid>
+      <Hidden>
+        <Drawer open={isDrawerOpen} onClose={() => toggleDrawer(!isDrawerOpen)}>
+          {drawer}
+        </Drawer>
+      </Hidden>
+      <Grid
+        container
+        className="navbar-brand"
+        alignItems="center"
+        justify="flex-end"
+      >
+        <img src="../favicon.ico" width="15%" />
+        <Typography variant="button">CASHCALC</Typography>
+      </Grid>
       {renderCurrentTab()}
     </Grid>
   );
 };
+
+const mapState = (state) => {
+  return {
+    role: state.loginReducer.role,
+  };
+};
+
+const Main = connect(mapState, mapDispatch)(MainConnected);
+export default Main;

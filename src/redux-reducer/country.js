@@ -1,8 +1,7 @@
-import { actionTypes } from '../constants/action-types';
+import actionTypes from '../constants/action-types';
 
 const initialState = {
   countries: null,
-  air: null,
 };
 
 const countryReducer = (state = initialState, action) => {

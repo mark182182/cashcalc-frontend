@@ -1,7 +1,9 @@
-export const actionTypes = {
+const actionTypes = {
   LOGIN_USER_SUCCESS: 'LOGIN_USER_SUCCESS',
   LOGIN_USER_ERROR: 'LOGIN_USER_ERROR',
   LOGIN_USER_RESET: 'LOGIN_USER_RESET',
   GET_COUNTRIES_AIR: 'GET_COUNTRIES_AIR',
   GET_COUNTRIES_ROAD: 'GET_COUNTRIES_ROAD',
 };
+
+export default actionTypes;

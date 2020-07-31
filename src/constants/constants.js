@@ -1,4 +1,4 @@
-const CONSTANTS = {
+const constants = {
   BASE_URL: 'https://cashcalc-backend.herokuapp.com/',
   API_ROUTES: {
     LOGIN: 'login',
@@ -10,7 +10,7 @@ const CONSTANTS = {
     PRICINGS_ROAD: 'pricings/road',
     PRICINGS_AIR_FARES: 'pricings/air/fares/',
     PRICINGS_ROAD_FARES: 'pricings/road/fares/',
-    PRICING_VARIABLES: 'pricingvariables'
+    PRICING_VARIABLES: 'pricingvariables',
   },
   ROUTES: {
     HOME: 'home',
@@ -20,10 +20,11 @@ const CONSTANTS = {
     SUPERUSER: 'superuser',
   },
   ROLES: {
-    CARRIER: 'carrier',
-    ADMIN: 'admin',
-    SUPERUSER: 'superuser',
+    null: 0,
+    carrier: 0,
+    admin: 1,
+    superuser: 2,
   },
 };
 
-export default CONSTANTS;
+export default constants;
