@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Button, ButtonGroup } from '@material-ui/core';
-import { Air } from '../air/air';
+import Air from '../air/air';
 import Road from '../road/road';
 
 export const Calculation = () => {

@@ -14,12 +14,20 @@ import {
   Button,
 } from '@material-ui/core';
 import Select from 'react-select';
-import { mapCountries } from '../../data-reducer/air';
+import { connect } from 'react-redux';
+import { mapCountries, isEUCountry } from '../../data-reducer/countries';
 import { Result } from '../result/result';
+import { getCountriesAir } from '../../action/country';
 import './air.scss';
 
-export const Air = () => {
-  const [countries, setCountries] = useState([]);
+const mapDispatch = (dispatch) => {
+  return {
+    getCountriesAir: () => dispatch(getCountriesAir()),
+  };
+};
+
+const AirConnected = (props) => {
+  const [country, setCountry] = useState([]);
   const [weights, setWeights] = useState([]);
   const [discount, setDiscount] = useState('');
   const [express, setExpress] = useState('');
@@ -27,7 +35,7 @@ export const Air = () => {
   const [openAirResult, setOpenAirResult] = useState(false);
 
   useEffect(() => {
-    setCountries(mapCountries());
+    props.getCountriesAir();
     let generateWeights = [];
     for (let i = 0.5; i <= 200; ) {
       generateWeights = [...generateWeights, { value: i, label: i }];
@@ -63,144 +71,162 @@ export const Air = () => {
   };
 
   return (
-    <Grid container item className="air-container">
-      <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
-        <Result close={closeAirResult} />
-      </Dialog>
-      <Typography variant="h5">Légi/belföld transzport</Typography>
-      <Grid container item direction="column">
-        <Typography variant="subtitle2">Ország</Typography>
-        <Select
-          placeholder="Kiválasztás..."
-          noOptionsMessage={() => 'Nincs opció'}
-          loadingMessage={() => 'Betöltés...'}
-          options={countries}
-        />
-      </Grid>
-      <Grid container item direction="column">
-        <Typography variant="subtitle2">Súly (kg)</Typography>
-        <Select
-          placeholder="Kiválasztás..."
-          noOptionsMessage={() => 'Nincs opció'}
-          loadingMessage={() => 'Betöltés...'}
-          options={weights}
-        />
-        <Typography variant="caption">
-          Adj meg 0.5 és 200 kg közötti súlyt.
-        </Typography>
-      </Grid>
-      <Grid container item direction="column">
-        <Typography variant="subtitle2">Biztosítási összeg (Ft)</Typography>
-        <TextField type="number" variant="outlined" />
-      </Grid>
-      <Grid container item>
-        <FormControl className="air-discount-formcontrol">
-          <FormLabel>Kedvezmény</FormLabel>
-          <RadioGroup
-            name="discount"
-            value={discount}
-            onChange={handleDiscountChange}
-          >
-            <FormControlLabel value="0.1" control={<Radio />} label="10%" />
-            <FormControlLabel value="0.2" control={<Radio />} label="20%" />
-            <FormControlLabel value="0.3" control={<Radio />} label="30%" />
-          </RadioGroup>
-        </FormControl>
-      </Grid>
-      <Grid container item>
-        <FormControl className="air-express-formcontrol">
-          <FormLabel>Express csomag?</FormLabel>
-          <RadioGroup
-            name="express"
-            value={express}
-            onChange={handleExpressChange}
-          >
-            <FormControlLabel
-              value="0"
-              control={<Radio />}
-              label="Express Worldwide"
+    <Grid>
+      {props.countries !== null && (
+        <Grid container item className="air-container">
+          <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
+            <Result close={closeAirResult} />
+          </Dialog>
+          <Typography variant="h5">Légi/belföld transzport</Typography>
+          <Grid container item direction="column">
+            <Typography variant="subtitle2">Ország</Typography>
+            <Select
+              placeholder="Kiválasztás..."
+              noOptionsMessage={() => 'Nincs opció'}
+              loadingMessage={() => 'Betöltés...'}
+              options={mapCountries(props.countries)}
+              onChange={(value) => setCountry(value)}
             />
-            <FormControlLabel
-              value="9"
-              control={<Radio />}
-              label="Express 9h"
+          </Grid>
+          <Grid container item direction="column">
+            <Typography variant="subtitle2">Súly (kg)</Typography>
+            <Select
+              placeholder="Kiválasztás..."
+              noOptionsMessage={() => 'Nincs opció'}
+              loadingMessage={() => 'Betöltés...'}
+              options={weights}
             />
-            <FormControlLabel
-              value="12"
-              control={<Radio />}
-              label="Express 12h"
-            />
-          </RadioGroup>
-        </FormControl>
-      </Grid>
-      <Grid container item>
-        <FormControl className="air-additional-formcontrol">
-          <FormLabel>Kiegészítő opciók</FormLabel>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={additional.includes('dox')}
-                onChange={handleAdditionalChange}
-                value="dox"
+            <Typography variant="caption">
+              Adj meg 0.5 és 200 kg közötti súlyt.
+            </Typography>
+          </Grid>
+          <Grid container item direction="column">
+            <Typography variant="subtitle2">Biztosítási összeg (Ft)</Typography>
+            <TextField type="number" variant="outlined" />
+          </Grid>
+          <Grid container item>
+            <FormControl className="air-discount-formcontrol">
+              <FormLabel>Kedvezmény</FormLabel>
+              <RadioGroup
+                name="discount"
+                value={discount}
+                onChange={handleDiscountChange}
+              >
+                <FormControlLabel value="0.1" control={<Radio />} label="10%" />
+                <FormControlLabel value="0.2" control={<Radio />} label="20%" />
+                <FormControlLabel value="0.3" control={<Radio />} label="30%" />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid container item>
+            <FormControl className="air-express-formcontrol">
+              <FormLabel>Express csomag?</FormLabel>
+              <RadioGroup
+                name="express"
+                value={express}
+                onChange={handleExpressChange}
+              >
+                <FormControlLabel
+                  value="0"
+                  control={<Radio />}
+                  label="Express Worldwide"
+                />
+                <FormControlLabel
+                  value="9"
+                  control={<Radio />}
+                  label="Express 9h"
+                />
+                <FormControlLabel
+                  value="12"
+                  control={<Radio />}
+                  label="Express 12h"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid container item>
+            <FormControl className="air-additional-formcontrol">
+              <FormLabel>Kiegészítő opciók</FormLabel>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={
+                      additional.includes('dox') &&
+                      !isEUCountry(country.zoneNumber)
+                    }
+                    onChange={handleAdditionalChange}
+                    value="dox"
+                    disabled={isEUCountry(country.zoneNumber)}
+                  />
+                }
+                label="DOX"
               />
-            }
-            label="DOX"
-          />
-          <FormHelperText>
-            Amennyiben az ügyfél EU-n kívüli területre küld dokumentumot,
-            ikszeld be!
-          </FormHelperText>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={additional.includes('ext')}
-                onChange={handleAdditionalChange}
-                value="ext"
+              <FormHelperText>
+                Amennyiben az ügyfél EU-n kívüli területre küld dokumentumot,
+                ikszeld be!
+              </FormHelperText>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={additional.includes('ext')}
+                    onChange={handleAdditionalChange}
+                    value="ext"
+                  />
+                }
+                label="EXT"
               />
-            }
-            label="EXT"
-          />
-          <FormHelperText>
-            Amennyiben az ügyfél küldeménye dokumentum, és szeretné biztosítani,
-            ikszeld be!
-          </FormHelperText>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={additional.includes('ras')}
-                onChange={handleAdditionalChange}
-                value="ras"
+              <FormHelperText>
+                Amennyiben az ügyfél küldeménye dokumentum, és szeretné
+                biztosítani, ikszeld be!
+              </FormHelperText>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={additional.includes('ras')}
+                    onChange={handleAdditionalChange}
+                    value="ras"
+                  />
+                }
+                label="RAS"
               />
-            }
-            label="RAS"
-          />
-          <FormHelperText>
-            Amennyiben a küldemény kieső területre megy, ikszeld be!
-          </FormHelperText>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={additional.includes('tk')}
-                onChange={handleAdditionalChange}
-                value="tk"
+              <FormHelperText>
+                Amennyiben a küldemény kieső területre megy, ikszeld be!
+              </FormHelperText>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={additional.includes('tk')}
+                    onChange={handleAdditionalChange}
+                    value="tk"
+                  />
+                }
+                label="TK"
               />
-            }
-            label="TK"
-          />
-          <FormHelperText>
-            Amennyiben az ügyfél lakóövezetbe kéri a kézbesítést (ODD), ikszeld
-            be!
-          </FormHelperText>
-        </FormControl>
-      </Grid>
-      <Grid container item justify="flex-end">
-        <Button
-          onClick={() => setOpenAirResult(true)}
-          className="air-calculate-button"
-        >
-          Számítsd ki!
-        </Button>
-      </Grid>
+              <FormHelperText>
+                Amennyiben az ügyfél lakóövezetbe kéri a kézbesítést (ODD),
+                ikszeld be!
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid container item justify="flex-end">
+            <Button
+              onClick={() => setOpenAirResult(true)}
+              className="air-calculate-button"
+            >
+              Számítsd ki!
+            </Button>
+          </Grid>
+        </Grid>
+      )}
     </Grid>
   );
 };
+
+const mapState = (state) => {
+  return {
+    countries: state.countryReducer.countries,
+  };
+};
+
+const Air = connect(mapState, mapDispatch)(AirConnected);
+export default Air;

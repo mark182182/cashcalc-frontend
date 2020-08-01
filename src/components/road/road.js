@@ -120,32 +120,6 @@ const RoadConnected = (props) => {
             </FormControl>
           </Grid>
           <Grid container item>
-            <FormControl className="road-express-formcontrol">
-              <FormLabel>Express csomag?</FormLabel>
-              <RadioGroup
-                name="express"
-                value={express}
-                onChange={handleExpressChange}
-              >
-                <FormControlLabel
-                  value="0"
-                  control={<Radio />}
-                  label="Express Worldwide"
-                />
-                <FormControlLabel
-                  value="9"
-                  control={<Radio />}
-                  label="Express 9h"
-                />
-                <FormControlLabel
-                  value="12"
-                  control={<Radio />}
-                  label="Express 12h"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-          <Grid container item>
             <FormControl className="road-additional-formcontrol">
               <FormLabel>Kiegészítő opciók</FormLabel>
               <FormControlLabel
