@@ -24,6 +24,7 @@ import { connect } from 'react-redux';
 import constants from '../../constants/constants';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import './main.scss';
+import { Calculation } from '../calculation/calculation';
 
 const mapDispatch = (dispatch) => {
   return {};
@@ -36,12 +37,10 @@ const MainConnected = (props) => {
   const renderCurrentTab = () => {
     switch (currentTab) {
       case 1:
-        return <Air />;
+        return <Calculation />;
       case 2:
-        return <Road />;
-      case 3:
         return <Admin />;
-      case 4:
+      case 3:
         return <SuperUser />;
       case null:
         return <Login />;
@@ -56,17 +55,15 @@ const MainConnected = (props) => {
 
   const drawer = (
     <List>
-      {['Bejelentkezés', 'Légi/belföld', 'Közúti', 'Admin', 'Super'].map(
-        (text, index) => {
-          if (getRole() >= index) {
-            return (
-              <ListItem button onClick={() => setTab(index)} key={text}>
-                <ListItemText primary={text} />
-              </ListItem>
-            );
-          }
+      {['Bejelentkezés', 'Kalkuláció', 'Admin', 'Super'].map((text, index) => {
+        if (getRole() >= index) {
+          return (
+            <ListItem button onClick={() => setTab(index)} key={text}>
+              <ListItemText primary={text} />
+            </ListItem>
+          );
         }
-      )}
+      })}
     </List>
   );
 

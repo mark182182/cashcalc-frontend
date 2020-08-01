@@ -1,3 +1,10 @@
+@import '../../styles/style.scss';
+
 .road-container {
   padding: 1em;
+}
+
+.road-calculate-button {
+  background: $success-color !important;
+  color: #ffffff !important;
 }

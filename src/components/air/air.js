@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core';
 import Select from 'react-select';
 import { mapCountries } from '../../data-reducer/air';
-import './air.scss';
 import { Result } from '../result/result';
+import './air.scss';
 
 export const Air = () => {
   const [countries, setCountries] = useState([]);
@@ -70,11 +70,21 @@ export const Air = () => {
       <Typography variant="h5">Légi/belföld transzport</Typography>
       <Grid container item direction="column">
         <Typography variant="subtitle2">Ország</Typography>
-        <Select options={countries} />
+        <Select
+          placeholder="Kiválasztás..."
+          noOptionsMessage={() => 'Nincs opció'}
+          loadingMessage={() => 'Betöltés...'}
+          options={countries}
+        />
       </Grid>
       <Grid container item direction="column">
         <Typography variant="subtitle2">Súly (kg)</Typography>
-        <Select options={weights} />
+        <Select
+          placeholder="Kiválasztás..."
+          noOptionsMessage={() => 'Nincs opció'}
+          loadingMessage={() => 'Betöltés...'}
+          options={weights}
+        />
         <Typography variant="caption">
           Adj meg 0.5 és 200 kg közötti súlyt.
         </Typography>
