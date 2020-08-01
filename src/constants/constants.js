@@ -2,6 +2,7 @@ const constants = {
   BASE_URL: 'https://cashcalc-backend.herokuapp.com/',
   API_ROUTES: {
     LOGIN: 'login',
+    LOGOUT: 'logout',
     REFRESH: 'reshresh',
     CALC: 'calc',
     COUNTRIES_AIR: 'countries/air',
@@ -20,10 +21,9 @@ const constants = {
     SUPERUSER: 'superuser',
   },
   ROLES: {
-    null: 0,
-    carrier: 0,
-    admin: 1,
-    superuser: 2,
+    carrier: 1,
+    admin: 2,
+    superuser: 3,
   },
 };
 

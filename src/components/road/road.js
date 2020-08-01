@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Grid,
   Typography,
@@ -18,19 +18,22 @@ import Select from 'react-select';
 import { getCountriesRoad } from '../../action/country';
 import { Result } from '../result/result';
 import { mapCountries } from '../../data-reducer/countries';
+import { calculate } from '../../action/calculation';
 import './road.scss';
 
 const mapDispatch = (dispatch) => {
   return {
     getCountriesRoad: () => dispatch(getCountriesRoad()),
+    calculate: (calc) => dispatch(calculate(calc)),
   };
 };
 
 const RoadConnected = (props) => {
+  const insurance = useRef(null);
   const [country, setCountry] = useState([]);
   const [weights, setWeights] = useState([]);
+  const [weight, setWeight] = useState(null);
   const [discount, setDiscount] = useState('');
-  const [express, setExpress] = useState('');
   const [additional, setAdditional] = useState([]);
   const [openRoadResult, setOpenRoadResult] = useState(false);
 
@@ -54,8 +57,21 @@ const RoadConnected = (props) => {
     setDiscount(event.target.value);
   };
 
-  const handleExpressChange = (event) => {
-    setExpress(event.target.value);
+  const handleCalculate = () => {
+    const calc = {
+      transferType: 'road',
+      zoneNumber: country.zoneNumber,
+      weight: weight.value,
+      insurance: insurance.current.value,
+      discountPercent: discount,
+      expressType: 'worldwide',
+      isDocument: false,
+      isExt: false,
+      isTk: additional.tk,
+      isRas: additional.ras,
+    };
+    props.calculate(calc);
+    setOpenRoadResult(true);
   };
 
   const handleAdditionalChange = (event) => {
@@ -77,7 +93,7 @@ const RoadConnected = (props) => {
       {props.countries !== null && (
         <Grid container item className="road-container">
           <Dialog open={openRoadResult} onClose={closeRoadResult} fullWidth>
-            <Result close={closeRoadResult} />
+            <Result close={closeRoadResult} type="road" />
           </Dialog>
           <Typography variant="h5">Közúti transzport</Typography>
           <Grid container item direction="column">
@@ -87,6 +103,7 @@ const RoadConnected = (props) => {
               noOptionsMessage={() => 'Nincs opció'}
               loadingMessage={() => 'Betöltés...'}
               options={mapCountries(props.countries)}
+              onChange={(value) => setCountry(value)}
             />
           </Grid>
           <Grid container item direction="column">
@@ -96,6 +113,7 @@ const RoadConnected = (props) => {
               noOptionsMessage={() => 'Nincs opció'}
               loadingMessage={() => 'Betöltés...'}
               options={weights}
+              onChange={(value) => setWeight(value)}
             />
             <Typography variant="caption">
               Adj meg 1 és 100 kg közötti súlyt.
@@ -103,7 +121,13 @@ const RoadConnected = (props) => {
           </Grid>
           <Grid container item direction="column">
             <Typography variant="subtitle2">Biztosítási összeg (Ft)</Typography>
-            <TextField type="number" variant="outlined" />
+            <TextField
+              className="input"
+              type="number"
+              variant="outlined"
+              required
+              inputRef={insurance}
+            />
           </Grid>
           <Grid container item>
             <FormControl className="road-discount-formcontrol">
@@ -153,7 +177,7 @@ const RoadConnected = (props) => {
           </Grid>
           <Grid container item justify="flex-end">
             <Button
-              onClick={() => setOpenRoadResult(true)}
+              onClick={() => handleCalculate()}
               className="road-calculate-button"
             >
               Számítsd ki!

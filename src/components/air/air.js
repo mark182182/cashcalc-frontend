@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Grid,
   Typography,
@@ -18,17 +18,21 @@ import { connect } from 'react-redux';
 import { mapCountries, isEUCountry } from '../../data-reducer/countries';
 import { Result } from '../result/result';
 import { getCountriesAir } from '../../action/country';
+import { calculate } from '../../action/calculation';
 import './air.scss';
 
 const mapDispatch = (dispatch) => {
   return {
     getCountriesAir: () => dispatch(getCountriesAir()),
+    calculate: (calc) => dispatch(calculate(calc)),
   };
 };
 
 const AirConnected = (props) => {
-  const [country, setCountry] = useState([]);
+  const insurance = useRef(null);
+  const [country, setCountry] = useState({});
   const [weights, setWeights] = useState([]);
+  const [weight, setWeight] = useState({});
   const [discount, setDiscount] = useState('');
   const [express, setExpress] = useState('');
   const [additional, setAdditional] = useState([]);
@@ -48,6 +52,23 @@ const AirConnected = (props) => {
     setWeights(generateWeights);
   }, []);
 
+  const handleCalculate = () => {
+    const calc = {
+      transferType: 'air',
+      zoneNumber: country.zoneNumber,
+      weight: parseFloat(weight.value),
+      insurance: parseInt(insurance.current.value),
+      discountPercent: parseFloat(discount),
+      expressType: express,
+      isDocument: additional.dox,
+      isExt: additional.ext,
+      isTk: additional.tk,
+      isRas: additional.ras,
+    };
+    props.calculate(calc);
+    setOpenAirResult(true);
+  };
+
   const handleDiscountChange = (event) => {
     setDiscount(event.target.value);
   };
@@ -66,6 +87,14 @@ const AirConnected = (props) => {
     }
   };
 
+  const handleDoxChange = (event) => {
+    if (weight.value > 2) {
+      console.log('hoho');
+    } else {
+      handleAdditionalChange(event);
+    }
+  };
+
   const closeAirResult = () => {
     setOpenAirResult(false);
   };
@@ -74,9 +103,11 @@ const AirConnected = (props) => {
     <Grid>
       {props.countries !== null && (
         <Grid container item className="air-container">
-          <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
-            <Result close={closeAirResult} />
-          </Dialog>
+          {props.result !== null && (
+            <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
+              <Result close={closeAirResult} type="air" express={express} />
+            </Dialog>
+          )}
           <Typography variant="h5">Légi/belföld transzport</Typography>
           <Grid container item direction="column">
             <Typography variant="subtitle2">Ország</Typography>
@@ -95,6 +126,7 @@ const AirConnected = (props) => {
               noOptionsMessage={() => 'Nincs opció'}
               loadingMessage={() => 'Betöltés...'}
               options={weights}
+              onChange={(value) => setWeight(value)}
             />
             <Typography variant="caption">
               Adj meg 0.5 és 200 kg közötti súlyt.
@@ -102,7 +134,13 @@ const AirConnected = (props) => {
           </Grid>
           <Grid container item direction="column">
             <Typography variant="subtitle2">Biztosítási összeg (Ft)</Typography>
-            <TextField type="number" variant="outlined" />
+            <TextField
+              className="input"
+              type="number"
+              variant="outlined"
+              required
+              inputRef={insurance}
+            />
           </Grid>
           <Grid container item>
             <FormControl className="air-discount-formcontrol">
@@ -127,17 +165,17 @@ const AirConnected = (props) => {
                 onChange={handleExpressChange}
               >
                 <FormControlLabel
-                  value="0"
+                  value="worldwide"
                   control={<Radio />}
                   label="Express Worldwide"
                 />
                 <FormControlLabel
-                  value="9"
+                  value="9h"
                   control={<Radio />}
                   label="Express 9h"
                 />
                 <FormControlLabel
-                  value="12"
+                  value="12h"
                   control={<Radio />}
                   label="Express 12h"
                 />
@@ -154,7 +192,7 @@ const AirConnected = (props) => {
                       additional.includes('dox') &&
                       !isEUCountry(country.zoneNumber)
                     }
-                    onChange={handleAdditionalChange}
+                    onChange={handleDoxChange}
                     value="dox"
                     disabled={isEUCountry(country.zoneNumber)}
                   />
@@ -210,7 +248,7 @@ const AirConnected = (props) => {
           </Grid>
           <Grid container item justify="flex-end">
             <Button
-              onClick={() => setOpenAirResult(true)}
+              onClick={() => handleCalculate()}
               className="air-calculate-button"
             >
               Számítsd ki!
@@ -225,6 +263,7 @@ const AirConnected = (props) => {
 const mapState = (state) => {
   return {
     countries: state.countryReducer.countries,
+    result: state.calculationReducer.result,
   };
 };
 

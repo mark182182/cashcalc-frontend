@@ -1,9 +1,16 @@
 import React from 'react';
-import { Grid, DialogContent, DialogActions, DialogTitle, Button } from '@material-ui/core';
+import {
+  Grid,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+  Button,
+} from '@material-ui/core';
 import { Close, ClearOutlined } from '@material-ui/icons';
+import { ResultTable } from './result-table';
 import './result.scss';
 
-export const Result = props => {
+export const Result = (props) => {
   const { close } = props;
 
   return (
@@ -13,9 +20,7 @@ export const Result = props => {
           <Grid container justify="space-between">
             <Grid item>Számított értékek</Grid>
             <Grid item>
-              <Button
-                onClick={close}
-                className="result-close-button">
+              <Button onClick={close} className="result-close-button">
                 <Close />
               </Button>
             </Grid>
@@ -23,13 +28,8 @@ export const Result = props => {
         </Grid>
       </DialogTitle>
       <DialogContent>
-        valami
+        <ResultTable calc={props.calc} express={props.express} />
       </DialogContent>
-      <DialogActions >
-        <Button className="cancel-result-button" onClick={close}>
-          <ClearOutlined /> Mégse
-          </Button>
-      </DialogActions>
     </Grid>
-  )
-}
+  );
+};

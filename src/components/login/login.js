@@ -69,7 +69,9 @@ export const LoginConnected = (props) => {
           </Grid>
         </Grid>
         <Grid container item justify="flex-end">
-          <Button onClick={login}>Belépés</Button>
+          <Button type="submit" onClick={login}>
+            Belépés
+          </Button>
         </Grid>
       </Grid>
     </Grid>
