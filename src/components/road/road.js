@@ -32,12 +32,12 @@ const RoadConnected = (props) => {
   useEffect(() => {
     props.getCountriesRoad().then(setCountries(props.countries));
     let generateWeights = [];
-    for (let i = 0.5; i < 200; ) {
+    for (let i = 1; i <= 100; ) {
       generateWeights = [...generateWeights, { value: i, label: i }];
-      if (i >= 30) {
-        i ++;
+      if (i >= 70) {
+        i += 5;
       } else {
-        i += 0.5;
+        i++;
       }
     }
     setWeights(generateWeights);
@@ -64,20 +64,20 @@ const RoadConnected = (props) => {
   return (
     <Grid container item className="road-container">
       <Typography variant="h5">Közúti transzport</Typography>
-      <Grid container item>
+      <Grid container item direction="column">
         <Typography variant="subtitle2">Ország</Typography>
         <Select options={countries} />
       </Grid>
-      <Grid container item>
+      <Grid container item direction="column">
         <Typography variant="subtitle2">Súly (kg)</Typography>
         <Select options={weights} />
         <Typography variant="caption">
           Adj meg 1 és 100 kg közötti súlyt.
         </Typography>
       </Grid>
-      <Grid container item>
+      <Grid container item direction="column">
         <Typography variant="subtitle2">Biztosítási összeg (Ft)</Typography>
-        <TextField variant="outlined" />
+        <TextField type="number" variant="outlined" />
       </Grid>
       <Grid container item>
         <FormControl className="air-discount-formcontrol">
