@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import { getCountriesRoad } from '../../action/country';
 import { Result } from '../result/result';
+import { mapCountries } from '../../data-reducer/countries';
 import './road.scss';
 
 const mapDispatch = (dispatch) => {
@@ -46,6 +47,8 @@ const RoadConnected = (props) => {
     }
     setWeights(generateWeights);
   }, []);
+
+  useEffect(() => {}, []);
 
   const handleDiscountChange = (event) => {
     setDiscount(event.target.value);
@@ -83,7 +86,7 @@ const RoadConnected = (props) => {
               placeholder="Kiválasztás..."
               noOptionsMessage={() => 'Nincs opció'}
               loadingMessage={() => 'Betöltés...'}
-              options={props.countries}
+              options={mapCountries(props.countries)}
             />
           </Grid>
           <Grid container item direction="column">
@@ -145,34 +148,6 @@ const RoadConnected = (props) => {
           <Grid container item>
             <FormControl className="road-additional-formcontrol">
               <FormLabel>Kiegészítő opciók</FormLabel>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={additional.includes('dox')}
-                    onChange={handleAdditionalChange}
-                    value="dox"
-                  />
-                }
-                label="DOX"
-              />
-              <FormHelperText>
-                Amennyiben az ügyfél EU-n kívüli területre küld dokumentumot,
-                ikszeld be!
-              </FormHelperText>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={additional.includes('ext')}
-                    onChange={handleAdditionalChange}
-                    value="ext"
-                  />
-                }
-                label="EXT"
-              />
-              <FormHelperText>
-                Amennyiben az ügyfél küldeménye dokumentum, és szeretné
-                biztosítani, ikszeld be!
-              </FormHelperText>
               <FormControlLabel
                 control={
                   <Checkbox
