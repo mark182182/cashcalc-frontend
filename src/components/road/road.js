@@ -34,7 +34,11 @@ const RoadConnected = (props) => {
     let generateWeights = [];
     for (let i = 0.5; i < 200; ) {
       generateWeights = [...generateWeights, { value: i, label: i }];
-      i += 0.5;
+      if (i >= 30) {
+        i ++;
+      } else {
+        i += 0.5;
+      }
     }
     setWeights(generateWeights);
   }, []);
