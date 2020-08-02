@@ -40,7 +40,7 @@ export const ResultTable = (props) => {
             return (
               <TableRow key={uuid()}>
                 <TableCell key={price.name}>{price.name}</TableCell>
-                <TableCell key={price.value}>{price.value}</TableCell>
+                <TableCell key={price.value}>{price.value + ' FT'}</TableCell>
               </TableRow>
             );
           })}

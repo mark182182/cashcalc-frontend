@@ -51,8 +51,6 @@ const RoadConnected = (props) => {
     setWeights(generateWeights);
   }, []);
 
-  useEffect(() => {}, []);
-
   const handleDiscountChange = (event) => {
     setDiscount(event.target.value);
   };
@@ -61,9 +59,9 @@ const RoadConnected = (props) => {
     const calc = {
       transferType: 'road',
       zoneNumber: country.zoneNumber,
-      weight: weight.value,
-      insurance: insurance.current.value,
-      discountPercent: discount,
+      weight: parseFloat(weight.value),
+      insurance: parseInt(insurance.current.value),
+      discountPercent: parseFloat(discount),
       expressType: 'worldwide',
       isDocument: false,
       isExt: false,
@@ -92,9 +90,11 @@ const RoadConnected = (props) => {
     <Grid>
       {props.countries !== null && (
         <Grid container item className="road-container">
-          <Dialog open={openRoadResult} onClose={closeRoadResult} fullWidth>
-            <Result close={closeRoadResult} type="road" />
-          </Dialog>
+          {props.resultIsLoading === false && (
+            <Dialog open={openRoadResult} onClose={closeRoadResult} fullWidth>
+              <Result close={closeRoadResult} type="road" calc={props.result} />
+            </Dialog>
+          )}
           <Typography variant="h5">Közúti transzport</Typography>
           <Grid container item direction="column">
             <Typography variant="subtitle2">Ország</Typography>
@@ -192,6 +192,8 @@ const RoadConnected = (props) => {
 const mapState = (state) => {
   return {
     countries: state.countryReducer.countries,
+    result: state.calcReducer.result,
+    resultIsLoading: state.calcReducer.isLoading,
   };
 };
 

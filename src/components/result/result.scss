@@ -1,10 +1,12 @@
+@import '../../styles/style.scss';
+
 .result-close-button {
   color: #ffffff !important;
 }
 
 .result-header {
   text-transform: uppercase;
-  background: rebeccapurple;
+  background: $primary-color;
   color: #ffffff;
 }
 

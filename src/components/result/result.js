@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid,
   DialogContent,
@@ -11,8 +11,6 @@ import { ResultTable } from './result-table';
 import './result.scss';
 
 export const Result = (props) => {
-  const { close } = props;
-
   return (
     <Grid container item>
       <DialogTitle className="result-header">
@@ -20,7 +18,7 @@ export const Result = (props) => {
           <Grid container justify="space-between">
             <Grid item>Számított értékek</Grid>
             <Grid item>
-              <Button onClick={close} className="result-close-button">
+              <Button onClick={props.close} className="result-close-button">
                 <Close />
               </Button>
             </Grid>

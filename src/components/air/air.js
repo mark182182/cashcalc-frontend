@@ -103,9 +103,9 @@ const AirConnected = (props) => {
     <Grid>
       {props.countries !== null && (
         <Grid container item className="air-container">
-          {props.result !== null && (
+          {props.resultIsLoading === false && (
             <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
-              <Result close={closeAirResult} type="air" express={express} />
+              <Result close={closeAirResult} type="air" calc={props.result} />
             </Dialog>
           )}
           <Typography variant="h5">Légi/belföld transzport</Typography>
@@ -263,7 +263,8 @@ const AirConnected = (props) => {
 const mapState = (state) => {
   return {
     countries: state.countryReducer.countries,
-    result: state.calculationReducer.result,
+    result: state.calcReducer.result,
+    resultIsLoading: state.calcReducer.isLoading,
   };
 };
 

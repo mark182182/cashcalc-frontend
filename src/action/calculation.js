@@ -4,7 +4,7 @@ import actionTypes from '../constants/action-types';
 
 export const calculate = (calc) => {
   return (dispatch) => {
-    dispatch({ type: actionTypes.CALCULATE_ERROR });
+    dispatch({ type: actionTypes.CALCULATE_RESET });
     return axios
       .post(constants.BASE_URL + constants.API_ROUTES.CALC, calc, {
         withCredentials: true,

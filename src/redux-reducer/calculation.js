@@ -7,17 +7,17 @@ const initialState = {
 
 const calcReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.LOGIN_USER_RESET:
+    case actionTypes.CALCULATE_RESET:
       return Object.assign({}, state, {
         isLoading: true,
         result: null,
       });
-    case actionTypes.LOGIN_USER_SUCCESS:
+    case actionTypes.CALCULATE_SUCCESS:
       return Object.assign({}, state, {
         isLoading: false,
         result: action.payload,
       });
-    case actionTypes.LOGIN_USER_ERROR:
+    case actionTypes.CALCULATE_ERROR:
       return Object.assign({}, state, {
         isLoading: false,
         result: null,
