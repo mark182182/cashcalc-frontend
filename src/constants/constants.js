@@ -1,5 +1,5 @@
 const constants = {
-  BASE_URL: 'https://cashcalc-backend.herokuapp.com/',
+  BASE_URL: 'http://localhost:8080/',
   API_ROUTES: {
     LOGIN: 'login',
     LOGOUT: 'logout',

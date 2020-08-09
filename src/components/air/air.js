@@ -105,7 +105,12 @@ const AirConnected = (props) => {
         <Grid container item className="air-container">
           {props.resultIsLoading === false && (
             <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
-              <Result close={closeAirResult} type="air" calc={props.result} />
+              <Result
+                close={closeAirResult}
+                type="air"
+                calc={props.result}
+                express={express}
+              />
             </Dialog>
           )}
           <Typography variant="h5">Légi/belföld transzport</Typography>

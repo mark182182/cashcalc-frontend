@@ -92,7 +92,12 @@ const RoadConnected = (props) => {
         <Grid container item className="road-container">
           {props.resultIsLoading === false && (
             <Dialog open={openRoadResult} onClose={closeRoadResult} fullWidth>
-              <Result close={closeRoadResult} type="road" calc={props.result} />
+              <Result
+                close={closeRoadResult}
+                type="road"
+                calc={props.result}
+                express={'worldwide'}
+              />
             </Dialog>
           )}
           <Typography variant="h5">Közúti transzport</Typography>
