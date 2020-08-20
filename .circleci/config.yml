@@ -22,7 +22,7 @@ jobs:
           command: echo REACT_APP_BASE_URL="$REACT_APP_BASE_URL" >> ./.env
       - run:
           name: Build
-          command: npm run build --prod
+          command: CI=false npm run build --prod
       - run:
           name: modify-firebaserc
           command: sed -i "s/\[YOUR\-PROJECT\-ID\]/$FIREBASE_PROJECT_ID/g" .firebaserc
