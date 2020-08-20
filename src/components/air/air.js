@@ -15,15 +15,23 @@ import {
 } from '@material-ui/core';
 import Select from 'react-select';
 import { connect } from 'react-redux';
-import { mapCountries, isEUCountry } from '../../data-reducer/countries';
+import {
+  mapCountries,
+  mapWeights,
+  isEUCountry,
+} from '../../data-reducer/countries';
 import { Result } from '../result/result';
-import { getCountriesAir } from '../../action/country';
+import { getCountriesAir, resetCountry } from '../../action/country';
+import { getPricesAir, resetPrices } from '../../action/air';
 import { calculate } from '../../action/calculation';
 import './air.scss';
 
 const mapDispatch = (dispatch) => {
   return {
     getCountriesAir: () => dispatch(getCountriesAir()),
+    resetCountry: () => dispatch(resetCountry()),
+    getPricesAir: (zoneNumber) => dispatch(getPricesAir(zoneNumber)),
+    resetPrices: () => dispatch(resetPrices()),
     calculate: (calc) => dispatch(calculate(calc)),
   };
 };
@@ -31,26 +39,52 @@ const mapDispatch = (dispatch) => {
 const AirConnected = (props) => {
   const insurance = useRef(null);
   const [country, setCountry] = useState({});
-  const [weights, setWeights] = useState([]);
   const [weight, setWeight] = useState({});
+  const [weights, setWeights] = useState([]);
   const [discount, setDiscount] = useState('');
   const [express, setExpress] = useState('');
   const [additional, setAdditional] = useState([]);
+  const [isDoxDisabled, setIsDoxDisabled] = useState(false);
   const [openAirResult, setOpenAirResult] = useState(false);
 
   useEffect(() => {
     props.getCountriesAir();
-    let generateWeights = [];
-    for (let i = 0.5; i <= 200; ) {
-      generateWeights = [...generateWeights, { value: i, label: i }];
-      if (i >= 30) {
-        i++;
-      } else {
-        i += 0.5;
-      }
-    }
-    setWeights(generateWeights);
   }, []);
+
+  useEffect(() => {
+    if (props.weights && props.weights.length > 0) {
+      setWeights(mapWeights(props.weights));
+    }
+  }, [props.weights]);
+
+  useEffect(() => {
+    setWeights([]);
+    setWeight({});
+    setAdditional([]);
+  }, [country]);
+
+  useEffect(() => {
+    return () => {
+      props.resetCountry();
+      props.resetPrices();
+    };
+  }, []);
+
+  const setCountryAndLoadWeights = (value) => {
+    setCountry(value);
+    props.getPricesAir(value.zoneNumber);
+  };
+
+  const setWeightAndDox = (value) => {
+    if (value.value > 2) {
+      setIsDoxDisabled(true);
+      const filteredValues = additional.filter((elem) => elem !== 'dox');
+      setAdditional([...filteredValues]);
+    } else {
+      setIsDoxDisabled(false);
+    }
+    setWeight(value);
+  };
 
   const handleCalculate = () => {
     const calc = {
@@ -87,14 +121,6 @@ const AirConnected = (props) => {
     }
   };
 
-  const handleDoxChange = (event) => {
-    if (weight.value > 2) {
-      console.log('hoho');
-    } else {
-      handleAdditionalChange(event);
-    }
-  };
-
   const closeAirResult = () => {
     setOpenAirResult(false);
   };
@@ -121,18 +147,28 @@ const AirConnected = (props) => {
               noOptionsMessage={() => 'Nincs opció'}
               loadingMessage={() => 'Betöltés...'}
               options={mapCountries(props.countries)}
-              onChange={(value) => setCountry(value)}
+              onChange={(value) => setCountryAndLoadWeights(value)}
             />
           </Grid>
           <Grid container item direction="column">
             <Typography variant="subtitle2">Súly (kg)</Typography>
-            <Select
-              placeholder="Kiválasztás..."
-              noOptionsMessage={() => 'Nincs opció'}
-              loadingMessage={() => 'Betöltés...'}
-              options={weights}
-              onChange={(value) => setWeight(value)}
-            />
+            {country && country.zoneNumber ? (
+              <Select
+                placeholder="Kiválasztás..."
+                noOptionsMessage={() => 'Nincs opció'}
+                loadingMessage={() => 'Betöltés...'}
+                options={weights}
+                value={weight}
+                onChange={(value) => setWeightAndDox(value)}
+              />
+            ) : (
+              <Select
+                options={[]}
+                value={{}}
+                placeholder="Kiválasztás..."
+                isDisabled={true}
+              ></Select>
+            )}
             <Typography variant="caption">
               Adj meg 0.5 és 200 kg közötti súlyt.
             </Typography>
@@ -197,9 +233,9 @@ const AirConnected = (props) => {
                       additional.includes('dox') &&
                       !isEUCountry(country.zoneNumber)
                     }
-                    onChange={handleDoxChange}
+                    onChange={handleAdditionalChange}
                     value="dox"
-                    disabled={isEUCountry(country.zoneNumber)}
+                    disabled={isEUCountry(country.zoneNumber) || isDoxDisabled}
                   />
                 }
                 label="DOX"
@@ -268,6 +304,8 @@ const AirConnected = (props) => {
 const mapState = (state) => {
   return {
     countries: state.countryReducer.countries,
+    weights: state.airReducer.weights,
+    weightsStatus: state.airReducer.weightsStatus,
     result: state.calcReducer.result,
     resultIsLoading: state.calcReducer.isLoading,
   };

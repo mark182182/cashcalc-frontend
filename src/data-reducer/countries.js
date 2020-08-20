@@ -8,6 +8,15 @@ export const mapCountries = (countries) => {
   });
 };
 
+export const mapWeights = (weights) => {
+  return weights.map(weight => {
+    return {
+      value: weight.weight,
+      label: weight.weight,
+    }
+  })
+}
+
 export const isEUCountry = (zoneNumber) => {
   return zoneNumber <= 4 && zoneNumber >= 0;
 };

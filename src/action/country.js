@@ -31,3 +31,9 @@ export const getCountriesAir = () => {
       });
   };
 };
+
+export const resetCountry = () => {
+  return dispatch => {
+    dispatch({type: actionTypes.GET_COUNTRIES_RESET});
+  }
+}

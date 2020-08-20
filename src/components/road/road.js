@@ -15,15 +15,18 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { getCountriesRoad } from '../../action/country';
+import { getCountriesRoad, resetCountry } from '../../action/country';
 import { Result } from '../result/result';
 import { mapCountries } from '../../data-reducer/countries';
 import { calculate } from '../../action/calculation';
+import { resetPrices } from '../../action/road';
 import './road.scss';
 
 const mapDispatch = (dispatch) => {
   return {
     getCountriesRoad: () => dispatch(getCountriesRoad()),
+    resetCountry: () => dispatch(resetCountry()),
+    resetPrices: () => dispatch(resetPrices()),
     calculate: (calc) => dispatch(calculate(calc)),
   };
 };
@@ -50,6 +53,15 @@ const RoadConnected = (props) => {
     }
     setWeights(generateWeights);
   }, []);
+
+  useEffect(() => {
+    return () => {
+      props.resetCountry();
+      props.resetPrices();
+    };
+  }, []);
+
+
 
   const handleDiscountChange = (event) => {
     setDiscount(event.target.value);
