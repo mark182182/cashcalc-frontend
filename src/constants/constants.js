@@ -1,5 +1,5 @@
 const constants = {
-  BASE_URL: 'https://cashcalc-backend.herokuapp.com/',
+  BASE_URL: `${process.env.REACT_APP_BASE_URL}`,
   API_ROUTES: {
     LOGIN: 'login',
     LOGOUT: 'logout',
