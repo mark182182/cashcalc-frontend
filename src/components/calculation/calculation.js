@@ -4,7 +4,7 @@ import Air from '../air/air';
 import Road from '../road/road';
 
 export const Calculation = () => {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState('air');
 
   return (
     <Grid>

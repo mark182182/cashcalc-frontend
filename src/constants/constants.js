@@ -2,6 +2,7 @@ const constants = {
   BASE_URL: `${process.env.REACT_APP_BASE_URL}`,
   API_ROUTES: {
     LOGIN: 'login',
+    IS_AUTHORIZED: 'is-authorized',
     LOGOUT: 'logout',
     REFRESH: 'reshresh',
     CALC: 'calc',
@@ -21,6 +22,11 @@ const constants = {
     SUPERUSER: 'superuser',
   },
   ROLES: {
+    carrier: 'carrier',
+    admin: 'admin',
+    superuser: 'superuser',
+  },
+  RIGHTS: {
     carrier: 1,
     admin: 2,
     superuser: 3,

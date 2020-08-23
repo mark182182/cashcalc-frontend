@@ -15,8 +15,6 @@ import {
   ListItem,
   Typography,
 } from '@material-ui/core';
-import { Air } from '../air/air';
-import Road from '../road/road';
 import { Admin } from '../admin/admin';
 import Login from '../login/login';
 import { SuperUser } from '../superuser/superuser';
@@ -24,7 +22,14 @@ import { connect } from 'react-redux';
 import constants from '../../constants/constants';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import { Calculation } from '../calculation/calculation';
-import { logout } from '../../action/logout.js';
+import { logout } from '../../action/logout';
+import ProtectedRoute from '../protected-route/protected-route';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import './main.scss';
 
 const mapDispatch = (dispatch) => {
@@ -43,26 +48,21 @@ const MainConnected = (props) => {
         setTab(null);
         toggleDrawer(false);
         props.logout();
-        return <Login redirect={redirectToCalc} />;
+        return <Redirect to="/login" />;
       case 1:
+        props.validateRole(constants.ROLES.carrier);
         return <Calculation />;
       case 2:
+        props.validateRole(constants.ROLES.admin);
         return <Admin />;
       case 3:
+        props.validateRole(constants.ROLES.superuser);
         return <SuperUser />;
-      case null:
-        return <Login redirect={redirectToCalc} />;
-      default:
-        return <Login redirect={redirectToCalc} />;
     }
   };
 
-  const redirectToCalc = () => {
-    setTab(1);
-  };
-
   const getRole = () => {
-    return constants.ROLES[props.role];
+    return constants.RIGHTS[props.role];
   };
 
   const drawer = (
@@ -82,11 +82,9 @@ const MainConnected = (props) => {
   return (
     <Grid container className="navbar-main">
       <Grid container className="navbar-content">
-        {props.role !== null && (
-          <IconButton onClick={() => toggleDrawer(true)}>
-            <MenuIcon />
-          </IconButton>
-        )}
+        <IconButton onClick={() => toggleDrawer(true)}>
+          <MenuIcon />
+        </IconButton>
       </Grid>
       <Hidden>
         <Drawer open={isDrawerOpen} onClose={() => toggleDrawer(false)}>
@@ -102,7 +100,14 @@ const MainConnected = (props) => {
         <img src="../favicon.ico" width="15%" />
         <Typography variant="button">CASHCALC</Typography>
       </Grid>
-      {renderCurrentTab()}
+      <Router>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <ProtectedRoute path="/main">{renderCurrentTab()}</ProtectedRoute>
+        </Switch>
+      </Router>
     </Grid>
   );
 };
