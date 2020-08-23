@@ -99,8 +99,26 @@ const AirConnected = (props) => {
       isTk: additional.tk,
       isRas: additional.ras,
     };
-    props.calculate(calc);
-    setOpenAirResult(true);
+    try {
+      validateCalculation(calc);
+      props.calculate(calc);
+      setOpenAirResult(true);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const validateCalculation = (calc) => {
+    if (!calc.zoneNumber || calc.zoneNumber <= 0) {
+      console.log(calc.zoneNumber);
+      throw new Error('Country is invalid!');
+    }
+    if (isNaN(calc.weight) || calc.weight <= 0) {
+      throw new Error('Weight is invalid!');
+    }
+    if (isNaN(calc.insurance) || calc.insurance <= 0) {
+      throw new Error('Insurance is invalid!');
+    }
   };
 
   const handleDiscountChange = (event) => {
@@ -143,6 +161,9 @@ const AirConnected = (props) => {
           <Grid container item direction="column">
             <Typography variant="subtitle2">Ország</Typography>
             <Select
+              styles={{
+                menu: (props) => ({ ...props, zIndex: 9999 }),
+              }}
               placeholder="Kiválasztás..."
               noOptionsMessage={() => 'Nincs opció'}
               loadingMessage={() => 'Betöltés...'}
@@ -154,6 +175,9 @@ const AirConnected = (props) => {
             <Typography variant="subtitle2">Súly (kg)</Typography>
             {country && country.zoneNumber ? (
               <Select
+                styles={{
+                  menu: (props) => ({ ...props, zIndex: 9999 }),
+                }}
                 placeholder="Kiválasztás..."
                 noOptionsMessage={() => 'Nincs opció'}
                 loadingMessage={() => 'Betöltés...'}
