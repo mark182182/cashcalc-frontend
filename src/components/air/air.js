@@ -41,8 +41,8 @@ const AirConnected = (props) => {
   const [country, setCountry] = useState({});
   const [weight, setWeight] = useState({});
   const [weights, setWeights] = useState([]);
-  const [discount, setDiscount] = useState('');
-  const [express, setExpress] = useState('');
+  const [discount, setDiscount] = useState('0.1');
+  const [express, setExpress] = useState('worldwide');
   const [additional, setAdditional] = useState([]);
   const [isDoxDisabled, setIsDoxDisabled] = useState(false);
   const [openAirResult, setOpenAirResult] = useState(false);
