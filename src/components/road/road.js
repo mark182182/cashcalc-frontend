@@ -12,6 +12,7 @@ import {
   TextField,
   Button,
   Dialog,
+  CircularProgress,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -61,8 +62,6 @@ const RoadConnected = (props) => {
     };
   }, []);
 
-
-
   const handleDiscountChange = (event) => {
     setDiscount(event.target.value);
   };
@@ -100,108 +99,128 @@ const RoadConnected = (props) => {
 
   return (
     <Grid>
-      {props.countries !== null && (
-        <Grid container item className="road-container">
-          {props.resultIsLoading === false && (
-            <Dialog open={openRoadResult} onClose={closeRoadResult} fullWidth>
-              <Result
-                close={closeRoadResult}
-                type="road"
-                calc={props.result}
-                express={'worldwide'}
+      <Grid container item className="road-container">
+        {props.countries !== null ? (
+          <>
+            {props.resultIsLoading === false && (
+              <Dialog open={openRoadResult} onClose={closeRoadResult} fullWidth>
+                <Result
+                  close={closeRoadResult}
+                  type="road"
+                  calc={props.result}
+                  express={'worldwide'}
+                />
+              </Dialog>
+            )}
+            <Typography variant="h5">Közúti transzport</Typography>
+            <Grid container item direction="column">
+              <Typography variant="subtitle2">Ország</Typography>
+              <Select
+                placeholder="Kiválasztás..."
+                noOptionsMessage={() => 'Nincs opció'}
+                loadingMessage={() => 'Betöltés...'}
+                options={mapCountries(props.countries)}
+                onChange={(value) => setCountry(value)}
               />
-            </Dialog>
-          )}
-          <Typography variant="h5">Közúti transzport</Typography>
-          <Grid container item direction="column">
-            <Typography variant="subtitle2">Ország</Typography>
-            <Select
-              placeholder="Kiválasztás..."
-              noOptionsMessage={() => 'Nincs opció'}
-              loadingMessage={() => 'Betöltés...'}
-              options={mapCountries(props.countries)}
-              onChange={(value) => setCountry(value)}
-            />
-          </Grid>
-          <Grid container item direction="column">
-            <Typography variant="subtitle2">Súly (kg)</Typography>
-            <Select
-              placeholder="Kiválasztás..."
-              noOptionsMessage={() => 'Nincs opció'}
-              loadingMessage={() => 'Betöltés...'}
-              options={weights}
-              onChange={(value) => setWeight(value)}
-            />
-            <Typography variant="caption">
-              Adj meg 1 és 100 kg közötti súlyt.
-            </Typography>
-          </Grid>
-          <Grid container item direction="column">
-            <Typography variant="subtitle2">Biztosítási összeg (Ft)</Typography>
-            <TextField
-              className="input"
-              type="number"
-              variant="outlined"
-              required
-              inputRef={insurance}
-            />
-          </Grid>
-          <Grid container item>
-            <FormControl className="road-discount-formcontrol">
-              <FormLabel>Kedvezmény</FormLabel>
-              <RadioGroup
-                name="discount"
-                value={discount}
-                onChange={handleDiscountChange}
+            </Grid>
+            <Grid container item direction="column">
+              <Typography variant="subtitle2">Súly (kg)</Typography>
+              <Select
+                placeholder="Kiválasztás..."
+                noOptionsMessage={() => 'Nincs opció'}
+                loadingMessage={() => 'Betöltés...'}
+                options={weights}
+                onChange={(value) => setWeight(value)}
+              />
+              <Typography variant="caption">
+                Adj meg 1 és 100 kg közötti súlyt.
+              </Typography>
+            </Grid>
+            <Grid container item direction="column">
+              <Typography variant="subtitle2">
+                Biztosítási összeg (Ft)
+              </Typography>
+              <TextField
+                className="input"
+                type="number"
+                variant="outlined"
+                required
+                inputRef={insurance}
+              />
+            </Grid>
+            <Grid container item>
+              <FormControl className="road-discount-formcontrol">
+                <FormLabel>Kedvezmény</FormLabel>
+                <RadioGroup
+                  name="discount"
+                  value={discount}
+                  onChange={handleDiscountChange}
+                >
+                  <FormControlLabel
+                    value="0.1"
+                    control={<Radio />}
+                    label="10%"
+                  />
+                  <FormControlLabel
+                    value="0.2"
+                    control={<Radio />}
+                    label="20%"
+                  />
+                  <FormControlLabel
+                    value="0.3"
+                    control={<Radio />}
+                    label="30%"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            <Grid container item>
+              <FormControl className="road-additional-formcontrol">
+                <FormLabel>Kiegészítő opciók</FormLabel>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={additional.includes('ras')}
+                      onChange={handleAdditionalChange}
+                      value="ras"
+                    />
+                  }
+                  label="RAS"
+                />
+                <FormHelperText>
+                  Amennyiben a küldemény kieső területre megy, ikszeld be!
+                </FormHelperText>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={additional.includes('tk')}
+                      onChange={handleAdditionalChange}
+                      value="tk"
+                    />
+                  }
+                  label="TK"
+                />
+                <FormHelperText>
+                  Amennyiben az ügyfél lakóövezetbe kéri a kézbesítést (ODD),
+                  ikszeld be!
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid container item justify="flex-end">
+              <Button
+                onClick={() => handleCalculate()}
+                className="road-calculate-button"
               >
-                <FormControlLabel value="0.1" control={<Radio />} label="10%" />
-                <FormControlLabel value="0.2" control={<Radio />} label="20%" />
-                <FormControlLabel value="0.3" control={<Radio />} label="30%" />
-              </RadioGroup>
-            </FormControl>
+                Számítsd ki!
+              </Button>
+            </Grid>
+          </>
+        ) : (
+          <Grid container item justify="center">
+            <CircularProgress disableShrink={true} />
           </Grid>
-          <Grid container item>
-            <FormControl className="road-additional-formcontrol">
-              <FormLabel>Kiegészítő opciók</FormLabel>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={additional.includes('ras')}
-                    onChange={handleAdditionalChange}
-                    value="ras"
-                  />
-                }
-                label="RAS"
-              />
-              <FormHelperText>
-                Amennyiben a küldemény kieső területre megy, ikszeld be!
-              </FormHelperText>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={additional.includes('tk')}
-                    onChange={handleAdditionalChange}
-                    value="tk"
-                  />
-                }
-                label="TK"
-              />
-              <FormHelperText>
-                Amennyiben az ügyfél lakóövezetbe kéri a kézbesítést (ODD),
-                ikszeld be!
-              </FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid container item justify="flex-end">
-            <Button
-              onClick={() => handleCalculate()}
-              className="road-calculate-button"
-            >
-              Számítsd ki!
-            </Button>
-          </Grid>
-        </Grid>
-      )}
+        )}
+      </Grid>
     </Grid>
   );
 };

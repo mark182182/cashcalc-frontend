@@ -12,6 +12,7 @@ import {
   TextField,
   Dialog,
   Button,
+  CircularProgress,
 } from '@material-ui/core';
 import Select from 'react-select';
 import { connect } from 'react-redux';
@@ -145,35 +146,22 @@ const AirConnected = (props) => {
 
   return (
     <Grid>
-      {props.countries !== null && (
-        <Grid container item className="air-container">
-          {props.resultIsLoading === false && (
-            <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
-              <Result
-                close={closeAirResult}
-                type="air"
-                calc={props.result}
-                express={express}
-              />
-            </Dialog>
-          )}
-          <Typography variant="h5">Légi/belföld transzport</Typography>
-          <Grid container item direction="column">
-            <Typography variant="subtitle2">Ország</Typography>
-            <Select
-              styles={{
-                menu: (props) => ({ ...props, zIndex: 9999 }),
-              }}
-              placeholder="Kiválasztás..."
-              noOptionsMessage={() => 'Nincs opció'}
-              loadingMessage={() => 'Betöltés...'}
-              options={mapCountries(props.countries)}
-              onChange={(value) => setCountryAndLoadWeights(value)}
-            />
-          </Grid>
-          <Grid container item direction="column">
-            <Typography variant="subtitle2">Súly (kg)</Typography>
-            {country && country.zoneNumber ? (
+      <Grid container item className="air-container">
+        {props.countries !== null ? (
+          <>
+            {props.resultIsLoading === false && (
+              <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
+                <Result
+                  close={closeAirResult}
+                  type="air"
+                  calc={props.result}
+                  express={express}
+                />
+              </Dialog>
+            )}
+            <Typography variant="h5">Légi/belföld transzport</Typography>
+            <Grid container item direction="column">
+              <Typography variant="subtitle2">Ország</Typography>
               <Select
                 styles={{
                   menu: (props) => ({ ...props, zIndex: 9999 }),
@@ -181,146 +169,181 @@ const AirConnected = (props) => {
                 placeholder="Kiválasztás..."
                 noOptionsMessage={() => 'Nincs opció'}
                 loadingMessage={() => 'Betöltés...'}
-                options={weights}
-                value={weight}
-                onChange={(value) => setWeightAndDox(value)}
+                options={mapCountries(props.countries)}
+                onChange={(value) => setCountryAndLoadWeights(value)}
               />
-            ) : (
-              <Select
-                options={[]}
-                value={{}}
-                placeholder="Kiválasztás..."
-                isDisabled={true}
-              ></Select>
-            )}
-            <Typography variant="caption">
-              Adj meg 0.5 és 200 kg közötti súlyt.
-            </Typography>
-          </Grid>
-          <Grid container item direction="column">
-            <Typography variant="subtitle2">Biztosítási összeg (Ft)</Typography>
-            <TextField
-              className="input"
-              type="number"
-              variant="outlined"
-              required
-              inputRef={insurance}
-            />
-          </Grid>
-          <Grid container item>
-            <FormControl className="air-discount-formcontrol">
-              <FormLabel>Kedvezmény</FormLabel>
-              <RadioGroup
-                name="discount"
-                value={discount}
-                onChange={handleDiscountChange}
+            </Grid>
+            <Grid container item direction="column">
+              <Typography variant="subtitle2">Súly (kg)</Typography>
+              {country && country.zoneNumber ? (
+                <Select
+                  styles={{
+                    menu: (props) => ({ ...props, zIndex: 9999 }),
+                  }}
+                  placeholder="Kiválasztás..."
+                  noOptionsMessage={() => 'Nincs opció'}
+                  loadingMessage={() => 'Betöltés...'}
+                  options={weights}
+                  value={weight}
+                  onChange={(value) => setWeightAndDox(value)}
+                />
+              ) : (
+                <Select
+                  options={[]}
+                  value={{}}
+                  placeholder="Kiválasztás..."
+                  isDisabled={true}
+                ></Select>
+              )}
+              <Typography variant="caption">
+                Adj meg 0.5 és 200 kg közötti súlyt.
+              </Typography>
+            </Grid>
+            <Grid container item direction="column">
+              <Typography variant="subtitle2">
+                Biztosítási összeg (Ft)
+              </Typography>
+              <TextField
+                className="input"
+                type="number"
+                variant="outlined"
+                required
+                inputRef={insurance}
+              />
+            </Grid>
+            <Grid container item>
+              <FormControl className="air-discount-formcontrol">
+                <FormLabel>Kedvezmény</FormLabel>
+                <RadioGroup
+                  name="discount"
+                  value={discount}
+                  onChange={handleDiscountChange}
+                >
+                  <FormControlLabel
+                    value="10"
+                    control={<Radio />}
+                    label="10%"
+                  />
+                  <FormControlLabel
+                    value="20"
+                    control={<Radio />}
+                    label="20%"
+                  />
+                  <FormControlLabel
+                    value="30"
+                    control={<Radio />}
+                    label="30%"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            <Grid container item>
+              <FormControl className="air-express-formcontrol">
+                <FormLabel>Express csomag?</FormLabel>
+                <RadioGroup
+                  name="express"
+                  value={express}
+                  onChange={handleExpressChange}
+                >
+                  <FormControlLabel
+                    value="worldwide"
+                    control={<Radio />}
+                    label="Express Worldwide"
+                  />
+                  <FormControlLabel
+                    value="9h"
+                    control={<Radio />}
+                    label="Express 9h"
+                  />
+                  <FormControlLabel
+                    value="12h"
+                    control={<Radio />}
+                    label="Express 12h"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            <Grid container item>
+              <FormControl className="air-additional-formcontrol">
+                <FormLabel>Kiegészítő opciók</FormLabel>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={
+                        additional.includes('dox') &&
+                        !isEUCountry(country.zoneNumber)
+                      }
+                      onChange={handleAdditionalChange}
+                      value="dox"
+                      disabled={
+                        isEUCountry(country.zoneNumber) || isDoxDisabled
+                      }
+                    />
+                  }
+                  label="DOX"
+                />
+                <FormHelperText>
+                  Amennyiben az ügyfél EU-n kívüli területre küld dokumentumot,
+                  ikszeld be!
+                </FormHelperText>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={additional.includes('ext')}
+                      onChange={handleAdditionalChange}
+                      value="ext"
+                    />
+                  }
+                  label="EXT"
+                />
+                <FormHelperText>
+                  Amennyiben az ügyfél küldeménye dokumentum, és szeretné
+                  biztosítani, ikszeld be!
+                </FormHelperText>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={additional.includes('ras')}
+                      onChange={handleAdditionalChange}
+                      value="ras"
+                    />
+                  }
+                  label="RAS"
+                />
+                <FormHelperText>
+                  Amennyiben a küldemény kieső területre megy, ikszeld be!
+                </FormHelperText>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={additional.includes('tk')}
+                      onChange={handleAdditionalChange}
+                      value="tk"
+                    />
+                  }
+                  label="TK"
+                />
+                <FormHelperText>
+                  Amennyiben az ügyfél lakóövezetbe kéri a kézbesítést (ODD),
+                  ikszeld be!
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid container item justify="flex-end">
+              <Button
+                onClick={() => handleCalculate()}
+                className="air-calculate-button"
               >
-                <FormControlLabel value="10" control={<Radio />} label="10%" />
-                <FormControlLabel value="20" control={<Radio />} label="20%" />
-                <FormControlLabel value="30" control={<Radio />} label="30%" />
-              </RadioGroup>
-            </FormControl>
+                Számítsd ki!
+              </Button>
+            </Grid>
+          </>
+        ) : (
+          <Grid container item justify="center">
+            <CircularProgress disableShrink={true} />
           </Grid>
-          <Grid container item>
-            <FormControl className="air-express-formcontrol">
-              <FormLabel>Express csomag?</FormLabel>
-              <RadioGroup
-                name="express"
-                value={express}
-                onChange={handleExpressChange}
-              >
-                <FormControlLabel
-                  value="worldwide"
-                  control={<Radio />}
-                  label="Express Worldwide"
-                />
-                <FormControlLabel
-                  value="9h"
-                  control={<Radio />}
-                  label="Express 9h"
-                />
-                <FormControlLabel
-                  value="12h"
-                  control={<Radio />}
-                  label="Express 12h"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-          <Grid container item>
-            <FormControl className="air-additional-formcontrol">
-              <FormLabel>Kiegészítő opciók</FormLabel>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={
-                      additional.includes('dox') &&
-                      !isEUCountry(country.zoneNumber)
-                    }
-                    onChange={handleAdditionalChange}
-                    value="dox"
-                    disabled={isEUCountry(country.zoneNumber) || isDoxDisabled}
-                  />
-                }
-                label="DOX"
-              />
-              <FormHelperText>
-                Amennyiben az ügyfél EU-n kívüli területre küld dokumentumot,
-                ikszeld be!
-              </FormHelperText>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={additional.includes('ext')}
-                    onChange={handleAdditionalChange}
-                    value="ext"
-                  />
-                }
-                label="EXT"
-              />
-              <FormHelperText>
-                Amennyiben az ügyfél küldeménye dokumentum, és szeretné
-                biztosítani, ikszeld be!
-              </FormHelperText>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={additional.includes('ras')}
-                    onChange={handleAdditionalChange}
-                    value="ras"
-                  />
-                }
-                label="RAS"
-              />
-              <FormHelperText>
-                Amennyiben a küldemény kieső területre megy, ikszeld be!
-              </FormHelperText>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={additional.includes('tk')}
-                    onChange={handleAdditionalChange}
-                    value="tk"
-                  />
-                }
-                label="TK"
-              />
-              <FormHelperText>
-                Amennyiben az ügyfél lakóövezetbe kéri a kézbesítést (ODD),
-                ikszeld be!
-              </FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid container item justify="flex-end">
-            <Button
-              onClick={() => handleCalculate()}
-              className="air-calculate-button"
-            >
-              Számítsd ki!
-            </Button>
-          </Grid>
-        </Grid>
-      )}
+        )}
+      </Grid>
     </Grid>
   );
 };

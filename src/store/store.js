@@ -8,6 +8,7 @@ import rootReducer from '../redux-reducer/root';
 import { push } from 'connected-react-router';
 import request from '../request/request';
 import constants from '../constants/constants';
+import actionTypes from '../constants/action-types';
 
 const persistConfig = {
   key: 'root',
@@ -38,6 +39,7 @@ export default (preloadedState) => {
     (error) => {
       switch (error.response.status) {
         case 401:
+          store.dispatch({ type: actionTypes.LOGIN_USER_RESET });
           store.dispatch(push(constants.ROUTES.LOGIN));
           break;
         case 403:

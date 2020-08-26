@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
   Grid,
-  Tabs,
-  Tab,
-  TabPanel,
-  AppBar,
-  Toolbar,
   IconButton,
   Hidden,
   Drawer,
   List,
-  ListItemIcon,
   ListItemText,
   ListItem,
   Typography,
@@ -26,6 +20,7 @@ import { Error404 } from '../404/404';
 import { Error500 } from '../500/500';
 import { logout } from '../../action/logout';
 import ProtectedRoute from '../protected-route/protected-route';
+import RoleBasedRoute from '../role-based-route/role-based-route';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../../store/store';
 import { ConnectedRouter } from 'connected-react-router';
@@ -48,16 +43,12 @@ const HomeConnected = (props) => {
         props.logout();
         break;
       case 1:
-        // props.validateRole(constants.ROLES.carrier);
         history.push(constants.ROUTES.HOME + constants.ROUTES.CALCULATION);
         break;
-      // return <Redirect to="/main/calculation" />;
       case 2:
-        // props.validateRole(constants.ROLES.admin);
         history.push(constants.ROUTES.HOME + constants.ROUTES.ADMIN);
         break;
       case 3:
-        // props.validateRole(constants.ROLES.superuser);
         history.push(constants.ROUTES.HOME + constants.ROUTES.SUPERUSER);
         break;
     }
@@ -113,19 +104,24 @@ const HomeConnected = (props) => {
           >
             <Welcome />
           </ProtectedRoute>
-          <ProtectedRoute
+          <RoleBasedRoute
             path={constants.ROUTES.HOME + constants.ROUTES.CALCULATION}
+            checkRole={constants.ROLES.carrier}
           >
             <Calculation />
-          </ProtectedRoute>
-          <ProtectedRoute path={constants.ROUTES.HOME + constants.ROUTES.ADMIN}>
+          </RoleBasedRoute>
+          <RoleBasedRoute
+            path={constants.ROUTES.HOME + constants.ROUTES.ADMIN}
+            checkRole={constants.ROLES.admin}
+          >
             <Admin />
-          </ProtectedRoute>
-          <ProtectedRoute
+          </RoleBasedRoute>
+          <RoleBasedRoute
             path={constants.ROUTES.HOME + constants.ROUTES.SUPERUSER}
+            checkRole={constants.ROLES.superuser}
           >
             <SuperUser />
-          </ProtectedRoute>
+          </RoleBasedRoute>
           <ProtectedRoute
             path={constants.ROUTES.HOME + constants.ROUTES.ERROR_403}
           >

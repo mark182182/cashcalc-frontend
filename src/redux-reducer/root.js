@@ -5,6 +5,7 @@ import roadReducer from './road';
 import countryReducer from './country';
 import loginReducer from './login';
 import calcReducer from './calculation';
+import adminReducer from './admin';
 
 const rootReducer = (history) =>
   combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = (history) =>
     countryReducer,
     calcReducer,
     loginReducer,
+    adminReducer,
   });
 
 export default rootReducer;
