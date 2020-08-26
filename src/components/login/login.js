@@ -9,6 +9,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { SnackBarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
+import { Redirect } from 'react-router-dom';
 import { Person, VpnKey } from '@material-ui/icons';
 import './login.scss';
 
@@ -74,6 +75,7 @@ export const LoginConnected = (props) => {
           </Button>
         </Grid>
       </Grid>
+      {props.loginStatus === 'success' && <Redirect to="/main/welcome" />}
     </Grid>
   );
 };

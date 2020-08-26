@@ -16,20 +16,20 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Admin } from '../admin/admin';
-import Login from '../login/login';
 import { SuperUser } from '../superuser/superuser';
 import { connect } from 'react-redux';
 import constants from '../../constants/constants';
-import { Menu as MenuIcon } from '@material-ui/icons';
+import { Welcome } from '../welcome/welcome';
 import { Calculation } from '../calculation/calculation';
+import { Error403 } from '../403/403';
+import { Error404 } from '../404/404';
+import { Error500 } from '../500/500';
 import { logout } from '../../action/logout';
 import ProtectedRoute from '../protected-route/protected-route';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { history } from '../../store/store';
+import { ConnectedRouter } from 'connected-react-router';
+import { Menu as MenuIcon } from '@material-ui/icons';
 import './main.scss';
 
 const mapDispatch = (dispatch) => {
@@ -39,25 +39,27 @@ const mapDispatch = (dispatch) => {
 };
 
 const MainConnected = (props) => {
-  const [currentTab, setTab] = useState(null);
   const [isDrawerOpen, toggleDrawer] = useState(false);
 
-  const renderCurrentTab = () => {
-    switch (currentTab) {
+  const renderCurrentTab = (index) => {
+    switch (index) {
       case 0:
-        setTab(null);
         toggleDrawer(false);
         props.logout();
-        return <Redirect to="/login" />;
+        break;
       case 1:
-        props.validateRole(constants.ROLES.carrier);
-        return <Calculation />;
+        // props.validateRole(constants.ROLES.carrier);
+        history.push('/main/calculation');
+        break;
+      // return <Redirect to="/main/calculation" />;
       case 2:
-        props.validateRole(constants.ROLES.admin);
-        return <Admin />;
+        // props.validateRole(constants.ROLES.admin);
+        history.push('/main/admin');
+        break;
       case 3:
-        props.validateRole(constants.ROLES.superuser);
-        return <SuperUser />;
+        // props.validateRole(constants.ROLES.superuser);
+        history.push('/main/superuser');
+        break;
     }
   };
 
@@ -70,7 +72,11 @@ const MainConnected = (props) => {
       {['Kijelentkezés', 'Kalkuláció', 'Admin', 'Super'].map((text, index) => {
         if (getRole() >= index) {
           return (
-            <ListItem button onClick={() => setTab(index)} key={text}>
+            <ListItem
+              button
+              onClick={() => renderCurrentTab(index)}
+              key={index}
+            >
               <ListItemText primary={text} />
             </ListItem>
           );
@@ -100,14 +106,34 @@ const MainConnected = (props) => {
         <img src="../favicon.ico" width="15%" />
         <Typography variant="button">CASHCALC</Typography>
       </Grid>
-      <Router>
+      <ConnectedRouter history={history}>
         <Switch>
-          <Route path="/login">
-            <Login />
+          <ProtectedRoute path="/main/welcome">
+            <Welcome />
+          </ProtectedRoute>
+          <ProtectedRoute path="/main/calculation">
+            <Calculation />
+          </ProtectedRoute>
+          <ProtectedRoute path="/main/admin">
+            <Admin />
+          </ProtectedRoute>
+          <ProtectedRoute path="/main/superuser">
+            <SuperUser />
+          </ProtectedRoute>
+          <ProtectedRoute path="/main/403">
+            <Error403 />
+          </ProtectedRoute>
+          <ProtectedRoute path="/main/404">
+            <Error404 />
+          </ProtectedRoute>
+          <ProtectedRoute path="/main/500">
+            <Error500 />
+          </ProtectedRoute>
+          <Route path="*">
+            <Redirect to="/main/welcome" />
           </Route>
-          <ProtectedRoute path="/main">{renderCurrentTab()}</ProtectedRoute>
         </Switch>
-      </Router>
+      </ConnectedRouter>
     </Grid>
   );
 };

@@ -1,9 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
+import { routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 import rootReducer from '../redux-reducer/root';
-import request from '../request/request';
 
 const persistConfig = {
   key: 'root',
@@ -11,41 +12,23 @@ const persistConfig = {
   whitelist: ['loginReducer'],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+export const history = createBrowserHistory();
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export default (preloadedState) => {
+  const middlewares = [routerMiddleware(history), thunk];
 
-export default () => {
+  const composeEnhancers =
+    (typeof window !== 'undefined' &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+    compose;
+
   const store = createStore(
-    persistedReducer,
-    composeEnhancers(applyMiddleware(thunk))
+    persistReducer(persistConfig, rootReducer(history)),
+    preloadedState,
+    composeEnhancers(applyMiddleware(...middlewares))
   );
-  const persistor = persistStore(store);
-  // 401 redirect to login
-  // 403 redirect to static unauthorized page
 
-  request.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      switch (error.status) {
-        case 401:
-          console.log('401');
-          // store.dispatch({ type: actionTypes.ERROR_401});
-          break;
-        case 403:
-          console.log('403');
-          break;
-        case 404:
-          console.log('404');
-          break;
-        case 500:
-          console.log('500');
-          break;
-        default:
-          break;
-      }
-    }
-  );
+  const persistor = persistStore(store);
 
   return { store, persistor };
 };

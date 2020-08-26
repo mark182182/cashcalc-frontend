@@ -1,13 +1,12 @@
-import axios from 'axios';
 import constants from '../constants/constants';
 import actionTypes from '../constants/action-types';
+import request from '../request/request';
 
 export const validateRole = (role) => {
   return (dispatch) => {
-    return axios
+    return request
       .get(constants.BASE_URL + constants.API_ROUTES.IS_AUTHORIZED, {
         params: { role: role },
-        withCredentials: true,
       })
       .then((resp) => {
         dispatch({

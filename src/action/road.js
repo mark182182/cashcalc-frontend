@@ -1,18 +1,15 @@
-import axios from 'axios';
 import constants from '../constants/constants';
 import actionTypes from '../constants/action-types';
+import request from '../request/request';
 
 export const getPricesRoad = (zoneNumber) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.PRICES_ROAD_RESET });
-    return axios
+    return request
       .get(
         constants.BASE_URL +
           constants.API_ROUTES.PRICINGS_ROAD_FARES +
-          zoneNumber,
-        {
-          withCredentials: true,
-        }
+          zoneNumber
       )
       .then((resp) => {
         dispatch({
@@ -27,7 +24,7 @@ export const getPricesRoad = (zoneNumber) => {
 };
 
 export const resetPrices = () => {
-  return dispatch => {
-    dispatch({type: actionTypes.PRICES_ROAD_RESET});
-  }
-}
+  return (dispatch) => {
+    dispatch({ type: actionTypes.PRICES_ROAD_RESET });
+  };
+};

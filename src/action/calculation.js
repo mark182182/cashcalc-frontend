@@ -1,14 +1,12 @@
-import axios from 'axios';
 import constants from '../constants/constants';
 import actionTypes from '../constants/action-types';
+import request from '../request/request';
 
 export const calculate = (calc) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.CALCULATE_RESET });
-    return axios
-      .post(constants.BASE_URL + constants.API_ROUTES.CALC, calc, {
-        withCredentials: true,
-      })
+    return request
+      .post(constants.BASE_URL + constants.API_ROUTES.CALC, calc)
       .then((resp) => {
         dispatch({
           type: actionTypes.CALCULATE_SUCCESS,

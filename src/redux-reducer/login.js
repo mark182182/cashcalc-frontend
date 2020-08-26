@@ -11,7 +11,15 @@ const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN_USER_RESET:
       return Object.assign({}, state, {
+        isLoading: null,
+        status: null,
+        message: null,
+        role: null,
+      });
+    case actionTypes.LOGIN_USER_START:
+      return Object.assign({}, state, {
         isLoading: true,
+        status: null,
         message: null,
         role: null,
       });
