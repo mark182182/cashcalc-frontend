@@ -41,7 +41,7 @@ const AirConnected = (props) => {
   const [country, setCountry] = useState({});
   const [weight, setWeight] = useState({});
   const [weights, setWeights] = useState([]);
-  const [discount, setDiscount] = useState('0.1');
+  const [discount, setDiscount] = useState('10');
   const [express, setExpress] = useState('worldwide');
   const [additional, setAdditional] = useState([]);
   const [isDoxDisabled, setIsDoxDisabled] = useState(false);
@@ -94,10 +94,10 @@ const AirConnected = (props) => {
       insurance: parseInt(insurance.current.value),
       discountPercent: parseFloat(discount),
       expressType: express,
-      isDocument: additional.dox,
-      isExt: additional.ext,
-      isTk: additional.tk,
-      isRas: additional.ras,
+      isDocument: additional.includes('dox'),
+      isExt: additional.includes('ext'),
+      isTk: additional.includes('tk'),
+      isRas: additional.includes('ras'),
     };
     try {
       validateCalculation(calc);
@@ -215,9 +215,9 @@ const AirConnected = (props) => {
                 value={discount}
                 onChange={handleDiscountChange}
               >
-                <FormControlLabel value="0.1" control={<Radio />} label="10%" />
-                <FormControlLabel value="0.2" control={<Radio />} label="20%" />
-                <FormControlLabel value="0.3" control={<Radio />} label="30%" />
+                <FormControlLabel value="10" control={<Radio />} label="10%" />
+                <FormControlLabel value="20" control={<Radio />} label="20%" />
+                <FormControlLabel value="30" control={<Radio />} label="30%" />
               </RadioGroup>
             </FormControl>
           </Grid>
