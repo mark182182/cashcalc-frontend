@@ -12,6 +12,7 @@ import { SnackBarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
 import { Redirect } from 'react-router-dom';
 import { Person, VpnKey } from '@material-ui/icons';
 import './login.scss';
+import constants from '../../constants/constants';
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -75,7 +76,9 @@ export const LoginConnected = (props) => {
           </Button>
         </Grid>
       </Grid>
-      {props.loginStatus === 'success' && <Redirect to="/main/welcome" />}
+      {props.loginStatus === 'success' && (
+        <Redirect to={constants.ROUTES.HOME + constants.ROUTES.WELCOME} />
+      )}
     </Grid>
   );
 };

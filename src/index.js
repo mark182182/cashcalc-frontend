@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Login from './components/login/login';
-import Main from './components/main/main';
+import Home from './components/home/home';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store, { history } from '../src/store/store';
@@ -11,20 +11,21 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import 'normalize.css';
 import './styles/style.scss';
+import constants from './constants/constants';
 
 ReactDOM.render(
   <Provider store={store().store}>
     <PersistGate loading={null} persistor={store().persistor}>
       <ConnectedRouter history={history}>
         <Switch>
-          <Route path="/login">
+          <Route path={constants.ROUTES.LOGIN}>
             <Login />
           </Route>
-          <ProtectedRoute path="/main">
-            <Main />
+          <ProtectedRoute path={constants.ROUTES.HOME}>
+            <Home />
           </ProtectedRoute>
           <Route path="*">
-            <Redirect to="/login" />
+            <Redirect to={constants.ROUTES.LOGIN} />
           </Route>
         </Switch>
       </ConnectedRouter>

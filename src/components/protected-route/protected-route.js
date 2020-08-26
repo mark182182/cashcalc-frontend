@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import constants from '../../constants/constants';
 
 const ProtectedRouteConnected = ({ children, ...props }) => {
   return (
@@ -12,7 +13,7 @@ const ProtectedRouteConnected = ({ children, ...props }) => {
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: constants.ROUTES.LOGIN,
               state: { from: location },
             }}
           />

@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import rootReducer from '../redux-reducer/root';
 import { push } from 'connected-react-router';
 import request from '../request/request';
+import constants from '../constants/constants';
 
 const persistConfig = {
   key: 'root',
@@ -37,16 +38,22 @@ export default (preloadedState) => {
     (error) => {
       switch (error.response.status) {
         case 401:
-          store.dispatch(push('/login'));
+          store.dispatch(push(constants.ROUTES.LOGIN));
           break;
         case 403:
-          store.dispatch(push('/main/403'));
+          store.dispatch(
+            push(constants.ROUTES.HOME + constants.ROUTES.ERROR_403)
+          );
           break;
         case 404:
-          store.dispatch(push('/main/404'));
+          store.dispatch(
+            push(constants.ROUTES.HOME + constants.ROUTES.ERROR_404)
+          );
           break;
         case 500:
-          store.dispatch(push('/main/500'));
+          store.dispatch(
+            push(constants.ROUTES.HOME + constants.ROUTES.ERROR_500)
+          );
           break;
         default:
           break;

@@ -30,7 +30,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../../store/store';
 import { ConnectedRouter } from 'connected-react-router';
 import { Menu as MenuIcon } from '@material-ui/icons';
-import './main.scss';
+import './home.scss';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -38,7 +38,7 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-const MainConnected = (props) => {
+const HomeConnected = (props) => {
   const [isDrawerOpen, toggleDrawer] = useState(false);
 
   const renderCurrentTab = (index) => {
@@ -49,16 +49,16 @@ const MainConnected = (props) => {
         break;
       case 1:
         // props.validateRole(constants.ROLES.carrier);
-        history.push('/main/calculation');
+        history.push(constants.ROUTES.HOME + constants.ROUTES.CALCULATION);
         break;
       // return <Redirect to="/main/calculation" />;
       case 2:
         // props.validateRole(constants.ROLES.admin);
-        history.push('/main/admin');
+        history.push(constants.ROUTES.HOME + constants.ROUTES.ADMIN);
         break;
       case 3:
         // props.validateRole(constants.ROLES.superuser);
-        history.push('/main/superuser');
+        history.push(constants.ROUTES.HOME + constants.ROUTES.SUPERUSER);
         break;
     }
   };
@@ -108,29 +108,41 @@ const MainConnected = (props) => {
       </Grid>
       <ConnectedRouter history={history}>
         <Switch>
-          <ProtectedRoute path="/main/welcome">
+          <ProtectedRoute
+            path={constants.ROUTES.HOME + constants.ROUTES.WELCOME}
+          >
             <Welcome />
           </ProtectedRoute>
-          <ProtectedRoute path="/main/calculation">
+          <ProtectedRoute
+            path={constants.ROUTES.HOME + constants.ROUTES.CALCULATION}
+          >
             <Calculation />
           </ProtectedRoute>
-          <ProtectedRoute path="/main/admin">
+          <ProtectedRoute path={constants.ROUTES.HOME + constants.ROUTES.ADMIN}>
             <Admin />
           </ProtectedRoute>
-          <ProtectedRoute path="/main/superuser">
+          <ProtectedRoute
+            path={constants.ROUTES.HOME + constants.ROUTES.SUPERUSER}
+          >
             <SuperUser />
           </ProtectedRoute>
-          <ProtectedRoute path="/main/403">
+          <ProtectedRoute
+            path={constants.ROUTES.HOME + constants.ROUTES.ERROR_403}
+          >
             <Error403 />
           </ProtectedRoute>
-          <ProtectedRoute path="/main/404">
+          <ProtectedRoute
+            path={constants.ROUTES.HOME + constants.ROUTES.ERROR_404}
+          >
             <Error404 />
           </ProtectedRoute>
-          <ProtectedRoute path="/main/500">
+          <ProtectedRoute
+            path={constants.ROUTES.HOME + constants.ROUTES.ERROR_500}
+          >
             <Error500 />
           </ProtectedRoute>
           <Route path="*">
-            <Redirect to="/main/welcome" />
+            <Redirect to={constants.ROUTES.HOME + constants.ROUTES.WELCOME} />
           </Route>
         </Switch>
       </ConnectedRouter>
@@ -145,5 +157,5 @@ const mapState = (state) => {
   };
 };
 
-const Main = connect(mapState, mapDispatch)(MainConnected);
-export default Main;
+const Home = connect(mapState, mapDispatch)(HomeConnected);
+export default Home;
