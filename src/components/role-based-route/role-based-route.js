@@ -32,12 +32,14 @@ const RoleBasedRouteConnected = ({ children, ...props }) => {
               </Grid>
             );
           case null:
-            <Redirect
-              to={{
-                pathname: constants.ROUTES.ERROR_403,
-                state: { from: location },
-              }}
-            />;
+            return (
+              <Redirect
+                to={{
+                  pathname: constants.ROUTES.ERROR_403,
+                  state: { from: location },
+                }}
+              />
+            );
         }
       }}
     />
