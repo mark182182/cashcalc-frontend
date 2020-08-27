@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Button, ButtonGroup } from '@material-ui/core';
 import './admin.scss';
 import UserManagement from './user-management/user';
 import PricingManagement from './pricing-management/pricing';
 
 export const Admin = () => {
-  const [selected, setSelected] = useState('users');
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    setSelected('users');
+  }, []);
 
   return (
     <Grid container item className="admin-container">

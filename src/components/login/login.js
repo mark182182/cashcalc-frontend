@@ -11,8 +11,8 @@ import {
 import { SnackBarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
 import { Redirect } from 'react-router-dom';
 import { Person, VpnKey } from '@material-ui/icons';
-import './login.scss';
 import constants from '../../constants/constants';
+import './login.scss';
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -71,7 +71,7 @@ export const LoginConnected = (props) => {
           </Grid>
         </Grid>
         <Grid container item justify="flex-end">
-          <Button type="submit" onClick={login}>
+          <Button type="submit" onClick={login} disabled={props.loginIsLoading}>
             Belépés
           </Button>
         </Grid>
