@@ -27,18 +27,18 @@ const RoleBasedRouteConnected = ({ children, ...props }) => {
             return children;
           case false:
             return (
-              <Grid container item justify="center">
-                <CircularProgress disableShrink={true} />
-              </Grid>
-            );
-          case null:
-            return (
               <Redirect
                 to={{
                   pathname: constants.ROUTES.ERROR_403,
                   state: { from: location },
                 }}
               />
+            );
+          case null:
+            return (
+              <Grid container item justify="center">
+                <CircularProgress disableShrink={true} />
+              </Grid>
             );
         }
       }}
