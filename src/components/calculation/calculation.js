@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Button, ButtonGroup } from '@material-ui/core';
 import Air from '../air/air';
 import Road from '../road/road';
 
 export const Calculation = () => {
-  const [selected, setSelected] = useState('air');
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    setSelected('air');
+  }, []);
 
   return (
     <Grid>

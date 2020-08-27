@@ -21,24 +21,25 @@ const RoleBasedRouteConnected = ({ children, ...props }) => {
   return (
     <Route
       {...props}
-      render={({ location }) =>
-        props.isAuthorized !== false ? (
-          props.isAuthorized === true ? (
-            children
-          ) : (
-            <Grid container item justify="center">
-              <CircularProgress disableShrink={true} />
-            </Grid>
-          )
-        ) : (
-          <Redirect
-            to={{
-              pathname: constants.ROUTES.ERROR_403,
-              state: { from: location },
-            }}
-          />
-        )
-      }
+      render={({ location }) => {
+        switch (props.isAuthorized) {
+          case true:
+            return children;
+          case false:
+            return (
+              <Grid container item justify="center">
+                <CircularProgress disableShrink={true} />
+              </Grid>
+            );
+          case null:
+            <Redirect
+              to={{
+                pathname: constants.ROUTES.ERROR_403,
+                state: { from: location },
+              }}
+            />;
+        }
+      }}
     />
   );
 };

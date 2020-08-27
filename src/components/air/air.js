@@ -50,6 +50,10 @@ const AirConnected = (props) => {
 
   useEffect(() => {
     props.getCountriesAir();
+    return () => {
+      props.resetCountry();
+      props.resetPrices();
+    };
   }, []);
 
   useEffect(() => {
@@ -63,13 +67,6 @@ const AirConnected = (props) => {
     setWeight({});
     setAdditional([]);
   }, [country]);
-
-  useEffect(() => {
-    return () => {
-      props.resetCountry();
-      props.resetPrices();
-    };
-  }, []);
 
   const setCountryAndLoadWeights = (value) => {
     setCountry(value);
