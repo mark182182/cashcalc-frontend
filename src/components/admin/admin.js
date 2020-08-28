@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Button, ButtonGroup } from '@material-ui/core';
-import './admin.scss';
-import UserManagement from './user-management/carrier';
+import CarrierManagement from './user-management/carrier';
 import PricingManagement from './pricing-management/pricing';
+import './admin.scss';
 
 export const Admin = () => {
   const [selected, setSelected] = useState(null);
@@ -23,7 +23,7 @@ export const Admin = () => {
           </Button>
         </ButtonGroup>
       </Grid>
-      {selected === 'carriers' && <UserManagement />}
+      {selected === 'carriers' && <CarrierManagement />}
       {selected === 'pricings' && <PricingManagement />}
     </Grid>
   );

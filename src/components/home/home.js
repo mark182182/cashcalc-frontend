@@ -63,11 +63,7 @@ const HomeConnected = (props) => {
       {['Kijelentkezés', 'Kalkuláció', 'Admin', 'Super'].map((text, index) => {
         if (getRole() >= index) {
           return (
-            <ListItem
-              button
-              onClick={() => renderCurrentTab(index)}
-              key={index}
-            >
+            <ListItem button onClick={() => renderCurrentTab(index)} key={text}>
               <ListItemText primary={text} />
             </ListItem>
           );

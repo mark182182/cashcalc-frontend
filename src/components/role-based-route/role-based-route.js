@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { validateRole } from '../../action/admin';
@@ -12,9 +12,12 @@ const mapDispatch = (dispatch) => {
 };
 
 const RoleBasedRouteConnected = ({ children, ...props }) => {
+  const [prevRole, setPrevRole] = useState(false);
+
   useEffect(() => {
-    if (props.checkRole) {
+    if (props.checkRole && props.checkRole !== prevRole) {
       props.validateRole(props.checkRole);
+      setPrevRole(props.checkRole);
     }
   }, [props.checkRole]);
 
@@ -24,7 +27,7 @@ const RoleBasedRouteConnected = ({ children, ...props }) => {
       render={({ location }) => {
         switch (props.isAuthorized) {
           case true:
-            return children;
+            return props.checkRole === prevRole ? children : null;
           case false:
             return (
               <Redirect
