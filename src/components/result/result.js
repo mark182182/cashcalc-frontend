@@ -12,7 +12,7 @@ import './result.scss';
 
 export const Result = (props) => {
   return (
-    <Grid container item>
+    <>
       <DialogTitle className="result-header">
         <Grid container>
           <Grid container justify="space-between">
@@ -28,6 +28,6 @@ export const Result = (props) => {
       <DialogContent>
         <ResultTable calc={props.calc} express={props.express} />
       </DialogContent>
-    </Grid>
+    </>
   );
 };

@@ -66,3 +66,63 @@ export const updatePricingVariables = (pricing) => {
       });
   };
 };
+
+export const getCarriers = () => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.GET_CARRIERS_RESET });
+    return request
+      .get(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS)
+      .then((resp) => {
+        dispatch({
+          type: actionTypes.GET_CARRIERS_SUCCESS,
+          payload: resp.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.GET_CARRIERS_ERROR,
+          payload: err.message,
+        });
+      });
+  };
+};
+
+export const createCarrier = () => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.CREATE_CARRIER_RESET });
+    return request
+      .put(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS_CREATE)
+      .then((resp) => {
+        dispatch({
+          type: actionTypes.CREATE_CARRIER_SUCCESS,
+          payload: resp.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.CREATE_CARRIER_ERROR,
+          payload: err.message,
+        });
+      });
+  };
+};
+
+export const deleteCarrier = () => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.DELETE_CARRIER_RESET });
+    return request
+      .delete(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS_DELETE)
+      .then((resp) => {
+        dispatch({
+          type: actionTypes.DELETE_CARRIER_SUCCESS,
+          payload: resp.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.DELETE_CARRIER_ERROR,
+          payload: err.message,
+        });
+      });
+  };
+};

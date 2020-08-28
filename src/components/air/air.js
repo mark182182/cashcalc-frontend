@@ -147,7 +147,11 @@ const AirConnected = (props) => {
         {props.countries !== null ? (
           <>
             {props.resultIsLoading === false && (
-              <Dialog open={openAirResult} onClose={closeAirResult} fullWidth>
+              <Dialog
+                open={openAirResult}
+                onClose={closeAirResult}
+                maxWidth="sm"
+              >
                 <Result
                   close={closeAirResult}
                   type="air"
@@ -336,7 +340,7 @@ const AirConnected = (props) => {
             </Grid>
           </>
         ) : (
-          <Grid container item justify="center">
+          <Grid container item>
             <CircularProgress disableShrink={true} />
           </Grid>
         )}

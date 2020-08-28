@@ -14,6 +14,9 @@ const constants = {
     PRICINGS_ROAD_FARES: 'pricings/road/fares/',
     PRICING_VARIABLES: 'pricingvariables',
     PRICING_VARIABLES_UPDATE: 'pricingvariables/update',
+    USERS_CARRIERS: 'users/carriers',
+    USERS_CARRIERS_CREATE: 'users/carriers',
+    USERS_CARRIERS_DELETE: 'users/carriers',
   },
   ROUTES: {
     HOME: '/home',
