@@ -26,7 +26,7 @@ export const ResultTable = (props) => {
     { name: 'RAS-díj', value: props.calc.rasFare },
     { name: 'TK-díj', value: props.calc.tkFare },
     { name: 'Üzemanyag-pótdíj', value: props.calc.fuelFare },
-    { name: 'Vészhelyzeti díj', value: props.calc.tkFare },
+    { name: 'Vészhelyzeti díj', value: props.calc.emergencyFare },
   ]);
 
   return (
