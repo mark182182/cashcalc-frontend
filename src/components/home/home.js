@@ -52,6 +52,7 @@ const HomeConnected = (props) => {
         history.push(constants.ROUTES.HOME + constants.ROUTES.SUPERUSER);
         break;
     }
+    toggleDrawer(false);
   };
 
   const getRole = () => {

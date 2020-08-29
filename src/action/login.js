@@ -1,6 +1,7 @@
 import constants from '../constants/constants';
 import actionTypes from '../constants/action-types';
 import request from '../request/request';
+import { push } from 'connected-react-router';
 
 export const loginUser = (username, password) => {
   return (dispatch) => {
@@ -17,7 +18,15 @@ export const loginUser = (username, password) => {
         });
       })
       .catch((err) => {
-        dispatch({ type: actionTypes.LOGIN_USER_ERROR, payload: err.message });
+        if (err.response.status === 500) {
+          dispatch({ type: actionTypes.LOGIN_USER_RESET });
+          dispatch(push(constants.ROUTES.LOGIN));
+        } else {
+          dispatch({
+            type: actionTypes.LOGIN_USER_ERROR,
+            payload: err.message,
+          });
+        }
       });
   };
 };

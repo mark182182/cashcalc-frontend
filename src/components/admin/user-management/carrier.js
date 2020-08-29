@@ -15,9 +15,10 @@ import {
 } from '@material-ui/core';
 import uuid from 'uuid/dist/v1';
 import { getCarriers, resetCarriers } from '../../../action/admin';
-import { Delete } from '@material-ui/icons';
+import { Delete, Add } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import ConfirmCarrierDelete from './confirm-carrier-delete';
+import CreateCarrier from './create-carrier';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -29,6 +30,7 @@ const mapDispatch = (dispatch) => {
 export const CarrierManagementConnected = (props) => {
   const [header, setHeader] = useState(['Felhasználónév', 'Törlés']);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
 
   const [carrier, setCarrier] = useState(null);
 
@@ -50,16 +52,31 @@ export const CarrierManagementConnected = (props) => {
 
   return (
     <>
+      {carrier !== null && (
+        <Dialog open={openConfirmDelete} maxWidth="md" fullWidth>
+          <ConfirmCarrierDelete
+            close={() => setOpenConfirmDelete(false)}
+            carrier={carrier}
+            reload={reloadCarriers}
+          />
+        </Dialog>
+      )}
+      <Dialog open={openCreate} maxWidth="sm" fullWidth>
+        <CreateCarrier
+          close={() => setOpenCreate(false)}
+          reload={reloadCarriers}
+        />
+      </Dialog>
+      <Grid container>
+        <IconButton
+          aria-label="create"
+          className="carrier-create-button"
+          onClick={() => setOpenCreate(true)}
+        >
+          <Add />
+        </IconButton>
+      </Grid>
       <TableContainer component={Paper}>
-        {carrier !== null && (
-          <Dialog open={openConfirmDelete} maxWidth="md" fullWidth>
-            <ConfirmCarrierDelete
-              close={() => setOpenConfirmDelete(false)}
-              carrier={carrier}
-              reload={reloadCarriers}
-            />
-          </Dialog>
-        )}
         {props.carrierLoading === false && props.carriers !== null && (
           <Table>
             <TableHead>

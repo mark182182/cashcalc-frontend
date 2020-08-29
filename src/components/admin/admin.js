@@ -19,7 +19,7 @@ export const Admin = () => {
             Futárok karbantartása
           </Button>
           <Button onClick={() => setSelected('pricings')}>
-            Árak karbantartása
+            Szolgáltatási díjak
           </Button>
         </ButtonGroup>
       </Grid>

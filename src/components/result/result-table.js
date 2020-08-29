@@ -3,7 +3,6 @@ import {
   Paper,
   TableContainer,
   Table,
-  TableHead,
   TableRow,
   TableCell,
   TableBody,
@@ -11,8 +10,6 @@ import {
 import { v1 as uuid } from 'uuid';
 
 export const ResultTable = (props) => {
-  const [header, setHeader] = useState(['Ár típusa', 'Ár (Ft)']);
-
   const [prices, setPrices] = useState([
     {
       name: 'Összesen',
@@ -32,17 +29,6 @@ export const ResultTable = (props) => {
   return (
     <TableContainer component={Paper}>
       <Table>
-        <TableHead>
-          <TableRow>
-            {header.map((header) => {
-              return (
-                <TableCell className="result-table-head-cell" key={header}>
-                  {header}
-                </TableCell>
-              );
-            })}
-          </TableRow>
-        </TableHead>
         <TableBody>
           {prices.map((price) => {
             if (parseInt(price.value) > 0) {

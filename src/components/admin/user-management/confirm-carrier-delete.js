@@ -24,14 +24,9 @@ const ConfirmCarrierDeleteConnected = (props) => {
   };
 
   useEffect(() => {
-    return () => {
-      props.reload();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (props.carrierStatus) {
+    if (props.carrierStatus === true) {
       props.close();
+      props.reload();
     }
   }, [props.carrierStatus]);
 
@@ -46,15 +41,11 @@ const ConfirmCarrierDeleteConnected = (props) => {
       </DialogTitle>
       <DialogContent>
         <Grid container>
-          <Typography>
-            Biztosan kívánja törölni a
-            {
-              <Typography className="confirm-delete-carrier-name">
-                {props.carrier}
-              </Typography>
-            }
-            felhasználót?
+          <Typography> Biztosan kívánja törölni a</Typography>
+          <Typography className="confirm-delete-carrier-name">
+            {props.carrier}
           </Typography>
+          <Typography> felhasználót?</Typography>
         </Grid>
       </DialogContent>
       <DialogActions>
