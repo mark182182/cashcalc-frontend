@@ -60,7 +60,7 @@ export default (preloadedState) => {
         default:
           break;
       }
-      return Promise.reject(error);
+      return error;
     }
   );
 

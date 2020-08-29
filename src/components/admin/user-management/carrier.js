@@ -14,7 +14,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import uuid from 'uuid/dist/v1';
-import { getCarriers, resetCarriers } from '../../../action/admin';
+import {
+  getCarriers,
+  resetCarriers,
+  resetDeleteStatus,
+  resetCreateStatus,
+} from '../../../action/admin';
 import { Delete, Add } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import ConfirmCarrierDelete from './confirm-carrier-delete';
@@ -24,14 +29,15 @@ const mapDispatch = (dispatch) => {
   return {
     getCarriers: () => dispatch(getCarriers()),
     resetCarriers: () => dispatch(resetCarriers()),
+    resetDeleteStatus: () => dispatch(resetDeleteStatus()),
+    resetCreateStatus: () => dispatch(resetCreateStatus()),
   };
 };
 
 export const CarrierManagementConnected = (props) => {
-  const [header, setHeader] = useState(['Felhasználónév', 'Törlés']);
+  const [headers, setHeaders] = useState(['Felhasználónév', 'Törlés']);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
-
   const [carrier, setCarrier] = useState(null);
 
   useEffect(() => {
@@ -46,21 +52,29 @@ export const CarrierManagementConnected = (props) => {
   };
 
   const handleDelete = (carrier) => {
+    props.resetDeleteStatus();
     setCarrier(carrier);
     setOpenConfirmDelete(true);
   };
 
+  const handleCreate = () => {
+    props.resetCreateStatus();
+    setOpenCreate(true);
+  };
+
   return (
     <>
-      {carrier !== null && (
-        <Dialog open={openConfirmDelete} maxWidth="md" fullWidth>
-          <ConfirmCarrierDelete
-            close={() => setOpenConfirmDelete(false)}
-            carrier={carrier}
-            reload={reloadCarriers}
-          />
-        </Dialog>
-      )}
+      <Dialog
+        open={openConfirmDelete && carrier !== null}
+        maxWidth="md"
+        fullWidth
+      >
+        <ConfirmCarrierDelete
+          close={() => setOpenConfirmDelete(false)}
+          carrier={carrier}
+          reload={reloadCarriers}
+        />
+      </Dialog>
       <Dialog open={openCreate} maxWidth="sm" fullWidth>
         <CreateCarrier
           close={() => setOpenCreate(false)}
@@ -71,7 +85,7 @@ export const CarrierManagementConnected = (props) => {
         <IconButton
           aria-label="create"
           className="carrier-create-button"
-          onClick={() => setOpenCreate(true)}
+          onClick={handleCreate}
         >
           <Add />
         </IconButton>
@@ -81,7 +95,7 @@ export const CarrierManagementConnected = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                {header.map((header) => {
+                {headers.map((header) => {
                   return (
                     <TableCell className="carrier-table-head-cell" key={header}>
                       {header}

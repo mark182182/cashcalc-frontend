@@ -116,6 +116,12 @@ export const createCarrier = (username, password) => {
   };
 };
 
+export const resetCreateStatus = () => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.CREATE_CARRIER_RESET });
+  };
+};
+
 export const deleteCarrier = (carrier) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.DELETE_CARRIER_RESET });
@@ -137,5 +143,11 @@ export const deleteCarrier = (carrier) => {
           payload: err.message,
         });
       });
+  };
+};
+
+export const resetDeleteStatus = () => {
+  return (dispatch) => {
+    // dispatch({ type: actionTypes.DELETE_CARRIER_RESET });
   };
 };

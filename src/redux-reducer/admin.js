@@ -7,7 +7,10 @@ const initialState = {
   updateStatus: null,
   carriers: null,
   carrierLoading: null,
-  carrierStatus: null,
+  createStatus: null,
+  isCreateLoading: null,
+  deleteStatus: null,
+  isDeleteLoading: null,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -68,27 +71,33 @@ const adminReducer = (state = initialState, action) => {
       });
     case actionTypes.CREATE_CARRIER_RESET:
       return Object.assign({}, state, {
-        carrierStatus: null,
+        createStatus: null,
+        isCreateLoading: true,
       });
     case actionTypes.CREATE_CARRIER_SUCCESS:
       return Object.assign({}, state, {
-        carrierStatus: true,
+        createStatus: true,
+        isCreateLoading: false,
       });
     case actionTypes.CREATE_CARRIER_ERROR:
       return Object.assign({}, state, {
-        carrierStatus: false,
+        createStatus: false,
+        isCreateLoading: false,
       });
     case actionTypes.DELETE_CARRIER_RESET:
       return Object.assign({}, state, {
-        carrierStatus: null,
+        deleteCarrier: null,
+        isDeleteLoading: true,
       });
     case actionTypes.DELETE_CARRIER_SUCCESS:
       return Object.assign({}, state, {
-        carrierStatus: true,
+        deleteCarrier: true,
+        isDeleteLoading: false,
       });
     case actionTypes.DELETE_CARRIER_ERROR:
       return Object.assign({}, state, {
-        carrierStatus: false,
+        deleteCarrier: false,
+        isDeleteLoading: false,
       });
     default:
       return state;

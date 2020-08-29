@@ -1,10 +1,5 @@
-import React, { useEffect } from 'react';
-import {
-  Grid,
-  DialogContent,
-  DialogTitle,
-  Button,
-} from '@material-ui/core';
+import React from 'react';
+import { Grid, DialogContent, DialogTitle, Button } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { ResultTable } from './result-table';
 import './result.scss';

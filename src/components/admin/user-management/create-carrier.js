@@ -25,11 +25,11 @@ const CreateCarrierConnected = (props) => {
   const password = useRef(null);
 
   useEffect(() => {
-    if (props.carrierStatus === true) {
+    if (props.createStatus === true && props.isCreateLoading === false) {
       props.close();
       props.reload();
     }
-  }, [props.carrierStatus]);
+  }, [props.createStatus]);
 
   const handleCreate = () => {
     const name = username.current.value;
@@ -102,6 +102,7 @@ const CreateCarrierConnected = (props) => {
             aria-label="delete"
             className="carrier-create-button"
             onClick={handleCreate}
+            disabled={props.isCreateLoading === true}
           >
             <Check />
           </IconButton>
@@ -113,7 +114,8 @@ const CreateCarrierConnected = (props) => {
 
 const mapState = (state) => {
   return {
-    carrierStatus: state.adminReducer.carrierStatus,
+    createStatus: state.adminReducer.createStatus,
+    isCreateLoading: state.adminReducer.isCreateLoading,
   };
 };
 
