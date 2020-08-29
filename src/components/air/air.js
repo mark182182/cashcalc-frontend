@@ -114,7 +114,7 @@ const AirConnected = (props) => {
     if (isNaN(calc.weight) || calc.weight <= 0) {
       throw new Error('Weight is invalid!');
     }
-    if (isNaN(calc.insurance) || calc.insurance <= 0) {
+    if (isNaN(calc.insurance) || calc.insurance < 0) {
       throw new Error('Insurance is invalid!');
     }
   };
@@ -151,6 +151,7 @@ const AirConnected = (props) => {
                 open={openAirResult}
                 onClose={closeAirResult}
                 maxWidth="sm"
+                fullWidth
               >
                 <Result
                   close={closeAirResult}
@@ -196,9 +197,6 @@ const AirConnected = (props) => {
                   isDisabled={true}
                 ></Select>
               )}
-              <Typography variant="caption">
-                Adj meg 0.5 és 200 kg közötti súlyt.
-              </Typography>
             </Grid>
             <Grid container item direction="column">
               <Typography variant="subtitle2">
@@ -209,6 +207,8 @@ const AirConnected = (props) => {
                 type="number"
                 variant="outlined"
                 required
+                defaultValue={0}
+                InputProps={{ inputProps: { min: 0 } }}
                 inputRef={insurance}
               />
             </Grid>

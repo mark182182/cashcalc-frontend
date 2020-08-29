@@ -49,7 +49,7 @@ export const CarrierManagementConnected = (props) => {
   return (
     <TableContainer component={Paper}>
       {carrier !== null && (
-        <Dialog open={openConfirmDelete} maxWidth="md">
+        <Dialog open={openConfirmDelete} maxWidth="md" fullWidth>
           <ConfirmCarrierDelete
             close={() => setOpenConfirmDelete(false)}
             carrier={carrier}
