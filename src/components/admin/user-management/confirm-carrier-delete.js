@@ -12,7 +12,7 @@ import './carrier.scss';
 
 export const ConfirmCarrierDelete = (props) => {
   const handleDelete = () => {
-    props.deleteCarrier();
+    props.deleteCarrier(props.carrier);
   };
 
   return (
