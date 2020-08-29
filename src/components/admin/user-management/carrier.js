@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import uuid from 'uuid/dist/v1';
-import { getCarriers } from '../../../action/admin';
+import { getCarriers, resetCarriers } from '../../../action/admin';
 import { Delete } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import ConfirmCarrierDelete from './confirm-carrier-delete';
@@ -22,6 +22,7 @@ import ConfirmCarrierDelete from './confirm-carrier-delete';
 const mapDispatch = (dispatch) => {
   return {
     getCarriers: () => dispatch(getCarriers()),
+    resetCarriers: () => dispatch(resetCarriers()),
   };
 };
 
@@ -29,18 +30,18 @@ export const CarrierManagementConnected = (props) => {
   const [header, setHeader] = useState(['Felhasználónév', 'Törlés']);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
-  const [carriers, setCarriers] = useState([]);
   const [carrier, setCarrier] = useState(null);
 
   useEffect(() => {
     props.getCarriers();
+    return () => {
+      props.resetCarriers();
+    };
   }, []);
 
-  useEffect(() => {
-    if (props.carriers && props.carriers.length > 0) {
-      setCarriers(props.carriers);
-    }
-  }, [props.carriers]);
+  const reloadCarriers = () => {
+    props.getCarriers();
+  };
 
   const handleDelete = (carrier) => {
     setCarrier(carrier);
@@ -55,10 +56,11 @@ export const CarrierManagementConnected = (props) => {
             <ConfirmCarrierDelete
               close={() => setOpenConfirmDelete(false)}
               carrier={carrier}
+              reload={reloadCarriers}
             />
           </Dialog>
         )}
-        {props.carrierLoading === false && carrier !== null && (
+        {props.carrierLoading === false && props.carriers !== null && (
           <Table>
             <TableHead>
               <TableRow>
@@ -72,7 +74,7 @@ export const CarrierManagementConnected = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {carriers.map((carrier) => {
+              {props.carriers.map((carrier) => {
                 return (
                   <TableRow key={uuid()}>
                     <TableCell className={carrier.className} key={carrier}>
@@ -99,7 +101,7 @@ export const CarrierManagementConnected = (props) => {
           </Grid>
         )}
       </TableContainer>
-      {props.carrierLoading === false && carrier === null && (
+      {props.carrierLoading === false && props.carriers === null && (
         <Typography>Nincs megjeleníthető adat.</Typography>
       )}
     </>

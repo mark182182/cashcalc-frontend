@@ -87,6 +87,12 @@ export const getCarriers = () => {
   };
 };
 
+export const resetCarriers = () => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.GET_CARRIERS_RESET });
+  };
+};
+
 export const createCarrier = (username, password) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.CREATE_CARRIER_RESET });
@@ -115,7 +121,7 @@ export const deleteCarrier = (carrier) => {
     dispatch({ type: actionTypes.DELETE_CARRIER_RESET });
     return request
       .delete(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS_DELETE, {
-        data: {
+        params: {
           username: carrier,
         },
       })

@@ -24,6 +24,12 @@ const ConfirmCarrierDeleteConnected = (props) => {
   };
 
   useEffect(() => {
+    return () => {
+      props.reload();
+    };
+  }, []);
+
+  useEffect(() => {
     if (props.carrierStatus) {
       props.close();
     }
