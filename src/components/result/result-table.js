@@ -45,16 +45,18 @@ export const ResultTable = (props) => {
         </TableHead>
         <TableBody>
           {prices.map((price) => {
-            return (
-              <TableRow key={uuid()}>
-                <TableCell className={price.className} key={price.name}>
-                  {price.name}
-                </TableCell>
-                <TableCell className={price.className} key={price.value}>
-                  {price.value}
-                </TableCell>
-              </TableRow>
-            );
+            if (parseInt(price.value) > 0) {
+              return (
+                <TableRow key={uuid()}>
+                  <TableCell className={price.className} key={price.name}>
+                    {price.name}
+                  </TableCell>
+                  <TableCell className={price.className} key={price.value}>
+                    {price.value}
+                  </TableCell>
+                </TableRow>
+              );
+            }
           })}
         </TableBody>
       </Table>
