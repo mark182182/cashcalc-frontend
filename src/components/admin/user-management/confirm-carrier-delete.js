@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid,
   DialogTitle,
@@ -7,13 +7,27 @@ import {
   DialogActions,
   IconButton,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
 import { Check, Close } from '@material-ui/icons';
+import { deleteCarrier } from '../../../action/admin';
 import './carrier.scss';
 
-export const ConfirmCarrierDelete = (props) => {
+const mapDispatch = (dispatch) => {
+  return {
+    deleteCarrier: (carrier) => dispatch(deleteCarrier(carrier)),
+  };
+};
+
+const ConfirmCarrierDeleteConnected = (props) => {
   const handleDelete = () => {
     props.deleteCarrier(props.carrier);
   };
+
+  useEffect(() => {
+    if (props.carrierStatus) {
+      props.close();
+    }
+  }, [props.carrierStatus]);
 
   return (
     <>
@@ -58,3 +72,15 @@ export const ConfirmCarrierDelete = (props) => {
     </>
   );
 };
+
+const mapState = (state) => {
+  return {
+    carrierStatus: state.adminReducer.carrierStatus,
+  };
+};
+
+const ConfirmCarrierDelete = connect(
+  mapState,
+  mapDispatch
+)(ConfirmCarrierDeleteConnected);
+export default ConfirmCarrierDelete;

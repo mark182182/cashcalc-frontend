@@ -11,12 +11,13 @@ import {
   IconButton,
   Grid,
   Dialog,
+  Typography,
 } from '@material-ui/core';
 import uuid from 'uuid/dist/v1';
 import { getCarriers } from '../../../action/admin';
 import { Delete } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
-import { ConfirmCarrierDelete } from './confirm-carrier-delete';
+import ConfirmCarrierDelete from './confirm-carrier-delete';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -47,55 +48,61 @@ export const CarrierManagementConnected = (props) => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      {carrier !== null && (
-        <Dialog open={openConfirmDelete} maxWidth="md" fullWidth>
-          <ConfirmCarrierDelete
-            close={() => setOpenConfirmDelete(false)}
-            carrier={carrier}
-          />
-        </Dialog>
-      )}
-      {carriers.length > 0 ? (
-        <Table>
-          <TableHead>
-            <TableRow>
-              {header.map((header) => {
+    <>
+      <TableContainer component={Paper}>
+        {carrier !== null && (
+          <Dialog open={openConfirmDelete} maxWidth="md" fullWidth>
+            <ConfirmCarrierDelete
+              close={() => setOpenConfirmDelete(false)}
+              carrier={carrier}
+            />
+          </Dialog>
+        )}
+        {props.carrierLoading === false && carrier !== null && (
+          <Table>
+            <TableHead>
+              <TableRow>
+                {header.map((header) => {
+                  return (
+                    <TableCell className="carrier-table-head-cell" key={header}>
+                      {header}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {carriers.map((carrier) => {
                 return (
-                  <TableCell className="carrier-table-head-cell" key={header}>
-                    {header}
-                  </TableCell>
+                  <TableRow key={uuid()}>
+                    <TableCell className={carrier.className} key={carrier}>
+                      {carrier}
+                    </TableCell>
+                    <TableCell className={carrier.className} key={uuid()}>
+                      <IconButton
+                        aria-label="delete"
+                        className="carrier-delete-button"
+                        onClick={() => handleDelete(carrier)}
+                      >
+                        <Delete fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {carriers.map((carrier) => {
-              return (
-                <TableRow key={uuid()}>
-                  <TableCell className={carrier.className} key={carrier}>
-                    {carrier}
-                  </TableCell>
-                  <TableCell className={carrier.className} key={uuid()}>
-                    <IconButton
-                      aria-label="delete"
-                      className="carrier-delete-button"
-                      onClick={() => handleDelete(carrier)}
-                    >
-                      <Delete fontSize="small" />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      ) : (
-        <Grid container item justify="center">
-          <Skeleton width={210} height={118} />
-        </Grid>
+            </TableBody>
+          </Table>
+        )}
+        {props.carrierLoading === true && (
+          <Grid container item justify="center">
+            <Skeleton width={210} height={118} />
+          </Grid>
+        )}
+      </TableContainer>
+      {props.carrierLoading === false && carrier === null && (
+        <Typography>Nincs megjeleníthető adat.</Typography>
       )}
-    </TableContainer>
+    </>
   );
 };
 

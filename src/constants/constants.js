@@ -15,8 +15,8 @@ const constants = {
     PRICING_VARIABLES: 'pricingvariables',
     PRICING_VARIABLES_UPDATE: 'pricingvariables/update',
     USERS_CARRIERS: 'users/carriers',
-    USERS_CARRIERS_CREATE: 'users/carriers',
-    USERS_CARRIERS_DELETE: 'users/carriers',
+    USERS_CARRIERS_CREATE: 'users/carriers/create',
+    USERS_CARRIERS_DELETE: 'users/carriers/delete',
   },
   ROUTES: {
     HOME: '/home',

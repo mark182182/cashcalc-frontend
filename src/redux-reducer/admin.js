@@ -82,11 +82,11 @@ const adminReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         carrierStatus: null,
       });
-    case actionTypes.DELETE_CARRIER_ERROR:
+    case actionTypes.DELETE_CARRIER_SUCCESS:
       return Object.assign({}, state, {
         carrierStatus: true,
       });
-    case actionTypes.DELETE_CARRIER_SUCCESS:
+    case actionTypes.DELETE_CARRIER_ERROR:
       return Object.assign({}, state, {
         carrierStatus: false,
       });

@@ -87,11 +87,14 @@ export const getCarriers = () => {
   };
 };
 
-export const createCarrier = () => {
+export const createCarrier = (username, password) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.CREATE_CARRIER_RESET });
     return request
-      .put(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS_CREATE)
+      .put(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS_CREATE, {
+        username,
+        password,
+      })
       .then((resp) => {
         dispatch({
           type: actionTypes.CREATE_CARRIER_SUCCESS,
@@ -107,11 +110,15 @@ export const createCarrier = () => {
   };
 };
 
-export const deleteCarrier = () => {
+export const deleteCarrier = (carrier) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.DELETE_CARRIER_RESET });
     return request
-      .delete(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS_DELETE)
+      .delete(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS_DELETE, {
+        data: {
+          username: carrier,
+        },
+      })
       .then((resp) => {
         dispatch({
           type: actionTypes.DELETE_CARRIER_SUCCESS,
