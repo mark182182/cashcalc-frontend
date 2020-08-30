@@ -3,14 +3,13 @@ import actionTypes from '../constants/action-types';
 const initialState = {
   isAuthorized: null,
   pricings: null,
-  pricingStatus: null,
+  pricingsStatus: null,
   updateStatus: null,
   carriers: null,
   carrierLoading: null,
   createStatus: null,
-  isCreateLoading: null,
   deleteStatus: null,
-  isDeleteLoading: null,
+  deleteIsLoading: null,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -30,17 +29,17 @@ const adminReducer = (state = initialState, action) => {
     case actionTypes.GET_PRICINGVARIABLES_RESET:
       return Object.assign({}, state, {
         pricings: null,
-        pricingStatus: null,
+        pricingsStatus: null,
       });
     case actionTypes.GET_PRICINGVARIABLES_SUCCESS:
       return Object.assign({}, state, {
         pricings: action.payload,
-        pricingStatus: true,
+        pricingsStatus: true,
       });
     case actionTypes.GET_PRICINGVARIABLES_ERROR:
       return Object.assign({}, state, {
         pricings: null,
-        pricingStatus: false,
+        pricingsStatus: false,
       });
     case actionTypes.UPDATE_PRICINGVARIABLES_RESET:
       return Object.assign({}, state, {
@@ -69,35 +68,45 @@ const adminReducer = (state = initialState, action) => {
         carriers: null,
         carrierLoading: false,
       });
+    case actionTypes.CREATE_CARRIER_LOADING:
+      return Object.assign({}, state, {
+        createStatus: null,
+        createIsLoading: true,
+      });
     case actionTypes.CREATE_CARRIER_RESET:
       return Object.assign({}, state, {
         createStatus: null,
-        isCreateLoading: true,
+        createIsLoading: null,
       });
     case actionTypes.CREATE_CARRIER_SUCCESS:
       return Object.assign({}, state, {
         createStatus: true,
-        isCreateLoading: false,
+        createIsLoading: false,
       });
     case actionTypes.CREATE_CARRIER_ERROR:
       return Object.assign({}, state, {
         createStatus: false,
-        isCreateLoading: false,
+        createIsLoading: false,
+      });
+    case actionTypes.DELETE_CARRIER_LOADING:
+      return Object.assign({}, state, {
+        deleteStatus: null,
+        deleteIsLoading: true,
       });
     case actionTypes.DELETE_CARRIER_RESET:
       return Object.assign({}, state, {
-        deleteCarrier: null,
-        isDeleteLoading: true,
+        deleteStatus: null,
+        deleteIsLoading: null,
       });
     case actionTypes.DELETE_CARRIER_SUCCESS:
       return Object.assign({}, state, {
-        deleteCarrier: true,
-        isDeleteLoading: false,
+        deleteStatus: true,
+        deleteIsLoading: false,
       });
     case actionTypes.DELETE_CARRIER_ERROR:
       return Object.assign({}, state, {
-        deleteCarrier: false,
-        isDeleteLoading: false,
+        deleteStatus: false,
+        deleteIsLoading: false,
       });
     default:
       return state;

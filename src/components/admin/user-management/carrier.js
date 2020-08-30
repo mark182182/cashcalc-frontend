@@ -12,6 +12,7 @@ import {
   Grid,
   Dialog,
   Typography,
+  Button,
 } from '@material-ui/core';
 import uuid from 'uuid/dist/v1';
 import {
@@ -82,13 +83,10 @@ export const CarrierManagementConnected = (props) => {
         />
       </Dialog>
       <Grid container>
-        <IconButton
-          aria-label="create"
-          className="carrier-create-button"
-          onClick={handleCreate}
-        >
+        <Button className="carrier-create-button" onClick={handleCreate}>
           <Add />
-        </IconButton>
+          Létrehozás
+        </Button>
       </Grid>
       <TableContainer component={Paper}>
         {props.carrierLoading === false && props.carriers !== null && (

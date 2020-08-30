@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import uuid from 'uuid/dist/v1';
 import { getPricingVariables } from '../../../action/admin';
+import { mapPricings } from '../../../data-reducer/admin';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -20,7 +21,6 @@ const mapDispatch = (dispatch) => {
 
 export const PricingManagementConnected = (props) => {
   const [header, setHeader] = useState(['Ár típusa', 'Ár (Ft)']);
-
   const [prices, setPrices] = useState([]);
 
   useEffect(() => {
@@ -28,19 +28,10 @@ export const PricingManagementConnected = (props) => {
   }, []);
 
   useEffect(() => {
-    if (props.pricing && props.pricing.length > 0) {
-      setPrices([
-        { name: 'Alapár kedvezménnyel', value: props.pricing.baseFare },
-        { name: 'Express ' + props.express, value: props.pricing.expressFare },
-        { name: 'Biztosítási díj', value: props.pricing.insuranceFare },
-        { name: 'EXT-díj', value: props.pricing.extFare },
-        { name: 'RAS-díj', value: props.pricing.rasFare },
-        { name: 'TK-díj', value: props.pricing.tkFare },
-        { name: 'Üzemanyag-pótdíj', value: props.pricing.fuelFare },
-        { name: 'Vészhelyzeti díj', value: props.pricing.tkFare },
-      ]);
+    if (props.pricings) {
+      setPrices(mapPricings(props.pricings));
     }
-  }, [props.pricing]);
+  }, [props.pricings]);
 
   return (
     <TableContainer component={Paper}>
@@ -49,7 +40,7 @@ export const PricingManagementConnected = (props) => {
           <TableRow>
             {header.map((header) => {
               return (
-                <TableCell className="pricing-table-head-cell" key={header}>
+                <TableCell className="pricings-table-head-cell" key={header}>
                   {header}
                 </TableCell>
               );
@@ -77,8 +68,8 @@ export const PricingManagementConnected = (props) => {
 
 const mapState = (state) => {
   return {
-    pricing: state.adminReducer.pricing,
-    pricingStatus: state.adminReducer.pricingStatus,
+    pricings: state.adminReducer.pricings,
+    pricingsStatus: state.adminReducer.pricingsStatus,
   };
 };
 

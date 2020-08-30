@@ -24,7 +24,7 @@ const ConfirmCarrierDeleteConnected = (props) => {
   };
 
   useEffect(() => {
-    if (props.deleteStatus === true && props.isDeleteLoading === false) {
+    if (props.deleteStatus === true || props.deleteIsLoading === false) {
       props.close();
       props.reload();
     }
@@ -61,7 +61,7 @@ const ConfirmCarrierDeleteConnected = (props) => {
             aria-label="delete"
             className="carrier-delete-button"
             onClick={handleDelete}
-            disabled={props.isDeleteLoading === true}
+            disabled={props.deleteIsLoading === true}
           >
             <Check />
           </IconButton>
@@ -74,7 +74,7 @@ const ConfirmCarrierDeleteConnected = (props) => {
 const mapState = (state) => {
   return {
     deleteStatus: state.adminReducer.deleteStatus,
-    isDeleteLoading: state.adminReducer.isDeleteLoading,
+    deleteIsLoading: state.adminReducer.deleteIsLoading,
   };
 };
 

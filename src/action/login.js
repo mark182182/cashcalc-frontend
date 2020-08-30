@@ -18,8 +18,6 @@ export const loginUser = (username, password) => {
         });
       })
       .catch((err) => {
-        console.log(err);
-        console.log(err.status);
         if (err.response.status === 500) {
           dispatch({ type: actionTypes.LOGIN_USER_RESET });
           dispatch(push(constants.ROUTES.LOGIN));
