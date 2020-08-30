@@ -8,61 +8,150 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  IconButton,
+  TextField,
+  Grid,
+  Button,
+  Typography,
 } from '@material-ui/core';
 import uuid from 'uuid/dist/v1';
-import { getPricingVariables } from '../../../action/admin';
+import {
+  getPricingVariables,
+  updatePricingVariables,
+  resetPricingVariables,
+} from '../../../action/admin';
 import { mapPricings } from '../../../data-reducer/admin';
+import { Edit, Close, Check } from '@material-ui/icons';
+import { Skeleton } from '@material-ui/lab';
 
 const mapDispatch = (dispatch) => {
   return {
     getPricingVariables: () => dispatch(getPricingVariables()),
+    updatePricingVariables: (pricing) =>
+      dispatch(updatePricingVariables(pricing)),
+    resetPricingVariables: () => dispatch(resetPricingVariables()),
   };
 };
 
 export const PricingManagementConnected = (props) => {
   const [header, setHeader] = useState(['Ár típusa', 'Ár (Ft)']);
   const [prices, setPrices] = useState([]);
+  const [pricings, setPricings] = useState({});
+  const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
     props.getPricingVariables();
+    return () => {
+      props.resetPricingVariables();
+    };
   }, []);
 
   useEffect(() => {
     if (props.pricings) {
+      setPricings(Object.assign({}, props.pricings));
       setPrices(mapPricings(props.pricings));
     }
   }, [props.pricings]);
 
+  useEffect(() => {
+    if (props.updateStatus === true) {
+      setPrices([]);
+      setPricings({});
+      props.getPricingVariables();
+    }
+  }, [props.updateStatus]);
+
+  const handleUpdate = (event, pricing) => {
+    console.log(Object.keys(pricing)[0]);
+    Object.keys(pricings).forEach((key) => {
+      if (key === Object.keys(pricing)[0]) {
+        pricings[key] = parseInt(event.currentTarget.value);
+      }
+    });
+    console.log(pricings);
+  };
+
+  const updatePrices = () => {
+    setIsEditable(false);
+    props.updatePricingVariables(pricings);
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {header.map((header) => {
+    <>
+      <Grid container>
+        {isEditable ? (
+          <>
+            <Button
+              className="pricing-modify-button"
+              onClick={() => setIsEditable(false)}
+            >
+              <Close fontSize="small" />
+              Mégsem
+            </Button>
+            <Button className="pricing-modify-button" onClick={updatePrices}>
+              <Check fontSize="small" />
+              Mentés
+            </Button>
+          </>
+        ) : (
+          <Button
+            className="pricing-modify-button"
+            onClick={() => setIsEditable(true)}
+          >
+            <Edit fontSize="small" />
+            Módosítás
+          </Button>
+        )}
+      </Grid>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {header.map((header) => {
+                return (
+                  <TableCell className="pricings-table-head-cell" key={header}>
+                    {header}
+                  </TableCell>
+                );
+              })}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {prices.map((price) => {
+              const pricing = Object.values(price)[0];
               return (
-                <TableCell className="pricings-table-head-cell" key={header}>
-                  {header}
-                </TableCell>
+                <TableRow key={uuid()}>
+                  <TableCell key={pricing.name}>{pricing.name}</TableCell>
+                  <TableCell key={pricing.value}>
+                    {isEditable ? (
+                      <TextField
+                        className="input"
+                        type="number"
+                        variant="outlined"
+                        defaultValue={pricing.value}
+                        InputProps={{ inputProps: { min: 0 } }}
+                        onChange={(event) => handleUpdate(event, price)}
+                        required
+                      />
+                    ) : (
+                      pricing.value
+                    )}
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {prices.map((price) => {
-            return (
-              <TableRow key={uuid()}>
-                <TableCell className={price.className} key={price.name}>
-                  {price.name}
-                </TableCell>
-                <TableCell className={price.className} key={price.value}>
-                  {price.value}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableBody>
+        </Table>
+        {props.pricingsStatus === null && (
+          <Grid container item justify="center">
+            <Skeleton width={210} height={118} />
+          </Grid>
+        )}
+      </TableContainer>
+      {props.pricingsStatus !== null && props.carriers === null && (
+        <Typography>Nincs megjeleníthető adat.</Typography>
+      )}
+    </>
   );
 };
 
@@ -70,6 +159,7 @@ const mapState = (state) => {
   return {
     pricings: state.adminReducer.pricings,
     pricingsStatus: state.adminReducer.pricingsStatus,
+    updateStatus: state.adminReducer.updateStatus,
   };
 };
 

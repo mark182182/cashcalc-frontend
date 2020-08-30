@@ -44,6 +44,12 @@ export const getPricingVariables = () => {
   };
 };
 
+export const resetPricingVariables = () => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.GET_PRICINGVARIABLES_RESET });
+  };
+};
+
 export const updatePricingVariables = (pricing) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.UPDATE_PRICINGVARIABLES_RESET });
