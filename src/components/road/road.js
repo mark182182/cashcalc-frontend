@@ -18,15 +18,16 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import { getCountriesRoad, resetCountry } from '../../action/country';
 import { Result } from '../result/result';
-import { mapCountries } from '../../data-reducer/countries';
+import { mapCountries, mapWeights } from '../../data-reducer/countries';
 import { calculate } from '../../action/calculation';
-import { resetPrices } from '../../action/road';
+import { resetPrices, getPricesRoad } from '../../action/road';
 import './road.scss';
 
 const mapDispatch = (dispatch) => {
   return {
     getCountriesRoad: () => dispatch(getCountriesRoad()),
     resetCountry: () => dispatch(resetCountry()),
+    getPricesRoad: (zoneNumber) => dispatch(getPricesRoad(zoneNumber)),
     resetPrices: () => dispatch(resetPrices()),
     calculate: (calc) => dispatch(calculate(calc)),
   };
@@ -34,36 +35,36 @@ const mapDispatch = (dispatch) => {
 
 const RoadConnected = (props) => {
   const insurance = useRef(null);
-  const [country, setCountry] = useState([]);
+  const [country, setCountry] = useState({});
+  const [weight, setWeight] = useState({});
   const [weights, setWeights] = useState([]);
-  const [weight, setWeight] = useState(null);
-  const [discount, setDiscount] = useState('');
+  const [discount, setDiscount] = useState('10');
   const [additional, setAdditional] = useState([]);
   const [openRoadResult, setOpenRoadResult] = useState(false);
 
   useEffect(() => {
     props.getCountriesRoad();
-    let generateWeights = [];
-    for (let i = 1; i <= 100; ) {
-      generateWeights = [...generateWeights, { value: i, label: i }];
-      if (i >= 70) {
-        i += 5;
-      } else {
-        i++;
-      }
-    }
-    setWeights(generateWeights);
-  }, []);
-
-  useEffect(() => {
     return () => {
       props.resetCountry();
       props.resetPrices();
     };
   }, []);
 
-  const handleDiscountChange = (event) => {
-    setDiscount(event.target.value);
+  useEffect(() => {
+    if (props.weights && props.weights.length > 0) {
+      setWeights(mapWeights(props.weights));
+    }
+  }, [props.weights]);
+
+  useEffect(() => {
+    setWeights([]);
+    setWeight({});
+    setAdditional([]);
+  }, [country]);
+
+  const setCountryAndLoadWeights = (value) => {
+    setCountry(value);
+    props.getPricesRoad(value.zoneNumber);
   };
 
   const handleCalculate = () => {
@@ -76,11 +77,33 @@ const RoadConnected = (props) => {
       expressType: 'worldwide',
       isDocument: false,
       isExt: false,
-      isTk: additional.tk,
-      isRas: additional.ras,
+      isTk: additional.includes('tk'),
+      isRas: additional.includes('ras'),
     };
-    props.calculate(calc);
-    setOpenRoadResult(true);
+    try {
+      validateCalculation(calc);
+      props.calculate(calc);
+      setOpenRoadResult(true);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const validateCalculation = (calc) => {
+    if (!calc.zoneNumber || calc.zoneNumber <= 0) {
+      console.log(calc.zoneNumber);
+      throw new Error('Country is invalid!');
+    }
+    if (isNaN(calc.weight) || calc.weight <= 0) {
+      throw new Error('Weight is invalid!');
+    }
+    if (isNaN(calc.insurance) || calc.insurance < 0) {
+      throw new Error('Insurance is invalid!');
+    }
+  };
+
+  const handleDiscountChange = (event) => {
+    setDiscount(event.target.value);
   };
 
   const handleAdditionalChange = (event) => {
@@ -120,21 +143,31 @@ const RoadConnected = (props) => {
                 noOptionsMessage={() => 'Nincs opció'}
                 loadingMessage={() => 'Betöltés...'}
                 options={mapCountries(props.countries)}
-                onChange={(value) => setCountry(value)}
+                onChange={(value) => setCountryAndLoadWeights(value)}
               />
             </Grid>
             <Grid container item direction="column">
               <Typography variant="subtitle2">Súly (kg)</Typography>
-              <Select
-                placeholder="Kiválasztás..."
-                noOptionsMessage={() => 'Nincs opció'}
-                loadingMessage={() => 'Betöltés...'}
-                options={weights}
-                onChange={(value) => setWeight(value)}
-              />
-              <Typography variant="caption">
-                Adj meg 1 és 100 kg közötti súlyt.
-              </Typography>
+              {country && country.zoneNumber ? (
+                <Select
+                  styles={{
+                    menu: (props) => ({ ...props, zIndex: 9999 }),
+                  }}
+                  placeholder="Kiválasztás..."
+                  noOptionsMessage={() => 'Nincs opció'}
+                  loadingMessage={() => 'Betöltés...'}
+                  options={weights}
+                  value={weight}
+                  onChange={(value) => setWeight(value)}
+                />
+              ) : (
+                <Select
+                  options={[]}
+                  value={{}}
+                  placeholder="Kiválasztás..."
+                  isDisabled={true}
+                ></Select>
+              )}
             </Grid>
             <Grid container item direction="column">
               <Typography variant="subtitle2">
@@ -145,6 +178,8 @@ const RoadConnected = (props) => {
                 type="number"
                 variant="outlined"
                 required
+                defaultValue={0}
+                InputProps={{ inputProps: { min: 0 } }}
                 inputRef={insurance}
               />
             </Grid>
@@ -157,17 +192,17 @@ const RoadConnected = (props) => {
                   onChange={handleDiscountChange}
                 >
                   <FormControlLabel
-                    value="0.1"
+                    value="10"
                     control={<Radio />}
                     label="10%"
                   />
                   <FormControlLabel
-                    value="0.2"
+                    value="20"
                     control={<Radio />}
                     label="20%"
                   />
                   <FormControlLabel
-                    value="0.3"
+                    value="30"
                     control={<Radio />}
                     label="30%"
                   />
@@ -228,6 +263,8 @@ const RoadConnected = (props) => {
 const mapState = (state) => {
   return {
     countries: state.countryReducer.countries,
+    weights: state.roadReducer.weights,
+    weightsStatus: state.roadReducer.weightsStatus,
     result: state.calcReducer.result,
     resultIsLoading: state.calcReducer.isLoading,
   };
