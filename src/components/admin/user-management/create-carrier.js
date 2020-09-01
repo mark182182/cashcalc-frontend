@@ -54,7 +54,7 @@ const CreateCarrierConnected = (props) => {
         <Grid container>
           <Grid container item direction="column">
             <TextField
-              className="input"
+              className="create-carrier-input"
               type="email"
               variant="outlined"
               required
@@ -71,7 +71,7 @@ const CreateCarrierConnected = (props) => {
           </Grid>
           <Grid container item direction="column">
             <TextField
-              className="input"
+              className="create-carrier-input"
               type="password"
               variant="outlined"
               required

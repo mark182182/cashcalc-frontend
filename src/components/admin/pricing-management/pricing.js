@@ -4,11 +4,9 @@ import {
   TableContainer,
   Paper,
   Table,
-  TableHead,
   TableRow,
   TableCell,
   TableBody,
-  IconButton,
   TextField,
   Grid,
   Button,
@@ -23,6 +21,7 @@ import {
 import { mapPricings } from '../../../data-reducer/admin';
 import { Edit, Close, Check } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
+import { SkeletonWrapper } from '../../skeleton-wrapper/skeleton-wrapper';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -34,7 +33,6 @@ const mapDispatch = (dispatch) => {
 };
 
 export const PricingManagementConnected = (props) => {
-  const [header, setHeader] = useState(['Ár típusa', 'Ár (Ft)']);
   const [prices, setPrices] = useState([]);
   const [pricings, setPricings] = useState({});
   const [isEditable, setIsEditable] = useState(false);
@@ -105,19 +103,8 @@ export const PricingManagementConnected = (props) => {
           </Button>
         )}
       </Grid>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} className="table-container">
         <Table>
-          <TableHead>
-            <TableRow>
-              {header.map((header) => {
-                return (
-                  <TableCell className="pricings-table-head-cell" key={header}>
-                    {header}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
           <TableBody>
             {prices.map((price) => {
               const pricing = Object.values(price)[0];
@@ -147,11 +134,7 @@ export const PricingManagementConnected = (props) => {
             })}
           </TableBody>
         </Table>
-        {props.pricingsStatus === null && (
-          <Grid container item justify="center">
-            <Skeleton width={210} height={118} />
-          </Grid>
-        )}
+        {props.pricingsStatus === null && <SkeletonWrapper fillCount={10} />}
       </TableContainer>
       {props.pricingsStatus !== null && props.carriers === null && (
         <Typography>Nincs megjeleníthető adat.</Typography>

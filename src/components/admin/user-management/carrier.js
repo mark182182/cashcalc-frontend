@@ -25,6 +25,7 @@ import { Delete, Add } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import ConfirmCarrierDelete from './confirm-carrier-delete';
 import CreateCarrier from './create-carrier';
+import { SkeletonWrapper } from '../../skeleton-wrapper/skeleton-wrapper';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -88,7 +89,7 @@ export const CarrierManagementConnected = (props) => {
           Létrehozás
         </Button>
       </Grid>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} className="table-container">
         {props.carrierLoading === false && props.carriers !== null && (
           <Table>
             <TableHead>
@@ -124,11 +125,7 @@ export const CarrierManagementConnected = (props) => {
             </TableBody>
           </Table>
         )}
-        {props.carrierLoading === true && (
-          <Grid container item justify="center">
-            <Skeleton width={210} height={118} />
-          </Grid>
-        )}
+        {props.carrierLoading === true && <SkeletonWrapper fillCount={10} />}
       </TableContainer>
       {props.carrierLoading === false && props.carriers === null && (
         <Typography>Nincs megjeleníthető adat.</Typography>
