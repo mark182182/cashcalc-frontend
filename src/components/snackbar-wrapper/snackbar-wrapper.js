@@ -18,10 +18,12 @@ export const SnackBarWrapper = (props) => {
         onClose={props.reset}
         TransitionComponent={(props) => <Slide {...props} direction="left" />}
       >
-        {props.isLoading === true && <Alert severity={'info'}>Loading...</Alert>}
-      {props.isLoading === false && (
-        <Alert severity={props.status}>{props.message}</Alert>
-      )}
+        {props.isLoading === true && (
+          <Alert severity={'info'}>Loading...</Alert>
+        )}
+        {props.isLoading === false && (
+          <Alert severity={props.status}>{props.message}</Alert>
+        )}
       </Snackbar>
     )
   );

@@ -1,13 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { loginUser, resetUser } from '../../action/login';
-import {
-  Grid,
-  Typography,
-  TextField,
-  InputAdornment,
-  Button,
-} from '@material-ui/core';
+import { Grid, TextField, InputAdornment, Button } from '@material-ui/core';
 import { SnackBarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
 import { Redirect } from 'react-router-dom';
 import { Person, VpnKey } from '@material-ui/icons';
