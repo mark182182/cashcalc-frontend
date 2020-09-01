@@ -5,6 +5,7 @@ export const Welcome = () => {
   return (
     <Grid container item justify="center">
       <Typography>Üdvözöljük a CashCalcban!</Typography>
+      <img src="../bg.png" width="60%" height="200%"></img>
     </Grid>
   );
 };
