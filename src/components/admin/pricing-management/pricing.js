@@ -61,14 +61,16 @@ export const PricingManagementConnected = (props) => {
     }
   }, [props.updateStatus]);
 
-  const handleUpdate = (event, pricing) => {
-    console.log(Object.keys(pricing)[0]);
+  const handleUpdate = (event, price) => {
     Object.keys(pricings).forEach((key) => {
-      if (key === Object.keys(pricing)[0]) {
-        pricings[key] = parseInt(event.currentTarget.value);
+      if (key === price) {
+        if (key.includes('Percent')) {
+          pricings[key] = parseFloat(event.currentTarget.value);
+        } else {
+          pricings[key] = parseInt(event.currentTarget.value);
+        }
       }
     });
-    console.log(pricings);
   };
 
   const updatePrices = () => {
@@ -119,6 +121,7 @@ export const PricingManagementConnected = (props) => {
           <TableBody>
             {prices.map((price) => {
               const pricing = Object.values(price)[0];
+              const key = Object.keys(price)[0];
               return (
                 <TableRow key={uuid()}>
                   <TableCell key={pricing.name}>{pricing.name}</TableCell>
@@ -130,11 +133,13 @@ export const PricingManagementConnected = (props) => {
                         variant="outlined"
                         defaultValue={pricing.value}
                         InputProps={{ inputProps: { min: 0 } }}
-                        onChange={(event) => handleUpdate(event, price)}
+                        onChange={(event) => handleUpdate(event, key)}
                         required
                       />
+                    ) : key.includes('Percent') ? (
+                      pricing.value + ' %'
                     ) : (
-                      pricing.value
+                      pricing.value.toLocaleString().replace(',', '.') + ' Ft'
                     )}
                   </TableCell>
                 </TableRow>
