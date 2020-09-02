@@ -17,6 +17,9 @@ const constants = {
     USERS_CARRIERS: 'users/carriers',
     USERS_CARRIERS_CREATE: 'users/carriers/create',
     USERS_CARRIERS_DELETE: 'users/carriers/delete',
+    USERS_ADMINS: 'users/admins',
+    USERS_ADMINS_CREATE: 'users/admins/create',
+    USERS_ADMINS_DELETE: 'users/admins/delete',
   },
   ROUTES: {
     HOME: '/home',

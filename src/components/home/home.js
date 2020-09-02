@@ -1,6 +1,6 @@
 import React from 'react';
 import { Admin } from '../admin/admin';
-import { SuperUser } from '../superuser/superuser';
+import Superuser from '../superuser/superuser';
 import constants from '../../constants/constants';
 import { Welcome } from '../welcome/welcome';
 import { Calculation } from '../calculation/calculation';
@@ -36,7 +36,7 @@ export const Home = () => {
           path={constants.ROUTES.HOME + constants.ROUTES.SUPERUSER}
           checkRole={constants.ROLES.superuser}
         >
-          <SuperUser />
+          <Superuser />
         </RoleBasedRoute>
         <ProtectedRoute
           path={constants.ROUTES.HOME + constants.ROUTES.ERROR_403}

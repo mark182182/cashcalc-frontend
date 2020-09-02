@@ -21,7 +21,6 @@ import {
   resetCreateStatus,
 } from '../../../action/admin';
 import { Delete, Add } from '@material-ui/icons';
-import { Skeleton } from '@material-ui/lab';
 import ConfirmCarrierDelete from './confirm-carrier-delete';
 import CreateCarrier from './create-carrier';
 import { SkeletonWrapper } from '../../skeleton-wrapper/skeleton-wrapper';

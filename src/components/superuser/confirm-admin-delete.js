@@ -9,18 +9,18 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Check, Close } from '@material-ui/icons';
-import { deleteCarrier } from '../../../action/admin';
-import './carrier.scss';
+import { deleteAdmin } from '../../action/superuser';
+import './superuser.scss';
 
 const mapDispatch = (dispatch) => {
   return {
-    deleteCarrier: (carrier) => dispatch(deleteCarrier(carrier)),
+    deleteAdmin: (admin) => dispatch(deleteAdmin(admin)),
   };
 };
 
-const ConfirmCarrierDeleteConnected = (props) => {
+const ConfirmAdminDeleteConnected = (props) => {
   const handleDelete = () => {
-    props.deleteCarrier(props.carrier);
+    props.deleteAdmin(props.admin);
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const ConfirmCarrierDeleteConnected = (props) => {
         <Grid container>
           <Typography> Biztosan kívánja törölni a </Typography>
           <Typography className="confirm-delete-carrier-name">
-            {props.carrier}
+            {props.admin}
           </Typography>
           <Typography> felhasználót?</Typography>
         </Grid>
@@ -78,8 +78,8 @@ const mapState = (state) => {
   };
 };
 
-const ConfirmCarrierDelete = connect(
+const ConfirmAdminDelete = connect(
   mapState,
   mapDispatch
-)(ConfirmCarrierDeleteConnected);
-export default ConfirmCarrierDelete;
+)(ConfirmAdminDeleteConnected);
+export default ConfirmAdminDelete;

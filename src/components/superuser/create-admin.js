@@ -10,19 +10,19 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Check, Close, Person, VpnKey } from '@material-ui/icons';
-import { createCarrier } from '../../../action/admin';
-import { snackbarError } from '../../../action/snackbar';
-import './carrier.scss';
+import { createAdmin } from '../../action/superuser';
+import { snackbarError } from '../../action/snackbar';
+import './superuser.scss';
 
 const mapDispatch = (dispatch) => {
   return {
-    createCarrier: (username, password) =>
-      dispatch(createCarrier(username, password)),
-      snackbarError: (message) => dispatch(snackbarError(message)),
+    createAdmin: (username, password) =>
+      dispatch(createAdmin(username, password)),
+    snackbarError: (message) => dispatch(snackbarError(message)),
   };
 };
 
-const CreateCarrierConnected = (props) => {
+const CreateAdminConnected = (props) => {
   const username = useRef(null);
   const password = useRef(null);
 
@@ -39,7 +39,7 @@ const CreateCarrierConnected = (props) => {
     if (name.length === 0 || pass.length < 8) {
       props.snackbarError('A jelszónak minimum 8 karakternek kell lennie!');
     } else {
-      props.createCarrier(username.current.value, password.current.value);
+      props.createAdmin(username.current.value, password.current.value);
     }
   };
 
@@ -116,10 +116,10 @@ const CreateCarrierConnected = (props) => {
 
 const mapState = (state) => {
   return {
-    createStatus: state.adminReducer.createStatus,
-    createIsLoading: state.adminReducer.createIsLoading,
+    createStatus: state.superuserReducer.createStatus,
+    createIsLoading: state.superuserReducer.createIsLoading,
   };
 };
 
-const CreateCarrier = connect(mapState, mapDispatch)(CreateCarrierConnected);
-export default CreateCarrier;
+const CreateAdmin = connect(mapState, mapDispatch)(CreateAdminConnected);
+export default CreateAdmin;

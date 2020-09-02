@@ -7,6 +7,7 @@ import loginReducer from './login';
 import calcReducer from './calculation';
 import adminReducer from './admin';
 import snackbarReducer from './snackbar';
+import superuserReducer from './superuser';
 
 const rootReducer = (history) =>
   combineReducers({
@@ -17,7 +18,8 @@ const rootReducer = (history) =>
     calcReducer,
     loginReducer,
     adminReducer,
-    snackbarReducer
+    snackbarReducer,
+    superuserReducer
   });
 
 export default rootReducer;
