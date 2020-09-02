@@ -29,8 +29,8 @@ import {
   calculationError,
   resetCalculation,
 } from '../../action/calculation';
+import { snackbarError } from '../../action/snackbar';
 import './air.scss';
-import { SnackbarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -39,8 +39,7 @@ const mapDispatch = (dispatch) => {
     getPricesAir: (zoneNumber) => dispatch(getPricesAir(zoneNumber)),
     resetPrices: () => dispatch(resetPrices()),
     calculate: (calc) => dispatch(calculate(calc)),
-    calculationError: (message) => dispatch(calculationError(message)),
-    resetCalculation: () => dispatch(resetCalculation()),
+    snackbarError: (message) => dispatch(snackbarError(message)),
   };
 };
 
@@ -109,7 +108,7 @@ const AirConnected = (props) => {
       props.calculate(calc);
       setOpenAirResult(true);
     } catch (e) {
-      props.calculationError(e.message);
+      props.snackbarError(e.message);
     }
   };
 
@@ -151,12 +150,6 @@ const AirConnected = (props) => {
 
   return (
     <Grid>
-      <SnackbarWrapper
-        reset={props.resetCalculation}
-        isLoading={props.resultIsLoading}
-        status={props.resultStatus}
-        message={props.resultMessage}
-      />
       <Grid container item className="air-container">
         {props.countries !== null ? (
           <>

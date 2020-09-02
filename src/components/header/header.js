@@ -13,11 +13,12 @@ import { history } from '../../store/store';
 import { connect } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import constants from '../../constants/constants';
-import { logout } from '../../action/logout';
+import ProtectedRoute from '../protected-route/protected-route';
 import Login from '../login/login';
 import { Home } from '../home/home';
-import ProtectedRoute from '../protected-route/protected-route';
+import { logout } from '../../action/logout';
+import constants from '../../constants/constants';
+import SnackbarWrapper from '../snackbar-wrapper/snackbar-wrapper';
 import { Menu } from '@material-ui/icons';
 import './header.scss';
 
@@ -69,6 +70,7 @@ export const HeaderConnected = (props) => {
 
   return (
     <Grid container className="navbar-main">
+      <SnackbarWrapper />
       <Grid container className="navbar-content">
         {props.role !== null && (
           <IconButton onClick={() => toggleDrawer(true)}>

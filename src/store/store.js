@@ -18,7 +18,7 @@ const persistConfig = {
 
 export const history = createBrowserHistory();
 
-export default (preloadedState) => {
+export default () => {
   const middlewares = [routerMiddleware(history), thunk];
 
   const composeEnhancers =
@@ -28,21 +28,30 @@ export default (preloadedState) => {
 
   const store = createStore(
     persistReducer(persistConfig, rootReducer(history)),
-    preloadedState,
     composeEnhancers(applyMiddleware(...middlewares))
   );
 
   const persistor = persistStore(store);
+
+  request.interceptors.request.use((config) => {
+    store.dispatch({ type: actionTypes.SNACKBAR_LOADING });
+    return config;
+  });
 
   request.interceptors.response.use(
     (response) => {
       if (response instanceof Error) {
         return Promise.reject(response);
       } else {
+        store.dispatch({ type: actionTypes.SNACKBAR_SUCCESS });
         return response;
       }
     },
     (error) => {
+      store.dispatch({
+        type: actionTypes.SNACKBAR_ERROR,
+        payload: error.response.data.error,
+      });
       switch (error.response.status) {
         case 401:
           if (history.location.pathname !== '/login') {

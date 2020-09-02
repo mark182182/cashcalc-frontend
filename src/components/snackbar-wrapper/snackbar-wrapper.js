@@ -1,27 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Snackbar, Slide } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import { resetSnackbar } from '../../action/snackbar';
 
-export const SnackbarWrapper = (props) => {
-  const handleAlert = () => {
-    if (props.isLoading === true) {
-      return <Alert severity="info">Betöltés...</Alert>;
-    } else if (props.status === 'success') {
-      return <Alert severity="success">{props.message}</Alert>;
-    } else if (props.status === 'error') {
-      return <Alert severity="error">{props.message}</Alert>;
-    }
+const mapDispatch = (dispatch) => {
+  return {
+    resetSnackbar: () => dispatch(resetSnackbar()),
   };
+};
+
+export const SnackbarWrapperConnected = (props) => {
+  useEffect(() => {
+    return () => {
+      props.resetSnackbar();
+    };
+  }, []);
 
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={props.isLoading === true || props.status !== null}
+      open={props.message !== null}
       autoHideDuration={4000}
-      onClose={props.reset}
+      disableWindowBlurListener={true}
+      onClose={props.resetSnackbar}
       TransitionComponent={(rest) => <Slide {...rest} direction="left" />}
     >
-      {handleAlert()}
+      {props.message !== null ? (
+        <Alert severity={props.status}>{props.message}</Alert>
+      ) : null}
     </Snackbar>
   );
 };
+
+const mapState = (state) => {
+  return {
+    isLoading: state.snackbarReducer.isLoading,
+    status: state.snackbarReducer.status,
+    message: state.snackbarReducer.message,
+  };
+};
+
+const SnackbarWrapper = connect(
+  mapState,
+  mapDispatch
+)(SnackbarWrapperConnected);
+export default SnackbarWrapper;
