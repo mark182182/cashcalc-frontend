@@ -1,4 +1,4 @@
-CashCalc frontend using Angular 2 and Bulma.
+Alternative version for the CashCalc frontend using Angular 2 and Bulma.
 
 This project aims to give additional support for people working in logistics to calculate transportation costs.
 
