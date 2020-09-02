@@ -86,7 +86,7 @@ export const SuperuserConnected = (props) => {
       </Grid>
       <TableContainer className="table-container">
         {props.adminLoading === false && props.admins !== null && (
-          <Table>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 {headers.map((header) => {

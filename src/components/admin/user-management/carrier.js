@@ -89,7 +89,7 @@ export const CarrierManagementConnected = (props) => {
       </Grid>
       <TableContainer className="table-container">
         {props.carrierLoading === false && props.carriers !== null && (
-          <Table>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 {headers.map((header) => {
