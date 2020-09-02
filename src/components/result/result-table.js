@@ -38,7 +38,7 @@ export const ResultTable = (props) => {
                     {price.name}
                   </TableCell>
                   <TableCell className={price.className} key={price.value}>
-                    {price.value}
+                    {price.value.toLocaleString().replace(',', '.') + ' Ft'}
                   </TableCell>
                 </TableRow>
               );

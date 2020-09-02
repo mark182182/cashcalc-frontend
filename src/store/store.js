@@ -50,7 +50,7 @@ export default () => {
     (error) => {
       store.dispatch({
         type: actionTypes.SNACKBAR_ERROR,
-        payload: error.response.data.error,
+        payload: error.message,
       });
       switch (error.response.status) {
         case 401:
