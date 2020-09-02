@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   TableContainer,
-  Paper,
   Table,
   TableRow,
   TableCell,
@@ -103,7 +102,7 @@ export const PricingManagementConnected = (props) => {
           </Button>
         )}
       </Grid>
-      <TableContainer component={Paper} className="table-container">
+      <TableContainer className="table-container">
         <Table>
           <TableBody>
             {prices.map((price) => {

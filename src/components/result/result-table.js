@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Paper,
   TableContainer,
   Table,
   TableRow,
@@ -27,7 +26,7 @@ export const ResultTable = (props) => {
   ]);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer>
       <Table>
         <TableBody>
           {prices.map((price) => {

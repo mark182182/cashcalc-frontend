@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   TableContainer,
-  Paper,
   Table,
   TableHead,
   TableRow,
@@ -89,7 +88,7 @@ export const CarrierManagementConnected = (props) => {
           Létrehozás
         </Button>
       </Grid>
-      <TableContainer component={Paper} className="table-container">
+      <TableContainer className="table-container">
         {props.carrierLoading === false && props.carriers !== null && (
           <Table>
             <TableHead>
