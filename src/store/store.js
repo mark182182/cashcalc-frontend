@@ -34,7 +34,9 @@ export default () => {
   const persistor = persistStore(store);
 
   request.interceptors.request.use((config) => {
-    store.dispatch({ type: actionTypes.SNACKBAR_LOADING });
+    if (!config.url.includes(constants.API_ROUTES.IS_AUTHORIZED)) {
+      store.dispatch({ type: actionTypes.SNACKBAR_LOADING });
+    }
     return config;
   });
 
@@ -43,7 +45,9 @@ export default () => {
       if (response instanceof Error) {
         return Promise.reject(response);
       } else {
-        store.dispatch({ type: actionTypes.SNACKBAR_SUCCESS });
+        if (!response.config.url.includes(constants.API_ROUTES.IS_AUTHORIZED)) {
+          store.dispatch({ type: actionTypes.SNACKBAR_SUCCESS });
+        }
         return response;
       }
     },
