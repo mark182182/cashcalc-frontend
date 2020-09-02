@@ -1,30 +1,27 @@
-import { React, useEffect } from 'react';
-import { Slide, Snackbar } from '@material-ui/core';
+import React from 'react';
+import { Snackbar, Slide } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
-export const SnackBarWrapper = (props) => {
-  useEffect(() => {
-    return () => {
-      props.reset();
-    };
-  }, []);
+export const SnackbarWrapper = (props) => {
+  const handleAlert = () => {
+    if (props.isLoading === true) {
+      return <Alert severity="info">Betöltés...</Alert>;
+    } else if (props.status === 'success') {
+      return <Alert severity="success">{props.message}</Alert>;
+    } else if (props.status === 'error') {
+      return <Alert severity="error">{props.message}</Alert>;
+    }
+  };
 
   return (
-    props.isLoading !== null && (
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        autoHideDuration={6000}
-        open={true}
-        onClose={props.reset}
-        TransitionComponent={(props) => <Slide {...props} direction="left" />}
-      >
-        {props.isLoading === true && (
-          <Alert severity={'info'}>Loading...</Alert>
-        )}
-        {props.isLoading === false && (
-          <Alert severity={props.status}>{props.message}</Alert>
-        )}
-      </Snackbar>
-    )
+    <Snackbar
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={props.isLoading === true || props.status !== null}
+      autoHideDuration={4000}
+      onClose={props.reset}
+      TransitionComponent={(rest) => <Slide {...rest} direction="left" />}
+    >
+      {handleAlert()}
+    </Snackbar>
   );
 };

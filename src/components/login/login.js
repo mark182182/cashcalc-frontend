@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { loginUser, resetUser } from '../../action/login';
 import { Grid, TextField, InputAdornment, Button } from '@material-ui/core';
-import { SnackBarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
+import { SnackbarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
 import { Redirect } from 'react-router-dom';
 import { Person, VpnKey } from '@material-ui/icons';
 import constants from '../../constants/constants';
@@ -25,12 +25,12 @@ export const LoginConnected = (props) => {
 
   return (
     <Grid container>
-      {/* <SnackBarWrapper
+      <SnackbarWrapper
         reset={props.resetUser}
         isLoading={props.loginIsLoading}
         status={props.loginStatus}
         message={props.loginMessage}
-      /> */}
+      />
       <Grid container className="login-wrapper" direction="column">
         <Grid container className="login-container">
           <Grid container className="login-username" justify="center">

@@ -48,6 +48,6 @@
   },
   "devDependencies": {
     "eslint-plugin-react": "^7.20.6",
-    "firebase-tools": "^8.9.0"
+    "firebase-tools": "^8.9.2"
   }
 }

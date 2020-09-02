@@ -35,12 +35,20 @@ export default (preloadedState) => {
   const persistor = persistStore(store);
 
   request.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      if (response instanceof Error) {
+        return Promise.reject(response);
+      } else {
+        return response;
+      }
+    },
     (error) => {
       switch (error.response.status) {
         case 401:
-          store.dispatch({ type: actionTypes.LOGIN_USER_RESET });
-          store.dispatch(push(constants.ROUTES.LOGIN));
+          if (history.location.pathname !== '/login') {
+            store.dispatch({ type: actionTypes.LOGIN_USER_RESET });
+            store.dispatch(push(constants.ROUTES.LOGIN));
+          }
           break;
         case 403:
           store.dispatch(

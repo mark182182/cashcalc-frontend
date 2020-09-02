@@ -24,8 +24,13 @@ import {
 import { Result } from '../result/result';
 import { getCountriesAir, resetCountry } from '../../action/country';
 import { getPricesAir, resetPrices } from '../../action/air';
-import { calculate } from '../../action/calculation';
+import {
+  calculate,
+  calculationError,
+  resetCalculation,
+} from '../../action/calculation';
 import './air.scss';
+import { SnackbarWrapper } from '../snackbar-wrapper/snackbar-wrapper';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -34,6 +39,8 @@ const mapDispatch = (dispatch) => {
     getPricesAir: (zoneNumber) => dispatch(getPricesAir(zoneNumber)),
     resetPrices: () => dispatch(resetPrices()),
     calculate: (calc) => dispatch(calculate(calc)),
+    calculationError: (message) => dispatch(calculationError(message)),
+    resetCalculation: () => dispatch(resetCalculation()),
   };
 };
 
@@ -102,20 +109,21 @@ const AirConnected = (props) => {
       props.calculate(calc);
       setOpenAirResult(true);
     } catch (e) {
-      console.log(e.message);
+      props.calculationError(e.message);
     }
   };
 
   const validateCalculation = (calc) => {
+    let message;
     if (!calc.zoneNumber || calc.zoneNumber <= 0) {
-      console.log(calc.zoneNumber);
-      throw new Error('Country is invalid!');
+      message = 'A kiválasztott ország érvénytelen!';
+    } else if (isNaN(calc.weight) || calc.weight <= 0) {
+      message = 'A kiválasztott súly érvénytelen!';
+    } else if (isNaN(calc.insurance) || calc.insurance < 0) {
+      message = 'A biztosítási összeg érvénytelen!';
     }
-    if (isNaN(calc.weight) || calc.weight <= 0) {
-      throw new Error('Weight is invalid!');
-    }
-    if (isNaN(calc.insurance) || calc.insurance < 0) {
-      throw new Error('Insurance is invalid!');
+    if (message) {
+      throw new Error(message);
     }
   };
 
@@ -143,6 +151,12 @@ const AirConnected = (props) => {
 
   return (
     <Grid>
+      <SnackbarWrapper
+        reset={props.resetCalculation}
+        isLoading={props.resultIsLoading}
+        status={props.resultStatus}
+        message={props.resultMessage}
+      />
       <Grid container item className="air-container">
         {props.countries !== null ? (
           <>
@@ -332,7 +346,7 @@ const AirConnected = (props) => {
             </Grid>
             <Grid container item justify="flex-end">
               <Button
-                onClick={() => handleCalculate()}
+                onClick={handleCalculate}
                 className="air-calculate-button"
               >
                 Számítsd ki!
@@ -356,6 +370,8 @@ const mapState = (state) => {
     weightsStatus: state.airReducer.weightsStatus,
     result: state.calcReducer.result,
     resultIsLoading: state.calcReducer.isLoading,
+    resultStatus: state.calcReducer.status,
+    resultMessage: state.calcReducer.message,
   };
 };
 

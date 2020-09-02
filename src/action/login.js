@@ -18,13 +18,13 @@ export const loginUser = (username, password) => {
         });
       })
       .catch((err) => {
-        if (err.response.status === 500) {
+        if (err.response && err.response.status === 500) {
           dispatch({ type: actionTypes.LOGIN_USER_RESET });
           dispatch(push(constants.ROUTES.LOGIN));
         } else {
           dispatch({
             type: actionTypes.LOGIN_USER_ERROR,
-            payload: err.message,
+            payload: err.response.data.error,
           });
         }
       });
