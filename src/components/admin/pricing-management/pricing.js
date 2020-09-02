@@ -61,7 +61,7 @@ export const PricingManagementConnected = (props) => {
 
   const handleUpdate = (event, price, name) => {
     const value = event.currentTarget.value;
-    if (!isNaN(value) && value > 0) {
+    if (!isNaN(value) && value >= 0) {
       Object.keys(pricings).forEach((key) => {
         if (key === price) {
           if (key.includes('Percent')) {
