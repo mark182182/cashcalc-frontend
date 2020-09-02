@@ -44,5 +44,11 @@ export const mapPricings = (pricings) => {
     { ext: { name: 'EXT-díj', value: pricings.ext } },
     { ras: { name: 'RAS-díj', value: pricings.ras } },
     { tk: { name: 'TK-díj', value: pricings.tk } },
+    {
+      emergencyFare: {
+        name: 'Vészhelyzeti díj',
+        value: pricings.emergencyFare,
+      },
+    },
   ];
 };

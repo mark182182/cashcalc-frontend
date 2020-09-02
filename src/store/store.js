@@ -73,11 +73,6 @@ export default () => {
             push(constants.ROUTES.HOME + constants.ROUTES.ERROR_404)
           );
           break;
-        case 500:
-          store.dispatch(
-            push(constants.ROUTES.HOME + constants.ROUTES.ERROR_500)
-          );
-          break;
         default:
           break;
       }

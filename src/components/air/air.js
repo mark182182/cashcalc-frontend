@@ -113,6 +113,7 @@ const AirConnected = (props) => {
   };
 
   const validateCalculation = (calc) => {
+    console.log(calc.insurance);
     let message;
     if (!calc.zoneNumber || calc.zoneNumber <= 0) {
       message = 'A kiválasztott ország érvénytelen!';

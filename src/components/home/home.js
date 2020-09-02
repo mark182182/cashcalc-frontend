@@ -6,7 +6,6 @@ import { Welcome } from '../welcome/welcome';
 import { Calculation } from '../calculation/calculation';
 import { Error403 } from '../403/403';
 import { Error404 } from '../404/404';
-import { Error500 } from '../500/500';
 import ProtectedRoute from '../protected-route/protected-route';
 import RoleBasedRoute from '../role-based-route/role-based-route';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -47,11 +46,6 @@ export const Home = () => {
           path={constants.ROUTES.HOME + constants.ROUTES.ERROR_404}
         >
           <Error404 />
-        </ProtectedRoute>
-        <ProtectedRoute
-          path={constants.ROUTES.HOME + constants.ROUTES.ERROR_500}
-        >
-          <Error500 />
         </ProtectedRoute>
         <Route path="*">
           <Redirect to={constants.ROUTES.HOME + constants.ROUTES.WELCOME} />

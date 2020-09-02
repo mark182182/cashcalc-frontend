@@ -17,10 +17,10 @@ import {
   updatePricingVariables,
   resetPricingVariables,
 } from '../../../action/admin';
+import { snackbarError } from '../../../action/snackbar';
+import { SkeletonWrapper } from '../../skeleton-wrapper/skeleton-wrapper';
 import { mapPricings } from '../../../data-reducer/admin';
 import { Edit, Close, Check } from '@material-ui/icons';
-import { Skeleton } from '@material-ui/lab';
-import { SkeletonWrapper } from '../../skeleton-wrapper/skeleton-wrapper';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -28,6 +28,7 @@ const mapDispatch = (dispatch) => {
     updatePricingVariables: (pricing) =>
       dispatch(updatePricingVariables(pricing)),
     resetPricingVariables: () => dispatch(resetPricingVariables()),
+    snackbarError: (message) => dispatch(snackbarError(message)),
   };
 };
 
@@ -58,16 +59,21 @@ export const PricingManagementConnected = (props) => {
     }
   }, [props.updateStatus]);
 
-  const handleUpdate = (event, price) => {
-    Object.keys(pricings).forEach((key) => {
-      if (key === price) {
-        if (key.includes('Percent')) {
-          pricings[key] = parseFloat(event.currentTarget.value);
-        } else {
-          pricings[key] = parseInt(event.currentTarget.value);
+  const handleUpdate = (event, price, name) => {
+    const value = event.currentTarget.value;
+    if (!isNaN(value) && value > 0) {
+      Object.keys(pricings).forEach((key) => {
+        if (key === price) {
+          if (key.includes('Percent')) {
+            pricings[key] = parseFloat(event.currentTarget.value);
+          } else {
+            pricings[key] = parseInt(event.currentTarget.value);
+          }
         }
-      }
-    });
+      });
+    } else {
+      props.snackbarError(`Érvénytelen ${name} érték!`);
+    }
   };
 
   const updatePrices = () => {
@@ -119,7 +125,9 @@ export const PricingManagementConnected = (props) => {
                         variant="outlined"
                         defaultValue={pricing.value}
                         InputProps={{ inputProps: { min: 0 } }}
-                        onChange={(event) => handleUpdate(event, key)}
+                        onChange={(event) =>
+                          handleUpdate(event, key, pricing.name)
+                        }
                         required
                       />
                     ) : key.includes('Percent') ? (
