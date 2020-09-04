@@ -134,7 +134,7 @@ export const deleteCarrier = (carrier) => {
     return request
       .delete(constants.BASE_URL + constants.API_ROUTES.USERS_CARRIERS_DELETE, {
         params: {
-          username: carrier,
+          id: carrier,
         },
       })
       .then((resp) => {
@@ -155,5 +155,25 @@ export const deleteCarrier = (carrier) => {
 export const resetDeleteStatus = () => {
   return (dispatch) => {
     dispatch({ type: actionTypes.DELETE_CARRIER_RESET });
+  };
+};
+
+export const getUsernames = () => {
+  return (dispatch) => {
+    dispatch({ type: actionTypes.GET_USERNAMES_RESET });
+    return request
+      .get(constants.BASE_URL + constants.API_ROUTES.GET_USERNAMES)
+      .then((resp) => {
+        dispatch({
+          type: actionTypes.GET_USERNAMES_SUCCESS,
+          payload: resp.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actionTypes.GET_USERNAMES_ERROR,
+          payload: err.message,
+        });
+      });
   };
 };

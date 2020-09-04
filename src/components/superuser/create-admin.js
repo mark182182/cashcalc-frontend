@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { Check, Close, Person, VpnKey } from '@material-ui/icons';
 import { createAdmin } from '../../action/superuser';
 import { snackbarError } from '../../action/snackbar';
+import { getUsernames } from '../../action/admin';
 import './superuser.scss';
 
 const mapDispatch = (dispatch) => {
@@ -19,12 +20,17 @@ const mapDispatch = (dispatch) => {
     createAdmin: (username, password) =>
       dispatch(createAdmin(username, password)),
     snackbarError: (message) => dispatch(snackbarError(message)),
+    getUsernames: () => dispatch(getUsernames()),
   };
 };
 
 const CreateAdminConnected = (props) => {
-  const username = useRef(null);
-  const password = useRef(null);
+  let username = 'null';
+  let password = 'null';
+
+  useEffect(() => {
+    props.getUsernames();
+  }, []);
 
   useEffect(() => {
     if (props.createStatus === true && props.createIsLoading === false) {
@@ -33,13 +39,33 @@ const CreateAdminConnected = (props) => {
     }
   }, [props.createStatus]);
 
+  const handleInputChange = (event, type) => {
+    const value = event.currentTarget.value;
+    if (type === 'username') {
+      if (props.usernames.includes(value)) {
+        props.snackbarError('Ez a felhasználónév már létezik!');
+        console.log('Ez a felhasználónév már létezik!');
+      }
+      username = value;
+    } else {
+      password = value;
+    }
+  };
+
   const handleCreate = () => {
-    const name = username.current.value;
-    const pass = password.current.value;
-    if (name.length === 0 || pass.length < 8) {
+    if (
+      username === null ||
+      username.length === 0 ||
+      password === null ||
+      password.length < 8
+    ) {
       props.snackbarError('A jelszónak minimum 8 karakternek kell lennie!');
     } else {
-      props.createAdmin(username.current.value, password.current.value);
+      if (props.usernames.includes(username)) {
+        props.snackbarError('Ez a felhasználónév már létezik!');
+      } else {
+        props.createAdmin(username, password);
+      }
     }
   };
 
@@ -61,7 +87,7 @@ const CreateAdminConnected = (props) => {
               variant="outlined"
               required
               placeholder="Név..."
-              inputRef={username}
+              onChange={(event) => handleInputChange(event, 'username')}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -78,6 +104,7 @@ const CreateAdminConnected = (props) => {
               variant="outlined"
               required
               placeholder="Jelszó..."
+              onChange={(event) => handleInputChange(event, 'password')}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -86,7 +113,6 @@ const CreateAdminConnected = (props) => {
                 ),
                 inputProps: { minLength: 8 },
               }}
-              inputRef={password}
             />
           </Grid>
         </Grid>
@@ -118,6 +144,7 @@ const mapState = (state) => {
   return {
     createStatus: state.superuserReducer.createStatus,
     createIsLoading: state.superuserReducer.createIsLoading,
+    usernames: state.adminReducer.usernames,
   };
 };
 

@@ -20,6 +20,7 @@ const constants = {
     USERS_ADMINS: 'users/admins',
     USERS_ADMINS_CREATE: 'users/admins/create',
     USERS_ADMINS_DELETE: 'users/admins/delete',
+    GET_USERNAMES: 'users/usernames',
   },
   ROUTES: {
     HOME: '/home',

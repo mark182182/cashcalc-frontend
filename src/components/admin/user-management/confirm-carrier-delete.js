@@ -20,7 +20,7 @@ const mapDispatch = (dispatch) => {
 
 const ConfirmCarrierDeleteConnected = (props) => {
   const handleDelete = () => {
-    props.deleteCarrier(props.carrier);
+    props.deleteCarrier(props.carrier.id);
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const ConfirmCarrierDeleteConnected = (props) => {
         <Grid container>
           <Typography> Biztosan kívánja törölni a </Typography>
           <Typography className="confirm-delete-carrier-name">
-            {props.carrier}
+            {props.carrier.username}
           </Typography>
           <Typography> felhasználót?</Typography>
         </Grid>

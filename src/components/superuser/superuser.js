@@ -35,7 +35,11 @@ const mapDispatch = (dispatch) => {
 };
 
 export const SuperuserConnected = (props) => {
-  const [headers, setHeaders] = useState(['Felhasználónév', 'Törlés']);
+  const [headers, setHeaders] = useState([
+    'Felhasználónév',
+    'Frissítve',
+    'Törlés',
+  ]);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [admin, setAdmin] = useState(null);
@@ -102,8 +106,11 @@ export const SuperuserConnected = (props) => {
               {props.admins.map((admin) => {
                 return (
                   <TableRow key={uuid()}>
-                    <TableCell className={admin.className} key={admin}>
-                      {admin}
+                    <TableCell className={admin.className}>
+                      {admin.username}
+                    </TableCell>
+                    <TableCell className={admin.className}>
+                      {new Date(admin.updatedAt).toLocaleString('HU')}
                     </TableCell>
                     <TableCell className={admin.className} key={uuid()}>
                       <IconButton

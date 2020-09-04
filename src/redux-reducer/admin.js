@@ -10,6 +10,8 @@ const initialState = {
   createStatus: null,
   deleteStatus: null,
   deleteIsLoading: null,
+  usernames: null,
+  usernamesStatus: null
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -107,6 +109,21 @@ const adminReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         deleteStatus: false,
         deleteIsLoading: false,
+      });
+    case actionTypes.GET_USERNAMES_RESET:
+      return Object.assign({}, state, {
+        usernames: null,
+        usernamesStatus: null,
+      });
+    case actionTypes.GET_USERNAMES_SUCCESS:
+      return Object.assign({}, state, {
+        usernames: action.payload,
+        usernamesStatus: true,
+      });
+    case actionTypes.GET_USERNAMES_ERROR:
+      return Object.assign({}, state, {
+        usernames: null,
+        usernamesStatus: false,
       });
     default:
       return state;

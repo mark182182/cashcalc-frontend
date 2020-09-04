@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Grid,
   DialogTitle,
@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Check, Close, Person, VpnKey } from '@material-ui/icons';
-import { createCarrier } from '../../../action/admin';
+import { createCarrier, getUsernames } from '../../../action/admin';
 import { snackbarError } from '../../../action/snackbar';
 import './carrier.scss';
 
@@ -18,13 +18,18 @@ const mapDispatch = (dispatch) => {
   return {
     createCarrier: (username, password) =>
       dispatch(createCarrier(username, password)),
-      snackbarError: (message) => dispatch(snackbarError(message)),
+    snackbarError: (message) => dispatch(snackbarError(message)),
+    getUsernames: () => dispatch(getUsernames()),
   };
 };
 
 const CreateCarrierConnected = (props) => {
-  const username = useRef(null);
-  const password = useRef(null);
+  let username = '';
+  let password = '';
+
+  useEffect(() => {
+    props.getUsernames();
+  }, []);
 
   useEffect(() => {
     if (props.createStatus === true && props.createIsLoading === false) {
@@ -33,13 +38,33 @@ const CreateCarrierConnected = (props) => {
     }
   }, [props.createStatus]);
 
+  const handleInputChange = (event, type) => {
+    const value = event.currentTarget.value;
+    if (type === 'username') {
+      if (props.usernames.includes(value)) {
+        props.snackbarError('Ez a felhasználónév már létezik!');
+        console.log('Ez a felhasználónév már létezik!');
+      }
+      username = value;
+    } else {
+      password = value;
+    }
+  };
+
   const handleCreate = () => {
-    const name = username.current.value;
-    const pass = password.current.value;
-    if (name.length === 0 || pass.length < 8) {
+    if (
+      username === null ||
+      username.length === 0 ||
+      password === null ||
+      password.length < 8
+    ) {
       props.snackbarError('A jelszónak minimum 8 karakternek kell lennie!');
     } else {
-      props.createCarrier(username.current.value, password.current.value);
+      if (props.usernames.includes(username)) {
+        props.snackbarError('Ez a felhasználónév már létezik!');
+      } else {
+        props.createCarrier(username, password);
+      }
     }
   };
 
@@ -61,7 +86,7 @@ const CreateCarrierConnected = (props) => {
               variant="outlined"
               required
               placeholder="Név..."
-              inputRef={username}
+              onChange={(event) => handleInputChange(event, 'username')}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -78,6 +103,7 @@ const CreateCarrierConnected = (props) => {
               variant="outlined"
               required
               placeholder="Jelszó..."
+              onChange={(event) => handleInputChange(event, 'password')}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -86,7 +112,6 @@ const CreateCarrierConnected = (props) => {
                 ),
                 inputProps: { minLength: 8 },
               }}
-              inputRef={password}
             />
           </Grid>
         </Grid>
@@ -118,6 +143,7 @@ const mapState = (state) => {
   return {
     createStatus: state.adminReducer.createStatus,
     createIsLoading: state.adminReducer.createIsLoading,
+    usernames: state.adminReducer.usernames,
   };
 };
 

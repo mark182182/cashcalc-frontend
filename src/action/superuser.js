@@ -63,7 +63,7 @@ export const deleteAdmin = (admin) => {
     return request
       .delete(constants.BASE_URL + constants.API_ROUTES.USERS_ADMINS_DELETE, {
         params: {
-          username: admin,
+          id: admin,
         },
       })
       .then((resp) => {

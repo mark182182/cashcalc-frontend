@@ -35,7 +35,11 @@ const mapDispatch = (dispatch) => {
 };
 
 export const CarrierManagementConnected = (props) => {
-  const [headers, setHeaders] = useState(['Felhasználónév', 'Törlés']);
+  const [headers, setHeaders] = useState([
+    'Felhasználónév',
+    'Frissítve',
+    'Törlés',
+  ]);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [carrier, setCarrier] = useState(null);
@@ -105,8 +109,11 @@ export const CarrierManagementConnected = (props) => {
               {props.carriers.map((carrier) => {
                 return (
                   <TableRow key={uuid()}>
-                    <TableCell className={carrier.className} key={carrier}>
-                      {carrier}
+                    <TableCell className={carrier.className} key={carrier.id}>
+                      {carrier.username}
+                    </TableCell>
+                    <TableCell className={carrier.className}>
+                      {new Date(carrier.updatedAt).toLocaleString('HU')}
                     </TableCell>
                     <TableCell className={carrier.className} key={uuid()}>
                       <IconButton
