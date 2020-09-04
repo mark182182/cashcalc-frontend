@@ -37,7 +37,7 @@ const mapDispatch = (dispatch) => {
 export const SuperuserConnected = (props) => {
   const [headers, setHeaders] = useState([
     'Felhasználónév',
-    'Frissítve',
+    'Létrehozva',
     'Törlés',
   ]);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);

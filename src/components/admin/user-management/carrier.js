@@ -37,7 +37,7 @@ const mapDispatch = (dispatch) => {
 export const CarrierManagementConnected = (props) => {
   const [headers, setHeaders] = useState([
     'Felhasználónév',
-    'Frissítve',
+    'Létrehozva',
     'Törlés',
   ]);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -113,7 +113,7 @@ export const CarrierManagementConnected = (props) => {
                       {carrier.username}
                     </TableCell>
                     <TableCell className={carrier.className}>
-                      {new Date(carrier.updatedAt).toLocaleString('HU')}
+                      {new Date(carrier.createdAt).toLocaleString('HU')}
                     </TableCell>
                     <TableCell className={carrier.className} key={uuid()}>
                       <IconButton

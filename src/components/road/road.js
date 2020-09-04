@@ -91,7 +91,6 @@ const RoadConnected = (props) => {
 
   const validateCalculation = (calc) => {
     if (!calc.zoneNumber || calc.zoneNumber <= 0) {
-      console.log(calc.zoneNumber);
       throw new Error('Country is invalid!');
     }
     if (isNaN(calc.weight) || calc.weight <= 0) {

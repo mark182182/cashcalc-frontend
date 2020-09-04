@@ -43,7 +43,6 @@ const CreateCarrierConnected = (props) => {
     if (type === 'username') {
       if (props.usernames.includes(value)) {
         props.snackbarError('Ez a felhasználónév már létezik!');
-        console.log('Ez a felhasználónév már létezik!');
       }
       username = value;
     } else {
