@@ -25,8 +25,8 @@ const mapDispatch = (dispatch) => {
 };
 
 const CreateAdminConnected = (props) => {
-  let username = 'null';
-  let password = 'null';
+  const username = useRef(null);
+  const password = useRef(null);
 
   useEffect(() => {
     props.getUsernames();
@@ -39,31 +39,23 @@ const CreateAdminConnected = (props) => {
     }
   }, [props.createStatus]);
 
-  const handleInputChange = (event, type) => {
-    const value = event.currentTarget.value;
-    if (type === 'username') {
-      if (props.usernames.includes(value)) {
-        props.snackbarError('Ez a felhasználónév már létezik!');
-      }
-      username = value;
-    } else {
-      password = value;
-    }
-  };
-
   const handleCreate = () => {
-    if (
-      username === null ||
-      username.length === 0 ||
-      password === null ||
-      password.length < 8
-    ) {
+    const user = username.current.value;
+    const pass = password.current.value;
+
+    if (pass === null || pass.length < 8) {
       props.snackbarError('A jelszónak minimum 8 karakternek kell lennie!');
+    } else if (user === null || user.length < 5) {
+      props.snackbarError(
+        'A felhasználónévnek minimum 5 karakternek kell lennie!'
+      );
+    } else if (pass === null || pass.length < 5) {
+      props.snackbarError('A felhasználónév maximum 30 karakternek lehet!');
     } else {
-      if (props.usernames.includes(username)) {
+      if (props.usernames.includes(user)) {
         props.snackbarError('Ez a felhasználónév már létezik!');
       } else {
-        props.createAdmin(username, password);
+        props.createAdmin(user, pass);
       }
     }
   };
@@ -86,7 +78,7 @@ const CreateAdminConnected = (props) => {
               variant="outlined"
               required
               placeholder="Név..."
-              onChange={(event) => handleInputChange(event, 'username')}
+              inputRef={username}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -103,7 +95,7 @@ const CreateAdminConnected = (props) => {
               variant="outlined"
               required
               placeholder="Jelszó..."
-              onChange={(event) => handleInputChange(event, 'password')}
+              inputRef={password}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

@@ -70,41 +70,47 @@ export const HeaderConnected = (props) => {
 
   return (
     <Grid container className="navbar-main">
-      <SnackbarWrapper />
+      <Grid container className="navbar-header">
+        <SnackbarWrapper />
+        <Grid container className="navbar-menu">
+          {props.role !== null && (
+            <Grid container className="navbar-menu-button">
+              <IconButton onClick={() => toggleDrawer(true)}>
+                <Menu />
+              </IconButton>
+            </Grid>
+          )}
+        </Grid>
+        <Hidden>
+          <Drawer open={isDrawerOpen} onClose={() => toggleDrawer(false)}>
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Grid
+          container
+          className="navbar-brand"
+          alignItems="center"
+          justify="flex-end"
+        >
+          <img src="../favicon.ico" width="15%" />
+          <Typography variant="button">CASHCALC</Typography>
+        </Grid>
+      </Grid>
       <Grid container className="navbar-content">
-        {props.role !== null && (
-          <IconButton onClick={() => toggleDrawer(true)}>
-            <Menu />
-          </IconButton>
-        )}
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path={constants.ROUTES.LOGIN}>
+              <Login />
+            </Route>
+            <ProtectedRoute path={constants.ROUTES.HOME}>
+              <Home />
+            </ProtectedRoute>
+            <Route path="*">
+              <Redirect to={constants.ROUTES.LOGIN} />
+            </Route>
+          </Switch>
+        </ConnectedRouter>
       </Grid>
-      <Hidden>
-        <Drawer open={isDrawerOpen} onClose={() => toggleDrawer(false)}>
-          {drawer}
-        </Drawer>
-      </Hidden>
-      <Grid
-        container
-        className="navbar-brand"
-        alignItems="center"
-        justify="flex-end"
-      >
-        <img src="../favicon.ico" width="15%" />
-        <Typography variant="button">CASHCALC</Typography>
-      </Grid>
-      <ConnectedRouter history={history}>
-        <Switch>
-          <Route path={constants.ROUTES.LOGIN}>
-            <Login />
-          </Route>
-          <ProtectedRoute path={constants.ROUTES.HOME}>
-            <Home />
-          </ProtectedRoute>
-          <Route path="*">
-            <Redirect to={constants.ROUTES.LOGIN} />
-          </Route>
-        </Switch>
-      </ConnectedRouter>
     </Grid>
   );
 };

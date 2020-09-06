@@ -1,10 +1,35 @@
 @import '../../styles/style.scss';
 
+.navbar-main {
+}
+
+.navbar-header {
+  background: #ffffff;
+  position: fixed;
+  z-index: 1;
+}
+
 .navbar-brand {
   width: 50% !important;
   padding: 12px;
 }
 
-.navbar-content {
+.navbar-menu {
+  justify-content: center;
+  align-items: center;
   width: 50% !important;
+}
+
+.navbar-menu-button {
+  z-index: 10000;
+}
+
+.navbar-content {
+  padding-top: 8em;
+}
+
+@media only screen and (max-width: 700px) {
+  .navbar-content {
+    padding-top: 4em;
+  }
 }
