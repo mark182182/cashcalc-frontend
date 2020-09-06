@@ -41,11 +41,15 @@ const ConfirmCarrierDeleteConnected = (props) => {
       </DialogTitle>
       <DialogContent>
         <Grid container>
-          <Typography> Biztosan kívánja törölni a </Typography>
-          <Typography className="confirm-delete-carrier-name">
-            {props.carrier.username}
+          <Typography>
+            Biztosan kívánja törölni a{' '}
+            {
+              <span className="confirm-delete-carrier-name">
+                {props.carrier.username}
+              </span>
+            }{' '}
+            felhasználót?
           </Typography>
-          <Typography> felhasználót?</Typography>
         </Grid>
       </DialogContent>
       <DialogActions>
