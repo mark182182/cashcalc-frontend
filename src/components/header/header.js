@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   Typography,
@@ -29,6 +29,14 @@ const mapDispatch = (dispatch) => {
 };
 
 export const HeaderConnected = (props) => {
+  document.addEventListener('scroll', () => {
+    document.documentElement.dataset.scroll = window.scrollY;
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.scroll = 0;
+  }, []);
+
   const [isDrawerOpen, toggleDrawer] = useState(false);
 
   const renderCurrentTab = (index) => {

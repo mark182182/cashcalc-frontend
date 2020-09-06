@@ -8,10 +8,6 @@ import Header from './components/header/header';
 import 'normalize.css';
 import './styles/style.scss';
 
-document.addEventListener('scroll', () => {
-  document.documentElement.dataset.scroll = window.scrollY;
-});
-
 ReactDOM.render(
   <Provider store={store().store}>
     <PersistGate loading={null} persistor={store().persistor}>
