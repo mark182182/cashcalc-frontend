@@ -114,7 +114,7 @@ const AirConnected = (props) => {
 
   const validateCalculation = (calc) => {
     let message;
-    if (!calc.zoneNumber || calc.zoneNumber <= 0) {
+    if (calc.zoneNumber === null || calc.zoneNumber < 0) {
       message = 'A kiválasztott ország érvénytelen!';
     } else if (isNaN(calc.weight) || calc.weight <= 0) {
       message = 'A kiválasztott súly érvénytelen!';
@@ -184,7 +184,7 @@ const AirConnected = (props) => {
             </Grid>
             <Grid container item direction="column">
               <Typography variant="subtitle2">Súly (kg)</Typography>
-              {country && country.zoneNumber ? (
+              {country && country.zoneNumber !== null ? (
                 <Select
                   styles={{
                     menu: (props) => ({ ...props, zIndex: 9999 }),
@@ -215,7 +215,7 @@ const AirConnected = (props) => {
                 variant="outlined"
                 required
                 defaultValue={0}
-                InputProps={{ inputProps: { min: 0 } }}
+                InputProps={{ inputProps: { min: 0, max: 10000000 } }}
                 inputRef={insurance}
               />
             </Grid>

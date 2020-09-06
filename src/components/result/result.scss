@@ -1,13 +1,17 @@
 @import '../../styles/style.scss';
 
-.result-close-button {
-  color: #ffffff !important;
-}
-
 .result-header {
   text-transform: uppercase;
   background: $primary-color;
   color: #ffffff;
+}
+
+.result-close-button {
+  color: #ffffff !important;
+}
+
+.result-header-calc {
+  align-self: center;
 }
 
 .result-table-head-cell {

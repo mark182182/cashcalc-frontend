@@ -10,7 +10,9 @@ export const Result = (props) => {
       <DialogTitle className="result-header">
         <Grid container>
           <Grid container justify="space-between">
-            <Grid item>Kalkuláció</Grid>
+            <Grid item className="result-header-calc">
+              Kalkuláció
+            </Grid>
             <Grid item>
               <Button onClick={props.close} className="result-close-button">
                 <Close />
