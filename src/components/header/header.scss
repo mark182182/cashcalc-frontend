@@ -5,8 +5,12 @@
 
 .navbar-header {
   background: #ffffff;
-  position: fixed;
   z-index: 1;
+}
+
+html:not([data-scroll='0']) .navbar-header {
+  position: fixed;
+  filter: drop-shadow(0 0 0.1rem black);
 }
 
 .navbar-brand {
@@ -22,14 +26,4 @@
 
 .navbar-menu-button {
   z-index: 10000;
-}
-
-.navbar-content {
-  padding-top: 8em;
-}
-
-@media only screen and (max-width: 700px) {
-  .navbar-content {
-    padding-top: 4em;
-  }
 }
