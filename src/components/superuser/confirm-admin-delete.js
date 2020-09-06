@@ -77,8 +77,8 @@ const ConfirmAdminDeleteConnected = (props) => {
 
 const mapState = (state) => {
   return {
-    deleteStatus: state.adminReducer.deleteStatus,
-    deleteIsLoading: state.adminReducer.deleteIsLoading,
+    deleteStatus: state.superuserReducer.deleteStatus,
+    deleteIsLoading: state.superuserReducer.deleteIsLoading,
   };
 };
 

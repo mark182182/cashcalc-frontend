@@ -51,7 +51,7 @@ export const SuperuserConnected = (props) => {
     };
   }, []);
 
-  const reloadadmins = () => {
+  const reloadAdmins = () => {
     props.getAdmins();
   };
 
@@ -76,11 +76,11 @@ export const SuperuserConnected = (props) => {
         <ConfirmAdminDelete
           close={() => setOpenConfirmDelete(false)}
           admin={admin}
-          reload={reloadadmins}
+          reload={reloadAdmins}
         />
       </Dialog>
       <Dialog open={openCreate} maxWidth="sm" fullWidth>
-        <CreateAdmin close={() => setOpenCreate(false)} reload={reloadadmins} />
+        <CreateAdmin close={() => setOpenCreate(false)} reload={reloadAdmins} />
       </Dialog>
       <Grid container>
         <Button className="carrier-create-button" onClick={handleCreate}>
