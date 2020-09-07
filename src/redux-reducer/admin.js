@@ -8,10 +8,11 @@ const initialState = {
   carriers: null,
   carrierLoading: null,
   createStatus: null,
+  createIsLoading: null,
   deleteStatus: null,
   deleteIsLoading: null,
   usernames: null,
-  usernamesStatus: null
+  usernamesStatus: null,
 };
 
 const adminReducer = (state = initialState, action) => {

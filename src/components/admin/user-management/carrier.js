@@ -19,16 +19,21 @@ import {
   resetCarriers,
   resetDeleteStatus,
   resetCreateStatus,
+  deleteCarrier,
+  createCarrier,
 } from '../../../action/admin';
 import { Delete, Add } from '@material-ui/icons';
-import ConfirmCarrierDelete from './confirm-carrier-delete';
-import CreateCarrier from './create-carrier';
+import { DeleteUser } from '../../delete-user/delete-user';
+import CreateUser from '../../create-user/create-user';
 import { SkeletonWrapper } from '../../skeleton-wrapper/skeleton-wrapper';
 
 const mapDispatch = (dispatch) => {
   return {
     getCarriers: () => dispatch(getCarriers()),
     resetCarriers: () => dispatch(resetCarriers()),
+    deleteCarrier: (id) => dispatch(deleteCarrier(id)),
+    createCarrier: (username, password) =>
+      dispatch(createCarrier(username, password)),
     resetDeleteStatus: () => dispatch(resetDeleteStatus()),
     resetCreateStatus: () => dispatch(resetCreateStatus()),
   };
@@ -73,16 +78,24 @@ export const CarrierManagementConnected = (props) => {
         maxWidth="md"
         fullWidth
       >
-        <ConfirmCarrierDelete
+        <DeleteUser
           close={() => setOpenConfirmDelete(false)}
-          carrier={carrier}
           reload={reloadCarriers}
+          user={carrier}
+          deleteUser={(id) => props.deleteCarrier(id)}
+          deleteStatus={props.deleteStatus}
+          deleteIsLoading={props.deleteIsLoading}
         />
       </Dialog>
       <Dialog open={openCreate} maxWidth="sm" fullWidth>
-        <CreateCarrier
+        <CreateUser
           close={() => setOpenCreate(false)}
           reload={reloadCarriers}
+          createUser={(username, password) =>
+            props.createCarrier(username, password)
+          }
+          createStatus={props.createStatus}
+          createIsLoading={props.createIsLoading}
         />
       </Dialog>
       <Grid container>
@@ -144,6 +157,10 @@ const mapState = (state) => {
     carriers: state.adminReducer.carriers,
     carrierLoading: state.adminReducer.carrierLoading,
     carrierStatus: state.adminReducer.carrierStatus,
+    createIsLoading: state.adminReducer.createIsLoading,
+    createStatus: state.adminReducer.createStatus,
+    deleteIsLoading: state.adminReducer.deleteIsLoading,
+    deleteStatus: state.adminReducer.deleteStatus,
   };
 };
 

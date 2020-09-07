@@ -4,6 +4,7 @@ const initialState = {
   admins: null,
   adminLoading: null,
   createStatus: null,
+  createIsLoading: null,
   deleteStatus: null,
   deleteIsLoading: null,
 };

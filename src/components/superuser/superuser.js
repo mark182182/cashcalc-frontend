@@ -19,16 +19,21 @@ import {
   resetAdmins,
   resetDeleteStatus,
   resetCreateStatus,
+  createAdmin,
+  deleteAdmin,
 } from '../../action/superuser';
 import { Delete, Add } from '@material-ui/icons';
-import ConfirmAdminDelete from './confirm-admin-delete';
-import CreateAdmin from './create-admin';
+import { DeleteUser } from '../delete-user/delete-user';
+import CreateUser from '../create-user/create-user';
 import { SkeletonWrapper } from '../skeleton-wrapper/skeleton-wrapper';
 
 const mapDispatch = (dispatch) => {
   return {
     getAdmins: () => dispatch(getAdmins()),
     resetAdmins: () => dispatch(resetAdmins()),
+    deleteAdmin: (id) => dispatch(deleteAdmin(id)),
+    createAdmin: (username, password) =>
+      dispatch(createAdmin(username, password)),
     resetDeleteStatus: () => dispatch(resetDeleteStatus()),
     resetCreateStatus: () => dispatch(resetCreateStatus()),
   };
@@ -73,14 +78,25 @@ export const SuperuserConnected = (props) => {
         maxWidth="md"
         fullWidth
       >
-        <ConfirmAdminDelete
+        <DeleteUser
           close={() => setOpenConfirmDelete(false)}
-          admin={admin}
           reload={reloadAdmins}
+          user={admin}
+          deleteUser={(id) => props.deleteAdmin(id)}
+          deleteStatus={props.deleteStatus}
+          deleteIsLoading={props.deleteIsLoading}
         />
       </Dialog>
       <Dialog open={openCreate} maxWidth="sm" fullWidth>
-        <CreateAdmin close={() => setOpenCreate(false)} reload={reloadAdmins} />
+        <CreateUser
+          close={() => setOpenCreate(false)}
+          reload={reloadAdmins}
+          createUser={(username, password) =>
+            props.createAdmin(username, password)
+          }
+          createStatus={props.createStatus}
+          createIsLoading={props.createIsLoading}
+        />{' '}
       </Dialog>
       <Grid container>
         <Button className="carrier-create-button" onClick={handleCreate}>
@@ -141,6 +157,10 @@ const mapState = (state) => {
     admins: state.superuserReducer.admins,
     adminLoading: state.superuserReducer.adminLoading,
     adminStatus: state.superuserReducer.adminStatus,
+    createIsLoading: state.superuserReducer.createIsLoading,
+    createStatus: state.superuserReducer.createStatus,
+    deleteIsLoading: state.superuserReducer.deleteIsLoading,
+    deleteStatus: state.superuserReducer.deleteStatus,
   };
 };
 

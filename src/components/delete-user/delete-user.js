@@ -7,20 +7,12 @@ import {
   DialogActions,
   IconButton,
 } from '@material-ui/core';
-import { connect } from 'react-redux';
 import { Check, Close } from '@material-ui/icons';
-import { deleteCarrier } from '../../../action/admin';
-import './carrier.scss';
+import './delete-user.scss';
 
-const mapDispatch = (dispatch) => {
-  return {
-    deleteCarrier: (carrier) => dispatch(deleteCarrier(carrier)),
-  };
-};
-
-const ConfirmCarrierDeleteConnected = (props) => {
+export const DeleteUser = (props) => {
   const handleDelete = () => {
-    props.deleteCarrier(props.carrier.id);
+    props.deleteUser(props.user.id);
   };
 
   useEffect(() => {
@@ -44,8 +36,8 @@ const ConfirmCarrierDeleteConnected = (props) => {
           <Typography>
             Biztosan kívánja törölni a{' '}
             {
-              <span className="confirm-delete-carrier-name">
-                {props.carrier.username}
+              <span className="confirm-delete-user-name">
+                {props.user.username}
               </span>
             }{' '}
             felhasználót?
@@ -56,14 +48,14 @@ const ConfirmCarrierDeleteConnected = (props) => {
         <DialogActions>
           <IconButton
             aria-label="delete"
-            className="carrier-delete-button"
+            className="user-delete-button"
             onClick={props.close}
           >
             <Close />
           </IconButton>
           <IconButton
             aria-label="delete"
-            className="carrier-delete-button"
+            className="user-delete-button"
             onClick={handleDelete}
             disabled={props.deleteIsLoading === true}
           >
@@ -74,16 +66,3 @@ const ConfirmCarrierDeleteConnected = (props) => {
     </>
   );
 };
-
-const mapState = (state) => {
-  return {
-    deleteStatus: state.adminReducer.deleteStatus,
-    deleteIsLoading: state.adminReducer.deleteIsLoading,
-  };
-};
-
-const ConfirmCarrierDelete = connect(
-  mapState,
-  mapDispatch
-)(ConfirmCarrierDeleteConnected);
-export default ConfirmCarrierDelete;

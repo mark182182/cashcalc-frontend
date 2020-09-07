@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Grid,
   DialogTitle,
@@ -10,20 +10,18 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Check, Close, Person, VpnKey } from '@material-ui/icons';
-import { createCarrier, getUsernames } from '../../../action/admin';
-import { snackbarError } from '../../../action/snackbar';
-import './carrier.scss';
+import { snackbarError } from '../../action/snackbar';
+import { getUsernames } from '../../action/admin';
+import './create-user.scss';
 
 const mapDispatch = (dispatch) => {
   return {
-    createCarrier: (username, password) =>
-      dispatch(createCarrier(username, password)),
     snackbarError: (message) => dispatch(snackbarError(message)),
     getUsernames: () => dispatch(getUsernames()),
   };
 };
 
-const CreateCarrierConnected = (props) => {
+const CreateUserConnected = (props) => {
   const username = useRef(null);
   const password = useRef(null);
 
@@ -54,7 +52,7 @@ const CreateCarrierConnected = (props) => {
       if (props.usernames.includes(user)) {
         props.snackbarError('Ez a felhasználónév már létezik!');
       } else {
-        props.createCarrier(user, pass);
+        props.createUser(user, pass);
       }
     }
   };
@@ -72,7 +70,7 @@ const CreateCarrierConnected = (props) => {
         <Grid container>
           <Grid container item direction="column">
             <TextField
-              className="create-carrier-input"
+              className="create-user-input"
               type="email"
               variant="outlined"
               required
@@ -89,7 +87,7 @@ const CreateCarrierConnected = (props) => {
           </Grid>
           <Grid container item direction="column">
             <TextField
-              className="create-carrier-input"
+              className="create-user-input"
               type="password"
               variant="outlined"
               required
@@ -111,14 +109,14 @@ const CreateCarrierConnected = (props) => {
         <DialogActions>
           <IconButton
             aria-label="delete"
-            className="carrier-delete-button"
+            className="user-delete-button"
             onClick={props.close}
           >
             <Close />
           </IconButton>
           <IconButton
             aria-label="delete"
-            className="carrier-create-button"
+            className="user-create-button"
             onClick={handleCreate}
             disabled={props.createIsLoading === true}
           >
@@ -132,11 +130,9 @@ const CreateCarrierConnected = (props) => {
 
 const mapState = (state) => {
   return {
-    createStatus: state.adminReducer.createStatus,
-    createIsLoading: state.adminReducer.createIsLoading,
     usernames: state.adminReducer.usernames,
   };
 };
 
-const CreateCarrier = connect(mapState, mapDispatch)(CreateCarrierConnected);
-export default CreateCarrier;
+const CreateUser = connect(mapState, mapDispatch)(CreateUserConnected);
+export default CreateUser;
