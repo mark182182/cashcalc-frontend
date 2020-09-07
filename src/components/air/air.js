@@ -24,11 +24,7 @@ import {
 import { Result } from '../result/result';
 import { getCountriesAir, resetCountry } from '../../action/country';
 import { getPricesAir, resetPrices } from '../../action/air';
-import {
-  calculate,
-  calculationError,
-  resetCalculation,
-} from '../../action/calculation';
+import { calculate } from '../../action/calculation';
 import { snackbarError } from '../../action/snackbar';
 import './air.scss';
 
@@ -184,7 +180,7 @@ const AirConnected = (props) => {
             </Grid>
             <Grid container item direction="column">
               <Typography variant="subtitle2">Súly (kg)</Typography>
-              {country && country.zoneNumber !== null ? (
+              {country && country.zoneNumber >= 0 ? (
                 <Select
                   styles={{
                     menu: (props) => ({ ...props, zIndex: 9999 }),

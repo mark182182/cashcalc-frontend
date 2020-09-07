@@ -42,12 +42,14 @@ const CreateUserConnected = (props) => {
 
     if (pass === null || pass.length < 8) {
       props.snackbarError('A jelszónak minimum 8 karakternek kell lennie!');
+    } else if (pass === null || pass.length >= 30) {
+      props.snackbarError('A jelszó maxium 30 karakter lehet!');
     } else if (user === null || user.length < 5) {
       props.snackbarError(
         'A felhasználónévnek minimum 5 karakternek kell lennie!'
       );
-    } else if (pass === null || pass.length < 5) {
-      props.snackbarError('A felhasználónév maximum 30 karakternek lehet!');
+    } else if (user === null || user.length >= 30) {
+      props.snackbarError('A felhasználónév maximum 30 karakter lehet!');
     } else {
       if (props.usernames.includes(user)) {
         props.snackbarError('Ez a felhasználónév már létezik!');
@@ -82,6 +84,7 @@ const CreateUserConnected = (props) => {
                     <Person />
                   </InputAdornment>
                 ),
+                inputProps: { minLength: 5, maxLength: 30 },
               }}
             />
           </Grid>
@@ -99,7 +102,7 @@ const CreateUserConnected = (props) => {
                     <VpnKey />
                   </InputAdornment>
                 ),
-                inputProps: { minLength: 8 },
+                inputProps: { minLength: 8, maxLength: 30 },
               }}
             />
           </Grid>

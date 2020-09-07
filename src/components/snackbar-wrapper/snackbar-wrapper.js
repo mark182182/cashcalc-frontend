@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Snackbar, Slide } from '@material-ui/core';
+import { Snackbar, Slide, Portal } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { resetSnackbar } from '../../action/snackbar';
 
@@ -11,25 +11,28 @@ const mapDispatch = (dispatch) => {
 };
 
 export const SnackbarWrapperConnected = (props) => {
-  useEffect(() => {
-    return () => {
+  const handleClose = (event, object) => {
+    if (event === null && object === 'timeout') {
       props.resetSnackbar();
-    };
-  }, []);
+    }
+  };
 
   return (
-    <Snackbar
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={props.message !== null}
-      autoHideDuration={4000}
-      disableWindowBlurListener={true}
-      onClose={props.resetSnackbar}
-      TransitionComponent={(rest) => <Slide {...rest} direction="left" />}
-    >
-      {props.message !== null ? (
-        <Alert severity={props.status}>{props.message}</Alert>
-      ) : null}
-    </Snackbar>
+    <Portal>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={props.message !== null}
+        autoHideDuration={4000}
+        disableWindowBlurListener={true}
+        onClose={handleClose}
+        TransitionComponent={(rest) => <Slide {...rest} direction="left" />}
+        className="snackbar"
+      >
+        {props.message !== null ? (
+          <Alert severity={props.status}>{props.message}</Alert>
+        ) : null}
+      </Snackbar>
+    </Portal>
   );
 };
 
