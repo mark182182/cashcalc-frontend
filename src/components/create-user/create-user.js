@@ -40,15 +40,15 @@ const CreateUserConnected = (props) => {
     const user = username.current.value;
     const pass = password.current.value;
 
-    if (pass === null || pass.length < 8) {
+    if (pass == null || pass.length < 8) {
       props.snackbarError('A jelszónak minimum 8 karakternek kell lennie!');
-    } else if (pass === null || pass.length >= 30) {
+    } else if (pass == null || pass.length >= 30) {
       props.snackbarError('A jelszó maxium 30 karakter lehet!');
-    } else if (user === null || user.length < 5) {
+    } else if (user == null || user.length < 5) {
       props.snackbarError(
         'A felhasználónévnek minimum 5 karakternek kell lennie!'
       );
-    } else if (user === null || user.length >= 30) {
+    } else if (user == null || user.length >= 30) {
       props.snackbarError('A felhasználónév maximum 30 karakter lehet!');
     } else {
       if (props.usernames.includes(user)) {
