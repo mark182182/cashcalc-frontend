@@ -17,8 +17,8 @@ export const SnackbarWrapperConnected = (props) => {
     }
   };
 
-  return (
-    <Portal>
+  const snackbar = () => {
+    return (
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={props.message !== null}
@@ -32,7 +32,18 @@ export const SnackbarWrapperConnected = (props) => {
           <Alert severity={props.status}>{props.message}</Alert>
         ) : null}
       </Snackbar>
-    </Portal>
+    );
+  };
+
+  return (
+    <>
+      {/* This elevates the Snackbar when a dialog window is present */}
+      {document.querySelector('.MuiDialog-root') ? (
+        <Portal>{snackbar()}</Portal>
+      ) : (
+        snackbar()
+      )}
+    </>
   );
 };
 
