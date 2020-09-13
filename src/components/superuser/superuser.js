@@ -40,17 +40,15 @@ const mapDispatch = (dispatch) => {
 };
 
 export const SuperuserConnected = (props) => {
-  const [headers, setHeaders] = useState([
-    'Felhasználónév',
-    'Létrehozva',
-    'Törlés',
-  ]);
+  const [headers] = useState(['Felhasználónév', 'Létrehozva', 'Törlés']);
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [admin, setAdmin] = useState(null);
 
   useEffect(() => {
-    props.getAdmins();
+    if (props.adminLoading === null) {
+      props.getAdmins();
+    }
     return () => {
       props.resetAdmins();
     };

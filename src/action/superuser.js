@@ -4,7 +4,7 @@ import request from '../request/request';
 
 export const getAdmins = () => {
   return (dispatch) => {
-    dispatch({ type: actionTypes.GET_ADMINS_RESET });
+    dispatch({ type: actionTypes.GET_ADMINS_LOADING });
     return request
       .get(constants.BASE_URL + constants.API_ROUTES.USERS_ADMINS)
       .then((resp) => {

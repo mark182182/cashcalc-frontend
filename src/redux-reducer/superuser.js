@@ -11,10 +11,15 @@ const initialState = {
 
 const superuserReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.GET_ADMINS_RESET:
+    case actionTypes.GET_ADMINS_LOADING:
       return Object.assign({}, state, {
         admins: null,
         adminLoading: true,
+      });
+    case actionTypes.GET_ADMINS_RESET:
+      return Object.assign({}, state, {
+        admins: null,
+        adminLoading: null,
       });
     case actionTypes.GET_ADMINS_SUCCESS:
       return Object.assign({}, state, {

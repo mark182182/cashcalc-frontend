@@ -21,10 +21,15 @@ export const loginUser = (username, password) => {
         if (err.response && err.response.status === 500) {
           dispatch({ type: actionTypes.LOGIN_USER_RESET });
           dispatch(push(constants.ROUTES.LOGIN));
-        } else {
+        } else if (err.response && err.response.data) {
           dispatch({
             type: actionTypes.LOGIN_USER_ERROR,
             payload: err.response.data.error,
+          });
+        } else {
+          dispatch({
+            type: actionTypes.LOGIN_USER_ERROR,
+            payload: err.message,
           });
         }
       });
