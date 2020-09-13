@@ -40,6 +40,7 @@ export const PricingManagementConnected = (props) => {
   useEffect(() => {
     props.getPricingVariables();
     return () => {
+      props.resetValidation();
       props.resetPricingVariables();
     };
   }, []);

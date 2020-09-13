@@ -45,6 +45,7 @@ const RoadConnected = (props) => {
   useEffect(() => {
     props.getCountriesRoad();
     return () => {
+      props.resetValidation();
       props.resetCountry();
       props.resetPrices();
     };

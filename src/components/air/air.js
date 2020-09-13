@@ -53,6 +53,7 @@ const AirConnected = (props) => {
   useEffect(() => {
     props.getCountriesAir();
     return () => {
+      props.resetValidation();
       props.resetCountry();
       props.resetPrices();
     };

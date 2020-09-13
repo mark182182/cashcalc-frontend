@@ -50,6 +50,7 @@ export const SuperuserConnected = (props) => {
       props.getAdmins();
     }
     return () => {
+      props.resetValidation();
       props.resetAdmins();
     };
   }, []);
