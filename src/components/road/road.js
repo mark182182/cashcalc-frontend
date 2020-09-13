@@ -21,6 +21,7 @@ import { Result } from '../result/result';
 import { mapCountries, mapWeights } from '../../data-reducer/countries';
 import { calculate } from '../../action/calculation';
 import { resetPrices, getPricesRoad } from '../../action/road';
+import { resetValidation } from '../../action/admin';
 import './road.scss';
 
 const mapDispatch = (dispatch) => {
@@ -29,6 +30,7 @@ const mapDispatch = (dispatch) => {
     resetCountry: () => dispatch(resetCountry()),
     getPricesRoad: (zoneNumber) => dispatch(getPricesRoad(zoneNumber)),
     resetPrices: () => dispatch(resetPrices()),
+    resetValidation: () => dispatch(resetValidation()),
     calculate: (calc) => dispatch(calculate(calc)),
   };
 };

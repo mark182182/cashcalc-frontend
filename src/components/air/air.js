@@ -25,6 +25,7 @@ import { Result } from '../result/result';
 import { getCountriesAir, resetCountry } from '../../action/country';
 import { getPricesAir, resetPrices } from '../../action/air';
 import { calculate } from '../../action/calculation';
+import { resetValidation } from '../../action/admin';
 import { snackbarError } from '../../action/snackbar';
 import './air.scss';
 
@@ -34,6 +35,7 @@ const mapDispatch = (dispatch) => {
     resetCountry: () => dispatch(resetCountry()),
     getPricesAir: (zoneNumber) => dispatch(getPricesAir(zoneNumber)),
     resetPrices: () => dispatch(resetPrices()),
+    resetValidation: () => dispatch(resetValidation()),
     calculate: (calc) => dispatch(calculate(calc)),
     snackbarError: (message) => dispatch(snackbarError(message)),
   };

@@ -16,6 +16,7 @@ import {
   getPricingVariables,
   updatePricingVariables,
   resetPricingVariables,
+  resetValidation,
 } from '../../../action/admin';
 import { snackbarError } from '../../../action/snackbar';
 import { SkeletonWrapper } from '../../skeleton-wrapper/skeleton-wrapper';
@@ -27,6 +28,7 @@ const mapDispatch = (dispatch) => {
     getPricingVariables: () => dispatch(getPricingVariables()),
     updatePricingVariables: (pricing) =>
       dispatch(updatePricingVariables(pricing)),
+    resetValidation: () => dispatch(resetValidation()),
     resetPricingVariables: () => dispatch(resetPricingVariables()),
     snackbarError: (message) => dispatch(snackbarError(message)),
   };
