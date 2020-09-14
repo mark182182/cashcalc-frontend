@@ -24,12 +24,6 @@ export const validateRole = (role) => {
   };
 };
 
-export const resetValidation = () => {
-  return (dispatch) => {
-    dispatch({ type: actionTypes.AUTHORIZATION_RESET });
-  };
-};
-
 export const getPricingVariables = () => {
   return (dispatch) => {
     dispatch({ type: actionTypes.GET_PRICINGVARIABLES_RESET });

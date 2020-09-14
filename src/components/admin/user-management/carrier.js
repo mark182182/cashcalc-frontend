@@ -21,7 +21,6 @@ import {
   resetCreateStatus,
   deleteCarrier,
   createCarrier,
-  resetValidation,
 } from '../../../action/admin';
 import { Delete, Add } from '@material-ui/icons';
 import { DeleteUser } from '../../delete-user/delete-user';
@@ -37,7 +36,6 @@ const mapDispatch = (dispatch) => {
       dispatch(createCarrier(username, password)),
     resetDeleteStatus: () => dispatch(resetDeleteStatus()),
     resetCreateStatus: () => dispatch(resetCreateStatus()),
-    resetValidation: () => dispatch(resetValidation()),
   };
 };
 
@@ -54,7 +52,6 @@ export const CarrierManagementConnected = (props) => {
   useEffect(() => {
     props.getCarriers();
     return () => {
-      props.resetValidation();
       props.resetCarriers();
     };
   }, []);

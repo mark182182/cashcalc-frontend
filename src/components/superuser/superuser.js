@@ -26,7 +26,6 @@ import { Delete, Add } from '@material-ui/icons';
 import { DeleteUser } from '../delete-user/delete-user';
 import CreateUser from '../create-user/create-user';
 import { SkeletonWrapper } from '../skeleton-wrapper/skeleton-wrapper';
-import { resetValidation } from '../../action/admin';
 
 const mapDispatch = (dispatch) => {
   return {
@@ -37,7 +36,6 @@ const mapDispatch = (dispatch) => {
       dispatch(createAdmin(username, password)),
     resetDeleteStatus: () => dispatch(resetDeleteStatus()),
     resetCreateStatus: () => dispatch(resetCreateStatus()),
-    resetValidation: () => dispatch(resetValidation()),
   };
 };
 
@@ -52,7 +50,6 @@ export const SuperuserConnected = (props) => {
       props.getAdmins();
     }
     return () => {
-      props.resetValidation();
       props.resetAdmins();
     };
   }, []);
