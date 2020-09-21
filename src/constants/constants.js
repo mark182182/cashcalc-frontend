@@ -4,7 +4,6 @@ const constants = {
     LOGIN: 'login',
     IS_AUTHORIZED: 'is-authorized',
     LOGOUT: 'logout',
-    REFRESH: 'reshresh',
     CALC: 'calc',
     COUNTRIES_AIR: 'countries/air',
     COUNTRIES_ROAD: 'countries/road',
