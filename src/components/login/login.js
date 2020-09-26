@@ -21,6 +21,10 @@ export const LoginConnected = (props) => {
   const password = useRef(null);
 
   useEffect(() => {
+    document.hasStorageAccess &&
+      document
+        .hasStorageAccess()
+        .then((hasAccess) => props.snackbarError('Státusz: ' + hasAccess));
     if (props.loginStatus !== 'success') {
       props.resetUser();
     }
@@ -30,8 +34,22 @@ export const LoginConnected = (props) => {
     props.loginUser(username.current.value, password.current.value);
   };
 
+  const acceptRequestWithUserGesture = (event) => {
+    document.requestStorageAccess &&
+      document.requestStorageAccess().then(
+        () => {
+          props.snackbarError('Megadva');
+          console.log('granted');
+        },
+        () => {
+          console.log('denied');
+        }
+      );
+  };
+
   return (
     <Grid container>
+      <Button onClick={acceptRequestWithUserGesture}>Accept cookie</Button>
       <Grid container className="login-wrapper" direction="column">
         <Grid container className="login-container">
           <Grid container className="login-username" justify="center">
