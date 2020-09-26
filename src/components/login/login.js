@@ -27,16 +27,7 @@ export const LoginConnected = (props) => {
   }, []);
 
   const login = () => {
-    document.requestStorageAccess
-      ? document.requestStorageAccess().then(
-          () => {
-            props.loginUser(username.current.value, password.current.value);
-          },
-          () => {
-            props.snackbarError('Hozzáférées megtagadva!');
-          }
-        )
-      : props.loginUser(username.current.value, password.current.value);
+    props.loginUser(username.current.value, password.current.value);
   };
 
   return (

@@ -48,7 +48,21 @@ export default () => {
         if (!response.config.url.includes(constants.API_ROUTES.IS_AUTHORIZED)) {
           store.dispatch({ type: actionTypes.SNACKBAR_SUCCESS });
         }
-        return response;
+        if (document.requestStorageAccess) {
+          return document.requestStorageAccess().then(
+            () => {
+              return response;
+            },
+            () => {
+              store.dispatch({
+                type: actionTypes.SNACKBAR_ERROR,
+                payload: 'Hozzáférées megtagadva!',
+              });
+            }
+          );
+        } else {
+          return response;
+        }
       }
     },
     (error) => {
