@@ -19,21 +19,23 @@ export const LoginConnected = (props) => {
   const password = useRef(null);
 
   useEffect(() => {
-    const oldStorage = localStorage.getItem('askForStorage');
-    if (oldStorage === null) {
-      localStorage.setItem('askForStorage', false);
-    }
-    const newStorage = localStorage.getItem('askForStorage');
-    if (document.hasStorageAccess && newStorage === 'false') {
-      document.hasStorageAccess().then((hasAccess) => {
-        if (!hasAccess) {
-          document.requestStorageAccess().then(() => {
+    if (document.hasStorageAccess) {
+      const oldStorage = localStorage.getItem('askForStorage');
+      if (oldStorage === null) {
+        localStorage.setItem('askForStorage', false);
+      }
+      const newStorage = localStorage.getItem('askForStorage');
+      if (newStorage === 'false') {
+        document.hasStorageAccess().then((hasAccess) => {
+          if (!hasAccess) {
+            document.requestStorageAccess().then(() => {
+              localStorage.setItem('askForStorage', true);
+            });
+          } else {
             localStorage.setItem('askForStorage', true);
-          });
-        } else {
-          localStorage.setItem('askForStorage', true);
-        }
-      });
+          }
+        });
+      }
     }
     if (props.loginStatus !== 'success') {
       props.resetUser();
@@ -41,7 +43,14 @@ export const LoginConnected = (props) => {
   }, []);
 
   const login = () => {
-    props.loginUser(username.current.value, password.current.value);
+    if (
+      document.hasStorageAccess &&
+      localStorage.getItem('askForStorage') === 'true'
+    ) {
+      props.loginUser(username.current.value, password.current.value);
+    } else if (!document.hasStorageAccess) {
+      props.loginUser(username.current.value, password.current.value);
+    }
   };
 
   return (
