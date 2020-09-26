@@ -19,6 +19,22 @@ export const LoginConnected = (props) => {
   const password = useRef(null);
 
   useEffect(() => {
+    const oldStorage = localStorage.getItem('askForStorage');
+    if (oldStorage === null) {
+      localStorage.setItem('askForStorage', false);
+    }
+    const newStorage = localStorage.getItem('askForStorage');
+    if (document.hasStorageAccess && newStorage === 'false') {
+      document.hasStorageAccess().then((hasAccess) => {
+        if (!hasAccess) {
+          document.requestStorageAccess().then(() => {
+            localStorage.setItem('askForStorage', true);
+          });
+        } else {
+          localStorage.setItem('askForStorage', true);
+        }
+      });
+    }
     if (props.loginStatus !== 'success') {
       props.resetUser();
     }
