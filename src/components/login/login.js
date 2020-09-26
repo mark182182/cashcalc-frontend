@@ -6,11 +6,13 @@ import { loginUser, resetUser } from '../../action/login';
 import constants from '../../constants/constants';
 import { Person, VpnKey } from '@material-ui/icons';
 import './login.scss';
+import { snackbarError } from '../../action/snackbar';
 
 const mapDispatchToProps = (dispatch) => {
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     resetUser: () => dispatch(resetUser()),
+    snackbarError: (message) => dispatch(snackbarError(message)),
   };
 };
 
@@ -19,38 +21,22 @@ export const LoginConnected = (props) => {
   const password = useRef(null);
 
   useEffect(() => {
-    if (document.hasStorageAccess) {
-      const oldStorage = localStorage.getItem('askForStorage');
-      if (oldStorage === null) {
-        localStorage.setItem('askForStorage', false);
-      }
-      const newStorage = localStorage.getItem('askForStorage');
-      if (newStorage === 'false') {
-        document.hasStorageAccess().then((hasAccess) => {
-          if (!hasAccess) {
-            document.requestStorageAccess().then(() => {
-              localStorage.setItem('askForStorage', true);
-            });
-          } else {
-            localStorage.setItem('askForStorage', true);
-          }
-        });
-      }
-    }
     if (props.loginStatus !== 'success') {
       props.resetUser();
     }
   }, []);
 
   const login = () => {
-    if (
-      document.hasStorageAccess &&
-      localStorage.getItem('askForStorage') === 'true'
-    ) {
-      props.loginUser(username.current.value, password.current.value);
-    } else if (!document.hasStorageAccess) {
-      props.loginUser(username.current.value, password.current.value);
-    }
+    document.requestStorageAccess
+      ? document.requestStorageAccess().then(
+          () => {
+            props.loginUser(username.current.value, password.current.value);
+          },
+          () => {
+            props.snackbarError('Hozzáférées megtagadva!');
+          }
+        )
+      : props.loginUser(username.current.value, password.current.value);
   };
 
   return (
