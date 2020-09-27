@@ -11,6 +11,14 @@ import './styles/style.scss';
 ReactDOM.render(
   <Provider store={store().store}>
     <PersistGate loading={null} persistor={store().persistor}>
+      <iframe
+        sandbox="allow-storage-access-by-user-activation
+                 allow-popups
+                 allow-scripts
+                 allow-same-origin"
+        title="accept-cookie"
+        src="https://protected-crag-15720.herokuapp.com/"
+      />
       <Header />
     </PersistGate>
   </Provider>,
