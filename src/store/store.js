@@ -34,11 +34,9 @@ export default () => {
   const persistor = persistStore(store);
 
   request.interceptors.request.use((config) => {
-    if (!navigator.cookieEnabled) {
-      const state = store.getState();
-      config.headers['Access-Token'] = state.loginReducer.accessToken;
-      config.headers['Refresh-Token'] = state.loginReducer.refreshToken;
-    }
+    const state = store.getState();
+    config.headers['access-token'] = state.loginReducer.accessToken;
+    config.headers['refresh-token'] = state.loginReducer.refreshToken;
     if (!config.url.includes(constants.API_ROUTES.IS_AUTHORIZED)) {
       store.dispatch({ type: actionTypes.SNACKBAR_LOADING });
     }
@@ -54,12 +52,15 @@ export default () => {
         fallback for browsers that block third-party cookies,
         will switch to Storage Access API in the future  
         */
-        if (!navigator.cookieEnabled) {
+        if (
+          response.headers['access-token'] &&
+          response.headers['refresh-token']
+        ) {
           store.dispatch({
             type: actionTypes.SET_TOKENS,
             payload: {
-              accessToken: response.headers['Access-Token'],
-              refreshToken: response.headers['Refresh-Token'],
+              accessToken: response.headers['access-token'],
+              refreshToken: response.headers['refresh-token'],
             },
           });
         }

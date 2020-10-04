@@ -46,7 +46,6 @@ const loginReducer = (state = initialState, action) => {
         refreshToken: null,
       });
     case actionTypes.SET_TOKENS:
-      console.log(action.payload);
       return Object.assign({}, state, {
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
