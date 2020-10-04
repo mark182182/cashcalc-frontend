@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Grid, TextField, InputAdornment, Button } from '@material-ui/core';
 import { loginUser, resetUser } from '../../action/login';
 import constants from '../../constants/constants';
