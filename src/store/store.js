@@ -34,7 +34,7 @@ export default () => {
   const persistor = persistStore(store);
 
   request.interceptors.request.use((config) => {
-    if (navigator.cookieEnabled) {
+    if (!navigator.cookieEnabled) {
       const state = store.getState();
       config.headers['Access-Token'] = state.loginReducer.accessToken;
       config.headers['Refresh-Token'] = state.loginReducer.refreshToken;
@@ -54,7 +54,7 @@ export default () => {
         fallback for browsers that block third-party cookies,
         will switch to Storage Access API in the future  
         */
-        if (navigator.cookieEnabled) {
+        if (!navigator.cookieEnabled) {
           store.dispatch({
             type: actionTypes.SET_TOKENS,
             payload: {
