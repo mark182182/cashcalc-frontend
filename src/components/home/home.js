@@ -9,12 +9,12 @@ import { Error404 } from '../404/404';
 import ProtectedRoute from '../protected-route/protected-route';
 import RoleBasedRoute from '../role-based-route/role-based-route';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { history } from '../../store/store';
+import store from '../../request/request';
 import { ConnectedRouter } from 'connected-react-router';
 
 export const Home = () => {
   return (
-    <ConnectedRouter history={history}>
+    <ConnectedRouter history={store().history}>
       <Switch>
         <ProtectedRoute path={constants.ROUTES.HOME + constants.ROUTES.WELCOME}>
           <Welcome />

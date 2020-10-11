@@ -1,6 +1,6 @@
 import constants from '../constants/constants';
 import actionTypes from '../constants/action-types';
-import request from '../request/request';
+import { request } from '../request/request';
 import { push } from 'connected-react-router';
 
 export const loginUser = (username, password) => {

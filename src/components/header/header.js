@@ -9,7 +9,7 @@ import {
   ListItem,
   ListItemText,
 } from '@material-ui/core';
-import { history } from '../../store/store';
+import store from '../../request/request';
 import { connect } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -21,6 +21,8 @@ import constants from '../../constants/constants';
 import SnackbarWrapper from '../snackbar-wrapper/snackbar-wrapper';
 import { Menu } from '@material-ui/icons';
 import './header.scss';
+
+const _history = store().history;
 
 const mapDispatch = (dispatch) => {
   return {
@@ -46,13 +48,13 @@ export const HeaderConnected = (props) => {
         props.logout();
         break;
       case 1:
-        history.push(constants.ROUTES.HOME + constants.ROUTES.CALCULATION);
+        _history.push(constants.ROUTES.HOME + constants.ROUTES.CALCULATION);
         break;
       case 2:
-        history.push(constants.ROUTES.HOME + constants.ROUTES.ADMIN);
+        _history.push(constants.ROUTES.HOME + constants.ROUTES.ADMIN);
         break;
       case 3:
-        history.push(constants.ROUTES.HOME + constants.ROUTES.SUPERUSER);
+        _history.push(constants.ROUTES.HOME + constants.ROUTES.SUPERUSER);
         break;
     }
     toggleDrawer(false);
@@ -105,7 +107,7 @@ export const HeaderConnected = (props) => {
         </Grid>
       </Grid>
       <Grid container className="navbar-content">
-        <ConnectedRouter history={history}>
+        <ConnectedRouter history={_history}>
           <Switch>
             <Route path={constants.ROUTES.LOGIN}>
               <Login />
